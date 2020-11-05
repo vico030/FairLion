@@ -10,60 +10,7 @@ import SearchScreen from './components/SearchScreen';
 import RequestsScreen from './components/RequestsScreen';
 import FriendsScreen from './components/FriendsScreen';
 
-const Tabs = createBottomTabNavigator(/*{
-  BorrowedScreen: {
-    screen: BorrowedScreen,
-    navigationOptions: {
-      tabBarLabel: "Ausgeliehen",
-      tabBarIcon: ({ tintColor }) => {
-        <Image source={require("./assets/ausgeliehe_icon.svg")} />
-      }
-    }
-  },
-  StockScreen: {
-    screen: StockScreen,
-    navigationOptions: {
-      tabBarLabel: "Lager",
-      tabBarIcon: ({ tintColor }) => {
-        <Image source={require("./assets/lager_icon.svg")} />
-      }
-    }
-  },
-  SearchScreen: {
-    screen: SearchScreen,
-    navigationOptions: {
-      tabBarLabel: "Suche",
-      tabBarIcon: ({ tintColor }) => {
-        <Image source={require("./assets/ausgeliehe_icon.svg")} />
-      }
-    }
-  },
-  RequestsScreen: {
-    screen: RequestsScreen,
-    navigationOptions: {
-      tabBarLabel: "Anfragen",
-      tabBarIcon: ({ tintColor }) => {
-        <Image source={require("./assets/anfragen_icon.svg")} />
-      }
-    }
-  },
-  FriendsScreen: {
-    screen: FriendsScreen,
-    navigationOptions: {
-      tabBarLabel: "Freunde",
-      tabBarIcon: ({ tintColor }) => {
-        <Image source={require("./assets/freunde_icon.svg")} />
-      }
-    }
-  },
-  tabBarOptions: {
-    activeTintColor: "#E77F23",
-    inactiveTintColor: "#333740",
-    style: {
-      backgroundColor: "#FFFFFF"
-    }
-  }
-}*/);
+const Tabs = createBottomTabNavigator();
 
 const activeTintColor = "#E77F23";
 const inactiveTintColor = "#333740";
