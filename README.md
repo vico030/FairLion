@@ -14,19 +14,19 @@ Nutzer können ohne viel Aufwand nachsehen, ob ihre Freunde Gegenstände zum Ver
 * Moritz Kolbe - Frontend
 * John Einicke - Backend
 * Lukas Heuveling - Frontend
-* Talha Dagli - Backend,Frontend
+* Talha Dagli - Backend, Frontend
 
 ## Beschreibung des Prototypen
 
 [Link zum Prototypen](https://www.figma.com/proto/PrKrtmLe2xtWkIJp2A2Did/FairLion?node-id=66%3A1439&scaling=min-zoom)
 
-Der vorliegende Prototyp wurde mit dem Tool Figma erstellt und bildet grob die Funktionalität unseres angestrebten Produktes ab. Zu diesem Zweck haben wir die wichtigsten Ansichten der FairLion-App bereits ausgestaltet und nach Möglichkeit miteinander verknüpft. Neben einem Splash- und Login/Registrierungs-Screen stellen die fünf Tabs ''Ausgeliehen'', ''Lager'', ''Suche'', ''Anfragen'' und ''Freunde'' den Hauptteil der Anwendung dar. Von dort können diverse Untermenüs, Profile und Editoren aufgerufen werden, um die Verleih- und Ausleihprozesse hinlänglich abzubilden. Auch das Farbschema und das vorläufige Logo wurden bereits an den entsprechenden Stellen eingesetzt.
+Der vorliegende Prototyp wurde mit dem Tool Figma erstellt und bildet grob die Funktionalität unseres angestrebten Produktes ab. Zu diesem Zweck haben wir die wichtigsten Ansichten der FairLion-App bereits ausgestaltet und nach Möglichkeit miteinander verknüpft. Neben einem Splash- und Login/Registrierungs-Screen stellen die fünf Tabs "Ausgeliehen", "Lager", "Suche", "Anfragen" und "Freunde" den Hauptteil der Anwendung dar. Von dort können diverse Untermenüs, Profile und Editoren aufgerufen werden, um die Verleih- und Ausleihprozesse hinlänglich abzubilden. Auch das Farbschema und das vorläufige Logo wurden bereits an den entsprechenden Stellen eingesetzt.
 Sobald der Einloggprozess abgeschlossen ist, befindet sich der Nutzer auf der "Ausgeliehen"-Ansicht. Hier tauchen die Artikel auf, die der Nutzer aktuell von anderen Nutzern ausgeliehen hat. Von hier kann er sofort zu einer Detailansicht eines beliebigen Artikels wechseln, um ihn genau zu prüfen oder um die Rückgabe an den Besitzer einzuleiten.
 
-Über die Tab-Bar am unteren Bildschirmrand kann zur Ansicht ''Lager'' gewechselt werden. Hier tauchen die Artikel aus eigenem Besitz auf, die der Nutzer sich entschlossen hat, zu verleihen. Neben einer Darstellung, welche Artikel gerade an welche anderen Nutzer verliehen sind, können hier auch neue Artikel zum Verleihen in die Sammlung aufgenommen werden.
-Möchte sich ein Nutzer einen Artikel von jemand anderem ausleihen, muss er auf den ''Suche''-Tab wechseln. Dieser zeigt initial die Artikel, die der Nutzer - beispielsweise für nochmalige oder spätere Ausleihen - favorisiert hat. Über die Suchleiste am oberen Bildschirmrand und die Kategorie-Filterauswahl können neue Artikel gefunden und deren Ausleihe bei deren Besitzern beantragt werden.
+Über die Tab-Bar am unteren Bildschirmrand kann zur Ansicht "Lager" gewechselt werden. Hier tauchen die Artikel aus eigenem Besitz auf, die der Nutzer sich entschlossen hat, zu verleihen. Neben einer Darstellung, welche Artikel gerade an welche anderen Nutzer verliehen sind, können hier auch neue Artikel zum Verleihen in die Sammlung aufgenommen werden.
+Möchte sich ein Nutzer einen Artikel von jemand anderem ausleihen, muss er auf den "Suche"-Tab wechseln. Dieser zeigt initial die Artikel, die der Nutzer - beispielsweise für nochmalige oder spätere Ausleihen - favorisiert hat. Über die Suchleiste am oberen Bildschirmrand und die Kategorie-Filterauswahl können neue Artikel gefunden und deren Ausleihe bei deren Besitzern beantragt werden.
 
-Diese Ausleihanfragen tauchen danach beim entsprechenden Nutzer im Tab ''Anfragen'' auf. Hier kann diesen mit einem einfachen Klick zugestimmt oder widersprochen werden. Auch Anfragen für neue Freunde werden hier angezeigt und können auf gleiche Weise bearbeitet werden.
+Diese Ausleihanfragen tauchen danach beim entsprechenden Nutzer im Tab "Anfragen" auf. Hier kann diesen mit einem einfachen Klick zugestimmt oder widersprochen werden. Auch Anfragen für neue Freunde werden hier angezeigt und können auf gleiche Weise bearbeitet werden.
    
 Die Liste der aktuell verknüpften Freunde wird dem Nutzer im Tab "Freunde" angezeigt. Dort können deren Profile und Artikel angesehen und neue Freunde per Suche hinzugefügt werden.
 
@@ -40,7 +40,7 @@ Als Framework für das Frontend verwenden wir React Native und für das Backend 
 
 ## Grobe Architektur
 
-[Architektur-Skizze](/architecture.png)
+![Architektur-Skizze](/architecture.png)
 
 ## Mögliche Herausforderungen
 
