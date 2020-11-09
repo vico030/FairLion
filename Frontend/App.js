@@ -4,17 +4,19 @@ import React from 'react';
 import { Image } from "react-native"
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
-import BorrowedScreen from './components/BorrowedScreen';
-import StockScreen from './components/StockScreen';
-import SearchScreen from './components/SearchScreen';
-import RequestsScreen from './components/RequestsScreen';
-import FriendsScreen from './components/FriendsScreen';
-
-const Tabs = createBottomTabNavigator();
-
+// import BorrowedScreen from './components/BorrowedScreen';
+// import StockScreen from './components/StockScreen';
+// import SearchScreen from './components/SearchScreen';
+// import RequestsScreen from './components/RequestsScreen';
+// import FriendsScreen from './components/FriendsScreen';
+import {BurrowedStackScreen,
+  StockStackScreen,
+  SearchStackScreen,
+  RequestsStackScreen,
+  FriendsStackScreen} from './components/Headers';
 const activeTintColor = "#E77F23";
 const inactiveTintColor = "#333740";
-
+const Tabs = createBottomTabNavigator();
 export default function App() {
   return (
     <NavigationContainer>
@@ -47,11 +49,11 @@ export default function App() {
           }
         }}
       >
-        <Tabs.Screen name="Ausgeliehen" component={BorrowedScreen} />
-        <Tabs.Screen name="Lager" component={StockScreen} />
-        <Tabs.Screen name="Suche" component={SearchScreen} />
-        <Tabs.Screen name="Anfragen" component={RequestsScreen} />
-        <Tabs.Screen name="Freunde" component={FriendsScreen} />
+        <Tabs.Screen name="Ausgeliehen" component={BurrowedStackScreen} />
+        <Tabs.Screen name="Lager" component={StockStackScreen} />
+        <Tabs.Screen name="Suche" component={SearchStackScreen} />
+        <Tabs.Screen name="Anfragen" component={RequestsStackScreen} />
+        <Tabs.Screen name="Freunde" component={FriendsStackScreen} />
       </Tabs.Navigator>
     </NavigationContainer>
   );
