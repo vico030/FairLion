@@ -1,0 +1,46 @@
+POST http://localhost:3000/auth/register
+content-type: application/json
+
+{
+    "username" : "HansRolf",
+    "password" : "Hat scheinbar funktioniert",
+    "email" : "hans.rolf@gmail.com",
+    "phone" : "030 1234565",
+    "street" : "Hans-Rolfer-Weg 69",
+    "zipCode" : "42069",
+    "city" : "Hansestadt",
+    "country" : "Hansonia",
+    "info" : "Der gute Hans",
+    "image" : "https://www.br.de/puls/themen/netz/pepe-der-frosch-mem-100~_v-img__16__9__xl_-d31c35f8186ebeb80b0cd843a7c267a0e0c81647.jpg?version=4ca31"
+}
+
+###
+
+
+POST http://localhost:3000/users/Hans/articles
+content-type: application/json
+
+{
+    "title" : "Pepe",
+    "description" : "Ein Bild von Pepe",
+    "duration" : "Vergessen was hier hin kommt",
+    "images" : ["https://i0.wp.com/star-revue.com/wp-content/uploads/2020/09/Pepe-the-Don-min.jpg", "https://i.guim.co.uk/img/media/327e46c3ab049358fad80575146be9e0e65686e7/0_56_1023_614/master/1023.jpg?width=1200&height=1200&quality=85&auto=format&fit=crop&s=094ddc96f89a1ea9a4f68d1b585d1f97"]
+}
+
+###
+
+POST http://localhost:3000/users/Hans/friendrequests
+content-type: application/json
+
+{
+    "recieverId" : "Rolf"
+}
+
+###
+
+POST http://localhost:3000/users/Hans/articlerequests
+content-type: application/json
+
+{
+    "articleId" : "507f1f77bcf86cd799439011"
+}

@@ -24,11 +24,10 @@ const articleSchema = mongoose.Schema({
     },
     owner: {
         required: true,
-        type: ObjectId
+        type: String
     },
     borrower: {
-        required: true,
-        type: ObjectId
+        type: String
     }
 })
 

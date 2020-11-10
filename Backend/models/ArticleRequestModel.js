@@ -1,4 +1,4 @@
-const { ObjectId } = require('mongooose');
+const { ObjectId } = require('mongoose');
 const mongoose = require('mongoose');
 
 const ArticleRequestSchema = mongoose.Schema({
@@ -7,7 +7,7 @@ const ArticleRequestSchema = mongoose.Schema({
         required: true
     },
     requesterId: {
-        type: ObjectId,
+        type: String,
         required: true
     },
     confirmed: {
