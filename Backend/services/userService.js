@@ -20,7 +20,7 @@ function friendrequest(req, res) {
     const request = new friendRequestModel({
         requesterId : req.params.userId,
         recieverId : req.body.recieverId,
-        date : Date.now,
+        date : Date.now(),
         confirmed : false
     })
 
