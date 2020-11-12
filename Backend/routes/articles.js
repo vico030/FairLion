@@ -5,7 +5,7 @@ const {
 const router = express.Router();
 const articleService = require('../services/articleService');
 
-router.get("/", (req, res, next) => {
+router.get("/", async (req, res, next) => {
     try {
         const response = await articleService.getAllArticles();
         res.status(response.status).json({
@@ -21,7 +21,7 @@ router.get("/", (req, res, next) => {
     }
 });
 
-router.put("/", (req, res, next) => {
+router.put("/", async (req, res, next) => {
     articleService.updateAllArticles(req.body, (err, articles) => {
         if (err) {
             console.log("ERROR!!!!!"); // ERROR_HANDLER!!!!
@@ -45,7 +45,7 @@ router.put("/", (req, res, next) => {
     }
 });
 
-router.delete("/", (req, res, next) => {
+router.delete("/", async (req, res, next) => {
     articleService.deleteAllArticles((err, articles) => {
         if (err) {
             console.log(err); // ERROR_HANDLER!!!!
