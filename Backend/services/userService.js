@@ -2,26 +2,37 @@ const articleModel = require("../models/ArticleModel");
 const friendRequestModel = require("../models/FriendRequestModel");
 const articleRequestModel = require("../models/ArticleRequestModel");
 
-function createArticle(req, res) {
-    const article = new articleModel({
-        title : req.body.title,
-        description : req.body.description,
-        duration : req.body.duration,
-        images: req.body.images,
-        status: "Vorhanden",
-        owner: req.params.userId,
-    });
-    article.save().then(() => {
-        console.log("Eintrag wurde erstellt.");
+function createArticle(body, userId) {
+    return new Promise((resolve, reject) => {
+        const article = new articleModel({
+            ...body,
+            status: "Vorhanden",
+            owner: userId
+        });
+        article.save()
+            .then((article) => {
+                return resolve({
+                    data: article,
+                    message: 'Eintrag wurde erstellt.',
+                    status: 201
+                })
+            })
+            .catch((err) => {
+                return reject({
+                    error: err,
+                    status: 500,
+                    message: 'Eintrag konnte nicht erstellt werden.'
+                })
+            });
     });
 }
 
 function createFriendRequest(req, res) {
     const request = new friendRequestModel({
-        requesterId : req.params.userId,
-        recieverId : req.body.recieverId,
-        date : Date.now(),
-        confirmed : false
+        requesterId: req.params.userId,
+        recieverId: req.body.recieverId,
+        date: Date.now(),
+        confirmed: false
     })
 
     request.save().then(() => {
@@ -31,10 +42,10 @@ function createFriendRequest(req, res) {
 
 function createArticleRequest(req, res) {
     const request = new articleRequestModel({
-        articleId : req.body.articleId,
-        requesterId : req.params.userId,
-        comfirmed : false,
-        date : Date.now()
+        articleId: req.body.articleId,
+        requesterId: req.params.userId,
+        comfirmed: false,
+        date: Date.now()
     })
 
     request.save().then(() => {
