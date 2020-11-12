@@ -22,14 +22,6 @@ router.get("/", async (req, res, next) => {
 });
 
 router.put("/", async (req, res, next) => {
-    articleService.updateAllArticles(req.body, (err, articles) => {
-        if (err) {
-            console.log("ERROR!!!!!"); // ERROR_HANDLER!!!!
-        } else {
-            res.status(200).send(articles);
-        }
-    });
-
     try {
         const response = await articleService.updateAllArticles(req.body);
         res.status(response.status).json({
@@ -46,14 +38,6 @@ router.put("/", async (req, res, next) => {
 });
 
 router.delete("/", async (req, res, next) => {
-    articleService.deleteAllArticles((err, articles) => {
-        if (err) {
-            console.log(err); // ERROR_HANDLER!!!!
-        } else {
-            res.status(200).send(articles);
-        }
-    })
-
     try {
         const response = await service.deleteAllArticles();
         res.status(response.status).json({
