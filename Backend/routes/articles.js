@@ -39,7 +39,7 @@ router.put("/", async (req, res, next) => {
 
 router.delete("/", async (req, res, next) => {
     try {
-        const response = await service.deleteAllArticles();
+        const response = await articleService.deleteAllArticles();
         res.status(response.status).json({
             'data': response.data,
             'message': response.message

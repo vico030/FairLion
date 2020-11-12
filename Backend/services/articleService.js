@@ -55,7 +55,7 @@ const deleteAllArticles = function () {
         articles = {}
         Article.find({}).then(findings => { articles = findings })
         Article.deleteMany({})
-            .then((articles) => {
+            .then(() => {
                 return resolve({
                     data: articles,
                     message: 'Einträge wurden gelöscht.',

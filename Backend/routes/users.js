@@ -20,7 +20,7 @@ router.post("/:userId/articles", async (req, res) => {
 
 router.post("/:userId/friendrequests", async (req, res) => {
     try {
-        const response = await service.createFriendRequest(req.body);
+        const response = await service.createFriendRequest(req.body, req.params.userId);
         res.status(response.status).json({
             'data': response.data,
             'message': response.message
@@ -36,7 +36,7 @@ router.post("/:userId/friendrequests", async (req, res) => {
 
 router.post("/:userId/articlerequests", async (req, res) => {
     try {
-        const response = await service.createArticleRequest(req.body);
+        const response = await service.createArticleRequest(req.body, req.params.userId);
         res.status(response.status).json({
             'data': response.data,
             'message': response.message

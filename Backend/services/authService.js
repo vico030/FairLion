@@ -4,8 +4,7 @@ const registerUser = (body) => {
     return new Promise(async (resolve, reject) => {
         try {
             const user = new userModel({
-                ...body,
-                image: req.body.image
+                ...body
             });
             const savedUser = await user.save();
             return resolve({

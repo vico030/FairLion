@@ -12,7 +12,7 @@ router.post("/register", async (req, res) => {
     }
 });
 
-router.post("/login", (req, res) => {
+router.post("/login", async (req, res) => {
     try {
         const { data, status, message } = await service.registerUser(req.body);
         res.status(status).json({ data, message })
