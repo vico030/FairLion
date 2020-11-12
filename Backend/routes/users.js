@@ -4,7 +4,7 @@ const service = require("../services/userService");
 
 router.post("/:userId/articles", async (req, res) => {
     try {
-        const response = await service.createArticle(req.body);
+        const response = await service.createArticle(req.body, req.params.userId);
         res.status(response.status).json({
             'data': response.data,
             'message': response.message
