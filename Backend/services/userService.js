@@ -2,7 +2,7 @@ const articleModel = require("../models/ArticleModel");
 const friendRequestModel = require("../models/FriendRequestModel");
 const articleRequestModel = require("../models/ArticleRequestModel");
 
-function newArticle(req, res) {
+function createArticle(req, res) {
     const article = new articleModel({
         title : req.body.title,
         description : req.body.description,
@@ -16,7 +16,7 @@ function newArticle(req, res) {
     });
 }
 
-function friendrequest(req, res) {
+function createFriendRequest(req, res) {
     const request = new friendRequestModel({
         requesterId : req.params.userId,
         recieverId : req.body.recieverId,
@@ -29,7 +29,7 @@ function friendrequest(req, res) {
     });
 }
 
-function articlerequest(req, res) {
+function createArticleRequest(req, res) {
     const request = new articleRequestModel({
         articleId : req.body.articleId,
         requesterId : req.params.userId,
@@ -44,7 +44,7 @@ function articlerequest(req, res) {
 
 
 module.exports = {
-    newArticle,
-    friendrequest,
-    articlerequest
+    createArticle,
+    createFriendRequest,
+    createArticleRequest
 };
