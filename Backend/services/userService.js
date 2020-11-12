@@ -13,7 +13,7 @@ function createArticle(body, userId) {
             .then((article) => {
                 return resolve({
                     data: article,
-                    message: 'Eintrag wurde erstellt.',
+                    message: 'Artikel wurde erstellt.',
                     status: 201
                 })
             })
@@ -21,35 +21,61 @@ function createArticle(body, userId) {
                 return reject({
                     error: err,
                     status: 500,
-                    message: 'Eintrag konnte nicht erstellt werden.'
+                    message: 'Artikel konnte nicht erstellt werden.'
                 })
             });
     });
 }
 
-function createFriendRequest(req, res) {
-    const request = new friendRequestModel({
-        requesterId: req.params.userId,
-        recieverId: req.body.recieverId,
-        date: Date.now(),
-        confirmed: false
-    })
-
-    request.save().then(() => {
-        console.log('Einträge wurden erstellt.');
+function createFriendRequest(body, userId) {
+    return new Promise((resolve, reject) => {
+        const request = new friendRequestModel({
+            requesterId: userId,
+            recieverId: body.recieverId,
+            date: Date.now(),
+            confirmed: false
+        })
+        request.save()
+            .then((friendRequest) => {
+                return resolve({
+                    data: friendRequest,
+                    message: 'Freundesanfrage wurde erstellt.',
+                    status: 201
+                })
+            })
+            .catch((err) => {
+                return reject({
+                    error: err,
+                    status: 500,
+                    message: 'Freundesanfrage konnte nicht erstellt werden.'
+                })
+            });
     });
 }
 
-function createArticleRequest(req, res) {
-    const request = new articleRequestModel({
-        articleId: req.body.articleId,
-        requesterId: req.params.userId,
-        comfirmed: false,
-        date: Date.now()
-    })
-
-    request.save().then(() => {
-        console.log('Einträge wurden erstellt.');
+function createArticleRequest(body, userId) {
+    return new Promise((resolve, reject) => {
+        const request = new articleRequestModel({
+            articleId: body.articleId,
+            requesterId: userId,
+            confirmed: false,
+            date: Date.now()
+        })
+        request.save()
+            .then((articleRequest) => {
+                return resolve({
+                    data: articleRequest,
+                    message: 'Artikelanfrage wurde erstellt.',
+                    status: 201
+                })
+            })
+            .catch((err) => {
+                return reject({
+                    error: err,
+                    status: 500,
+                    message: 'Artikelanfrage konnte nicht erstellt werden.'
+                })
+            });
     });
 }
 
