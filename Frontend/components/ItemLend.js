@@ -18,8 +18,8 @@ export default function ItemLend({besitzer,produktName,ausleihfrist,image}) {
                             <MaterialCommunityIcons name='heart-outline' size={24}/>
                         </View>
                         <View style={styles.itemBottom} >
-                            <UserButton userName={besitzer}></UserButton>
-                            <Text styke={styles.itemTime}>Noch: {ausleihfrist}</Text>
+                            <UserButton userName={besitzer}/>
+                            <Text style={styles.itemTime}>Noch: {ausleihfrist}</Text>
                         </View>
                        
                     </View>
@@ -39,12 +39,11 @@ export default function ItemLend({besitzer,produktName,ausleihfrist,image}) {
             },
             itemImage:{height:100,width:100},
             itemBottom:{
-                
-               
                 marginLeft:5,
                 width:'68%',
                 flexDirection:'row',
-                justifyContent: 'space-between'
+                justifyContent: 'space-between',
+                alignItems:'center',
             },
             itemUpper:{
                 width:'68%',
@@ -59,7 +58,7 @@ export default function ItemLend({besitzer,produktName,ausleihfrist,image}) {
                 alignItems: 'center',
                 borderColor: '#E77F23',
                 borderRadius:50,
-                justifyContent:'space-between'
+                
             },
             itemBottomView:{
                
@@ -68,6 +67,8 @@ export default function ItemLend({besitzer,produktName,ausleihfrist,image}) {
             },
             itemTime:{
                 fontSize:12,
+                marginBottom:10,
+                
             },
             itemName:{
                 fontWeight:'bold'
