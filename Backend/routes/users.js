@@ -10,7 +10,7 @@ router.post("/:userId/articles", async (req, res) => {
             'message': response.message
         });
     }
-    catch({error, status, message}){
+    catch ({ error, status, message }) {
         res.status(status).json({
             'error': error,
             'message': message
@@ -26,7 +26,7 @@ router.post("/:userId/friendrequests", async (req, res) => {
             'message': response.message
         });
     }
-    catch({error, status, message}){
+    catch ({ error, status, message }) {
         res.status(status).json({
             'error': error,
             'message': message
@@ -42,7 +42,7 @@ router.post("/:userId/articlerequests", async (req, res) => {
             'message': response.message
         });
     }
-    catch({error, status, message}){
+    catch ({ error, status, message }) {
         res.status(status).json({
             'error': error,
             'message': message

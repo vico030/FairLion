@@ -13,8 +13,14 @@ const user = mongoose.model("User",
         country: String,
         info: String,
         image: String,
-        friends: [ObjectId],
-        favourites: [ObjectId]
+        friends: {
+            type: [ObjectId],
+            default: []
+        },
+        favourites: {
+            type: [ObjectId],
+            default: []
+        }
     });
 
 module.exports = user;
