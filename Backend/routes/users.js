@@ -1,8 +1,9 @@
 const express = require("express");
 const router = express.Router();
 const service = require("../services/userService");
+const { isAuthenticated } = require("../services/authService");
 
-router.post("/:userId/articles", async (req, res) => {
+router.post("/:userId/articles", isAuthenticated, async (req, res) => {
     try {
         const response = await service.createArticle(req.body, req.params.userId);
         res.status(response.status).json({

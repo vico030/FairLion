@@ -26,4 +26,13 @@ router.post("/login", async (req, res) => {
     }
 })
 
+router.get("/logout", async (req, res) => {
+    try {
+
+    }
+    catch (err) {
+
+    }
+})
+
 module.exports = router;

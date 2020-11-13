@@ -3,7 +3,8 @@ const express = require('express')
 const app = express()
 const port = 3000
 const bodyparser = require("body-parser");
-const {handleError} = require('./helpers/error')
+const { handleError } = require('./helpers/error')
+const cookieParser = require('cookie-parser')
 
 var allRoutes = require('./routes/allRoutes');
 app.use(bodyparser.json());
@@ -14,6 +15,7 @@ app.use('/', allRoutes.indexRoute);
 app.use('/users', allRoutes.usersRoute);
 app.use('/articles', allRoutes.articlesRoute);
 app.use('/auth', allRoutes.authRoute);
+app.use(cookieParser());
 
 // Error Handling
 app.use((err, req, res, next) => {
