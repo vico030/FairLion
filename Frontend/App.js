@@ -14,12 +14,15 @@ import {BurrowedStackScreen,
   SearchStackScreen,
   RequestsStackScreen,
   FriendsStackScreen} from './components/Headers';
+
+import RootStackScreen from "./components/RootStackScreen";
 const activeTintColor = "#E77F23";
 const inactiveTintColor = "#333740";
 const Tabs = createBottomTabNavigator();
 export default function App() {
   return (
     <NavigationContainer>
+      {/* <RootStackScreen /> */}
       <Tabs.Navigator screenOptions={({ route }) => ({
         tabBarIcon: ({ focused, color, size }) => {
           let icon;

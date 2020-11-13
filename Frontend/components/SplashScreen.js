@@ -15,7 +15,7 @@ const SplashScreen = props => {
       AsyncStorage.getItem('user_id').then(value =>
         props.navigation.navigate(
           //value === null ? 'LoginScreen' : 'DrawerNavigationRoutes'
-          "RegisterScreen"
+          "LoginScreen"
         )
       );
     }, 5000);

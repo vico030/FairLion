@@ -12,7 +12,7 @@ import Constants from "expo-constants";
 import DropDownPicker from "react-native-dropdown-picker";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scrollview";
 
-const RegisterScreen = () => {
+const RegisterScreen = ({ navigation }) => {
   const [data, setData] = React.useState({
     username: "",
     password: "",
@@ -109,7 +109,7 @@ const RegisterScreen = () => {
   };
 
   return (
-    <KeyboardAwareScrollView style={{ flex: 1, marginTop: Constants.statusBarHeight }}>
+    <KeyboardAwareScrollView style={{ flex: 1 }}>
       <View style={styles.userInfo}>
         <View style={styles.inputView}>
           <TextInput
@@ -237,7 +237,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#C4C4C4",
     alignItems: "center",
     justifyContent: "center",
-    marginTop: Constants.statusBarHeight,
+    //marginTop: Constants.statusBarHeight,
   },
   ScrollView: {
     width: "100%",
