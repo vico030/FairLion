@@ -76,13 +76,12 @@ const isAuthenticated = async (req, res, next) => {
             try { //if authToken not valid, check if refreshToken is valid
                 const { refreshToken } = req.cookies;
                 const decoded = jwt.verify(refreshToken, privateRefreshKey);
-                console.log("got beyond refresh token check")
                 //if verified refreshToken
                 const user = await userModel.findOne({ username: decoded.username });
                 if (user.refreshToken === refreshToken) { //database refreshToken === given refreshToken from cookies
                     generateAuthToken({ username: decoded.username, userId: decoded.userId }, privateAuthKey, (err, newAuthToken) => {
                         if (err) return res.status(500).send("Internal Server Error. Please try later again.");
-                        res.cookie("authToken", newAuthToken, { httpOnly: true, /*secure: true,*/ maxAge: 9999999999 });
+                        res.cookie("authToken", newAuthToken, { httpOnly: true, maxAge: 9999999999 });
                         req.username = decoded.username;
                         req.userId = decoded.userId;
                         return next();
@@ -148,7 +147,7 @@ function handleNewUserError(err) {
 }
 
 const generateAuthToken = (userDetails, key, callback) => {
-    jwt.sign(userDetails, key, { expiresIn: "5m" }, (err, result) => {
+    jwt.sign(userDetails, key, { expiresIn: "5s" }, (err, result) => {
         if (err) return callback(err);
         callback(null, result)
     })
@@ -157,7 +156,7 @@ const generateAuthToken = (userDetails, key, callback) => {
 const generateTokens = (userDetails, callback) => {
     jwt.sign(userDetails, privateAuthKey, { expiresIn: "5s" }, (err, authToken) => { //generate authToken
         if (err) return callback(err);
-        jwt.sign(userDetails, privateRefreshKey, { expiresIn: "15s" }, (err, refreshToken) => {
+        jwt.sign(userDetails, privateRefreshKey, { expiresIn: "1m" }, (err, refreshToken) => {
             if (err) callback(err);
             callback(null, authToken, refreshToken);
         })

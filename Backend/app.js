@@ -4,18 +4,21 @@ const app = express()
 const port = 3000
 const bodyparser = require("body-parser");
 const { handleError } = require('./helpers/error')
-const cookieParser = require('cookie-parser')
+const cookieParser = require('cookie-parser');
+const cors = require("cors")
 
 var allRoutes = require('./routes/allRoutes');
+const database = require("./db/connection");
+
+app.use(cors())
+app.use(cookieParser());
 app.use(bodyparser.json());
 
-const database = require("./db/connection");
 // Routes
 app.use('/', allRoutes.indexRoute);
 app.use('/users', allRoutes.usersRoute);
 app.use('/articles', allRoutes.articlesRoute);
 app.use('/auth', allRoutes.authRoute);
-app.use(cookieParser());
 
 // Error Handling
 app.use((err, req, res, next) => {
