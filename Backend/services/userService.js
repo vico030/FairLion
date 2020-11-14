@@ -4,15 +4,15 @@ const friendRequestModel = require("../models/FriendRequestModel");
 const articleRequestModel = require("../models/ArticleRequestModel");
 
 function getAllUsers() {
-    return new Promise((resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
         try {
-            const users = userModel.find({});
-            users.then((users) => {
-                return resolve({
-                    data: users,
-                    message: 'User wurden gefunden.',
-                    status: 200
-                });
+            const users = await userModel.find({})
+                .select('-password')
+                .catch(err =>{throw err});
+            return resolve({
+                data: users,
+                message: 'User wurden gefunden.',
+                status: 200
             });
         } catch (err) {
             return reject({
@@ -22,6 +22,68 @@ function getAllUsers() {
             })
         }
     });
+}
+
+function getUsersByName(username) {
+    return new Promise(async (resolve, reject) =>{
+        try {
+            const users = await userModel.find({'username':  { $regex: username, $options: 'i' }})
+                .select('-password')
+                .catch(err =>{throw err});
+            return resolve({
+                data: users,
+                message: 'User wurden gefunden.',
+                status: 200
+            });
+        } catch (err) {
+            return reject({
+                error: err,
+                status: 500,
+                message: 'User konnten nicht gefunden werden.'
+            })
+        }
+    });
+}
+
+function getUserById(userId) {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const user = await userModel.findById(userId)
+                .select('-password')
+                .catch(err =>{throw err});
+            return resolve({
+                data: user,
+                message: 'User wurde gefunden.',
+                status: 200
+            });
+        } catch (err) {
+            return reject({
+                error: err,
+                status: 500,
+                message: 'User konnte nicht gefunden werden.'
+            })
+        }
+    });
+}
+
+function deleteAllUsers() {
+    return new Promise(async (resolve, reject) =>{
+        try {
+            const users = await userModel.find({}).catch(err => {throw err});
+            userModel.deleteMany({}).catch(err => {throw err});
+            return resolve({
+                data: users,
+                message: 'User wurden erfolgreich entfernt.',
+                status: 200
+            });
+        } catch (err) {
+            return reject({
+                error: err,
+                status: 500,
+                message: 'User konnten nicht entfernt werden.'
+            })
+        }
+    })
 }
 
 function createArticle(body, userId) {
@@ -104,6 +166,9 @@ function createArticleRequest(body, userId) {
 
 module.exports = {
     getAllUsers,
+    getUsersByName,
+    getUserById,
+    deleteAllUsers,
     createArticle,
     createFriendRequest,
     createArticleRequest

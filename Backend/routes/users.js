@@ -3,6 +3,7 @@ const router = express.Router();
 const service = require("../services/userService");
 const { isAuthenticated } = require("../services/authService");
 
+// Get all users
 router.get("/", async (req, res) => {
     try{
         const response = await service.getAllUsers();
@@ -19,6 +20,55 @@ router.get("/", async (req, res) => {
     }
 });
 
+// Get all users with a certain username
+router.get("/query/:username", async (req, res) => {
+    try {
+        const response = await service.getUsersByName(req.params.username);
+        res.status(response.status).json({
+            'data': response.data,
+            'message': response.message
+        });
+    } catch ({error, status, message}) {
+        res.status(status).json({
+            'error': error,
+            'message': message
+        })
+    }
+});
+
+// Get single user by userId
+router.get("/:userId", async (req, res) => {
+    try {
+        const response = await service.getUserById(req.params.userId);
+        res.status(response.status).json({
+            'data': response.data,
+            'message': response.message
+        });
+    } catch ({error, status, message}) {
+        res.status(status).json({
+            'error': error,
+            'message': message
+        })
+    }
+});
+
+// Delete all users
+router.delete("/", async (req, res) => {
+    try {
+        const response = await service.deleteAllUsers();
+        res.status(response.status).json({
+            'data': response.data,
+            'message': response.message
+        });
+    } catch ({error, status, message}) {
+        res.status(status).json({
+            'error': error,
+            'message': message
+        })
+    }
+});
+
+// Create a new article for one user
 router.post("/:userId/articles", isAuthenticated, async (req, res) => {
     try {
         const response = await service.createArticle(req.body, req.params.userId);
@@ -35,6 +85,7 @@ router.post("/:userId/articles", isAuthenticated, async (req, res) => {
     }
 });
 
+// Create a new friend request for the user as requester
 router.post("/:userId/friendrequests", async (req, res) => {
     try {
         const response = await service.createFriendRequest(req.body, req.params.userId);
@@ -51,6 +102,7 @@ router.post("/:userId/friendrequests", async (req, res) => {
     }
 })
 
+// create a new article request for the user as requester
 router.post("/:userId/articlerequests", async (req, res) => {
     try {
         const response = await service.createArticleRequest(req.body, req.params.userId);
