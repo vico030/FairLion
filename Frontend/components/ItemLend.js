@@ -20,12 +20,12 @@ export default function ItemLend({
       </View>
       <View style={styles.itemBottomView}>
         <View style={styles.itemUpper}>
-          <Text style={styles.itemName}>{produktName}</Text>
+          <Text style={styles.itemName} numberOfLines={1}>{produktName}</Text>
           <MaterialCommunityIcons name="heart-outline" size={24} />
         </View>
         <View style={styles.itemBottom}>
           <UserButton userName={besitzer} />
-          <Text style={styles.itemTime}>Noch: {ausleihfrist}</Text>
+          <Text style={styles.itemTime} numberOfLines={1}>Noch: {ausleihfrist}</Text>
         </View>
       </View>
     </View>
@@ -39,9 +39,9 @@ const styles = StyleSheet.create({
     width: Dimensions.get("window").width - 5,
     marginVertical: 3,
   },
-  itemImage: { height: 100, width: 100 },
+  itemImage: { height: 90, width: 120 },
   itemBottom: {
-    marginLeft: 5,
+    marginLeft: 10,
     width: "68%",
     flexDirection: "row",
     justifyContent: "space-between",

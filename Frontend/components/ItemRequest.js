@@ -15,7 +15,7 @@ export default function ItemRequest({ besitzer, produktName, image }) {
       </View>
       <View style={styles.itemBottomView}>
         <View style={styles.itemUpper}>
-          <Text style={styles.itemName}>{produktName}</Text>
+          <Text style={styles.itemName} numberOfLines={1}>{produktName}</Text>
         </View>
         <View style={styles.bottomRowRight}>
           <UserButton userName={besitzer} />
@@ -36,9 +36,9 @@ const styles = StyleSheet.create({
     width: Dimensions.get("window").width - 5,
     marginVertical: 3,
   },
-  itemImage: { height: 100, width: 100 },
+  itemImage: { height: 90, width: 120 },
   bottomRowRight: {
-    marginLeft: 5,
+    marginLeft: 10,
     width: "72%",
     flexDirection: "row",
     justifyContent: "space-between",

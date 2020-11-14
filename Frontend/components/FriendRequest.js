@@ -34,10 +34,11 @@ const styles = StyleSheet.create({
     width: Dimensions.get("window").width - 5,
   },
   profilePicture: {
-    height: 60,
-    width: 60,
-    borderRadius: 30,
+    height: 75,
+    width: 75,
+    borderRadius: 35,
     marginVertical: 5,
+    marginLeft: 5
   },
   userName: {
     fontWeight: "bold",
@@ -46,6 +47,7 @@ const styles = StyleSheet.create({
   },
   wohnort: {
     fontFamily: "Roboto",
+    width: 'auto'
   },
   bottomRowRight: {
     marginLeft: 5,
