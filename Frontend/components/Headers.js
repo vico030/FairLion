@@ -48,11 +48,7 @@ const FriendsStackScreen = () => (
         ),
 
         headerLeft: () => (
-          <MaterialIcons
-            name="menu"
-            size={28}
-            style={styles.leftIcon}
-          />
+          <MaterialIcons name="menu" size={28} style={styles.leftIcon} />
         ),
       }}
     />
@@ -65,7 +61,7 @@ const RequestsStackScreen = () => (
       name="Anfragen"
       component={RequestsScreen}
       options={{
-        title: "Lager",
+        title: "Anfragen",
         headerStyle: {
           backgroundColor: inactiveTintColor,
         },
@@ -76,11 +72,7 @@ const RequestsStackScreen = () => (
         },
 
         headerLeft: () => (
-          <MaterialIcons
-            name="menu"
-            size={28}
-            style={styles.leftIcon}
-          />
+          <MaterialIcons name="menu" size={28} style={styles.leftIcon} />
         ),
       }}
     />
@@ -103,11 +95,7 @@ const BurrowedStackScreen = () => (
           fontFamily: "Roboto",
         },
         headerLeft: () => (
-          <MaterialIcons
-            name="menu"
-            size={28}
-            style={styles.leftIcon}
-          />
+          <MaterialIcons name="menu" size={28} style={styles.leftIcon} />
         ),
       }}
     />
@@ -129,18 +117,10 @@ const StockStackScreen = () => (
           fontFamily: "Roboto",
         },
         headerRight: () => (
-          <MaterialIcons
-            name="add"
-            size={28}
-            style={styles.rightIcon}
-          />
+          <MaterialIcons name="add" size={28} style={styles.rightIcon} />
         ),
         headerLeft: () => (
-          <MaterialIcons
-            name="menu"
-            size={28}
-            style={styles.leftIcon}
-          />
+          <MaterialIcons name="menu" size={28} style={styles.leftIcon} />
         ),
       }}
     />
@@ -169,11 +149,7 @@ const SearchStackScreen = () => (
           />
         ),
         headerLeft: () => (
-          <MaterialIcons
-            name="menu"
-            size={28}
-            style={styles.leftIcon}
-          />
+          <MaterialIcons name="menu" size={28} style={styles.leftIcon} />
         ),
       }}
     />
@@ -196,11 +172,7 @@ const RegisterStackScreen = () => (
           fontFamily: "Roboto",
         },
         headerLeft: () => (
-          <Ionicons
-            name="md-arrow-back"
-            size={28}
-            style={styles.leftIcon}
-          />
+          <Ionicons name="md-arrow-back" size={28} style={styles.leftIcon} />
         ),
       }}
     />

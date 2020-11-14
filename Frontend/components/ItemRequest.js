@@ -1,17 +1,12 @@
 import React from "react";
 import { View, Text, StyleSheet, Image, Dimensions } from "react-native";
 import UserButton from "./UserButton";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { AntDesign, Feather } from "@expo/vector-icons";
 
-export default function ItemLend({
-  besitzer,
-  produktName,
-  ausleihfrist,
-  image,
-}) {
+export default function ItemRequest({ besitzer, produktName, image }) {
   return (
     // change image link to correct parameter url
-    <View style={styles.itemStyle}>
+    <View style={styles.wrapper}>
       <View>
         <Image
           style={styles.itemImage}
@@ -21,18 +16,20 @@ export default function ItemLend({
       <View style={styles.itemBottomView}>
         <View style={styles.itemUpper}>
           <Text style={styles.itemName}>{produktName}</Text>
-          <MaterialCommunityIcons name="heart-outline" size={24} />
         </View>
-        <View style={styles.itemBottom}>
+        <View style={styles.bottomRowRight}>
           <UserButton userName={besitzer} />
-          <Text style={styles.itemTime}>Noch: {ausleihfrist}</Text>
+          <View style={styles.icons}>
+            <AntDesign name="check" size={24} color="green" />
+            <Feather name="x" size={24} color="red" />
+          </View>
         </View>
       </View>
     </View>
   );
 }
 const styles = StyleSheet.create({
-  itemStyle: {
+  wrapper: {
     backgroundColor: "#ddd",
     flexDirection: "row",
     alignSelf: "stretch",
@@ -40,9 +37,9 @@ const styles = StyleSheet.create({
     marginVertical: 3,
   },
   itemImage: { height: 100, width: 100 },
-  itemBottom: {
+  bottomRowRight: {
     marginLeft: 5,
-    width: "68%",
+    width: "72%",
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
@@ -71,5 +68,10 @@ const styles = StyleSheet.create({
   },
   itemName: {
     fontWeight: "bold",
+  },
+  icons: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    width: "23%",
   },
 });
