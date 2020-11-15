@@ -68,6 +68,22 @@ router.delete("/", async (req, res) => {
     }
 });
 
+// Delete single user
+router.delete("/:userId", async (req, res) =>{
+    try {
+        const response = await service.deleteUser(req.params.userId);
+        res.status(response.status).json({
+            'data': response.data,
+            'message': response.message
+        });
+    } catch ({error, status, message}) {
+        res.status(status).json({
+            'error': error,
+            'message': message
+        });
+    }
+});
+
 // Create a new article for one user
 router.post("/:userId/articles", isAuthenticated, async (req, res) => {
     try {
@@ -118,5 +134,21 @@ router.post("/:userId/articlerequests", async (req, res) => {
         })
     }
 })
+
+// update a single user
+router.put("/:userId", async (req, res) => {
+    try {
+        const response = await service.updateUser(req.body, req.params.userId);
+        res.status(response.status).json({
+            'data': response.data,
+            'message': response.message
+        });
+    } catch ({ error, status, message }) {
+        res.status(status).json({
+            'error': error,
+            'message': message
+        })
+    }
+});
 
 module.exports = router;

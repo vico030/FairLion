@@ -2,9 +2,9 @@ POST http://localhost:3000/auth/register
 content-type: application/json
 
 {
-    "username" : "Domingo Perez",
+    "username" : "Anna Blabla",
     "password" : "Hat scheinbar funktioniert",
-    "email" : "dp@gmail.com",
+    "email" : "babb@gmail.com",
     "phone" : "030 1234565",
     "street" : "Hans-Rolfer-Weg 69",
     "zipCode" : "42069",

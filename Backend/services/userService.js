@@ -2,6 +2,7 @@ const userModel = require("../models/UserModel");
 const articleModel = require("../models/ArticleModel");
 const friendRequestModel = require("../models/FriendRequestModel");
 const articleRequestModel = require("../models/ArticleRequestModel");
+const { findById } = require("../models/ArticleModel");
 
 function getAllUsers() {
     return new Promise(async (resolve, reject) => {
@@ -69,8 +70,10 @@ function getUserById(userId) {
 function deleteAllUsers() {
     return new Promise(async (resolve, reject) =>{
         try {
-            const users = await userModel.find({}).catch(err => {throw err});
-            userModel.deleteMany({}).catch(err => {throw err});
+            const users = await userModel.find({})
+                .catch(err => {throw err});
+            userModel.deleteMany({})
+                .catch(err => {throw err});
             return resolve({
                 data: users,
                 message: 'User wurden erfolgreich entfernt.',
@@ -84,6 +87,29 @@ function deleteAllUsers() {
             })
         }
     })
+}
+
+function deleteUser(userId) {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const user = await userModel.findById(userId)
+                .select('-password')
+                .catch(err => {throw err});
+            userModel.findByIdAndDelete(userId)
+                .catch(err => {throw err});
+            return resolve({
+                data: user,
+                message: 'User wurde erfolgreich entfernt.',
+                status: 200
+            });
+        } catch (err) {
+            return reject({
+                error: err,
+                status: 500,
+                message: 'User konnte nicht entfernt werden.'
+            });
+        }
+    });
 }
 
 function createArticle(body, userId) {
@@ -163,13 +189,36 @@ function createArticleRequest(body, userId) {
     });
 }
 
+function updateUser(body, userId) {
+    return new Promise(async (resolve, reject) => {
+        try {
+            console.log(body);
+            const user = await userModel.findByIdAndUpdate(userId, body, {new: true})
+                .catch(err => {throw err});
+            return resolve({
+                data: user,
+                message: 'User-Update wurde durchgeführt.',
+                status: 201
+            });
+        } catch (err) {
+            return reject({
+                error: err,
+                status: 500,
+                message: 'User-Update konnte nicht durchgeführt werden.'
+            });
+        }
+    });
+}
+
 
 module.exports = {
     getAllUsers,
     getUsersByName,
     getUserById,
     deleteAllUsers,
+    deleteUser,
     createArticle,
     createFriendRequest,
-    createArticleRequest
+    createArticleRequest,
+    updateUser
 };
