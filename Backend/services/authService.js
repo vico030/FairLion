@@ -37,7 +37,7 @@ const loginUser = ({ username, password }) => {
     return new Promise(async (resolve, reject) => {
         try {
             const user = await userModel.findOne({ username });
-            if (!user) return reject({ data: result, message: "User does not exist.", status: 200 })
+            if (!user) return reject({ data: [], message: "User does not exist.", status: 200 })
             user.comparePasswords(password, err => {
                 if (err) {
                     if (err === true) return reject({ error: "Password invalid", status: 400, message: "Password invalid" }); //passwords arent equal
@@ -56,7 +56,6 @@ const loginUser = ({ username, password }) => {
             })
         }
         catch (err) {
-            console.log(err)
             return reject({ error: err, message: "Server error. Try later again.", status: 500 })
         }
     })
@@ -69,6 +68,7 @@ const isAuthenticated = async (req, res, next) => {
         const { authToken } = req.cookies;
         const { username, userId } = jwt.verify(authToken, privateAuthKey); //just checking for an exception
         req.username = username;
+        req.userId = userId;
         return next(); //valid key
     }
     catch (err) {

@@ -2,9 +2,9 @@ POST http://localhost:3000/auth/register
 content-type: application/json
 
 {
-    "username" : "Anna Blabla",
+    "username" : "Hans Rolf der Kleine",
     "password" : "Hat scheinbar funktioniert",
-    "email" : "babb@gmail.com",
+    "email" : "hansiderKleine@gmail.com",
     "phone" : "030 1234565",
     "street" : "Hans-Rolfer-Weg 69",
     "zipCode" : "42069",
@@ -21,10 +21,10 @@ POST http://localhost:3000/users/5fafe18b9869fb2310fe103c/ownedArticles
 content-type: application/json
 
 {
-    "title" : "mkfoauhdfabdsds",
+    "title" : "Hans privater Link zum OnlyFans",
     "description" : "Ein tolles Konsole",
     "duration" : "???",
-    "owner": "5fafe18b9869fb2310fe103c",
+    "owner": "5fb2e57d824eae2150e63677",
     "images" : ["https://i0.wp.com/star-revue.com/wp-content/uploads/2020/09/Pepe-the-Don-min.jpg", "https://i.guim.co.uk/img/media/327e46c3ab049358fad80575146be9e0e65686e7/0_56_1023_614/master/1023.jpg?width=1200&height=1200&quality=85&auto=format&fit=crop&s=094ddc96f89a1ea9a4f68d1b585d1f97"]
 }
 
