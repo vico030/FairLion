@@ -2,7 +2,6 @@ const userModel = require("../models/UserModel");
 const articleModel = require("../models/ArticleModel");
 const friendRequestModel = require("../models/FriendRequestModel");
 const articleRequestModel = require("../models/ArticleRequestModel");
-const { findById } = require("../models/ArticleModel");
 
 function getAllUsers() {
     return new Promise(async (resolve, reject) => {
@@ -62,7 +61,28 @@ function getUserById(userId) {
                 error: err,
                 status: 500,
                 message: 'User konnte nicht gefunden werden.'
-            })
+            });
+        }
+    });
+}
+
+// Move to ArticleService?
+function getOwnedArticles(userId) {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const articles = await articleModel.find({"owner": userId})
+                .catch(err =>{throw err});
+            return resolve({
+                data: articles,
+                message: 'Artikel wurden gefunden.',
+                status: 200
+            });
+        } catch (err) {
+            return reject({
+                error: err,
+                status: 500,
+                message: 'Artikel konnten nicht gefunden werden.'
+            });
         }
     });
 }
@@ -112,6 +132,7 @@ function deleteUser(userId) {
     });
 }
 
+// Move to ArticleService?
 function createArticle(body, userId) {
     return new Promise((resolve, reject) => {
         const article = new articleModel({
@@ -215,6 +236,7 @@ module.exports = {
     getAllUsers,
     getUsersByName,
     getUserById,
+    getOwnedArticles,
     deleteAllUsers,
     deleteUser,
     createArticle,

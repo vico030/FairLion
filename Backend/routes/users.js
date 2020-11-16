@@ -20,10 +20,10 @@ router.get("/", async (req, res) => {
     }
 });
 
-// Get all users with a certain username
-router.get("/query/:username", async (req, res) => {
+// Delete all users
+router.delete("/", async (req, res) => {
     try {
-        const response = await service.getUsersByName(req.params.username);
+        const response = await service.deleteAllUsers();
         res.status(response.status).json({
             'data': response.data,
             'message': response.message
@@ -48,19 +48,19 @@ router.get("/:userId", async (req, res) => {
         res.status(status).json({
             'error': error,
             'message': message
-        })
+        });
     }
 });
 
-// Delete all users
-router.delete("/", async (req, res) => {
+// update a single user
+router.put("/:userId", async (req, res) => {
     try {
-        const response = await service.deleteAllUsers();
+        const response = await service.updateUser(req.body, req.params.userId);
         res.status(response.status).json({
             'data': response.data,
             'message': response.message
         });
-    } catch ({error, status, message}) {
+    } catch ({ error, status, message }) {
         res.status(status).json({
             'error': error,
             'message': message
@@ -84,8 +84,24 @@ router.delete("/:userId", async (req, res) =>{
     }
 });
 
+// Get all articles of a single user /// Divide in Owned and Borrowed?
+router.get("/:userId/articles", async (req, res) =>{
+    try {
+        const response = await service.getOwnedArticles(req.params.userId);
+        res.status(response.status).json({
+            'data': response.data,
+            'message': response.message
+        });
+    } catch ({error, status, message}) {
+        res.status(status).json({
+            'error': error,
+            'message': message
+        });
+    }
+});
+
 // Create a new article for one user
-router.post("/:userId/articles", isAuthenticated, async (req, res) => {
+router.post("/:userId/articles", async (req, res) => {
     try {
         const response = await service.createArticle(req.body, req.params.userId);
         res.status(response.status).json({
@@ -94,6 +110,22 @@ router.post("/:userId/articles", isAuthenticated, async (req, res) => {
         });
     }
     catch ({ error, status, message }) {
+        res.status(status).json({
+            'error': error,
+            'message': message
+        })
+    }
+});
+
+// Get all users with a certain username
+router.get("/query/:username", async (req, res) => {
+    try {
+        const response = await service.getUsersByName(req.params.username);
+        res.status(response.status).json({
+            'data': response.data,
+            'message': response.message
+        });
+    } catch ({error, status, message}) {
         res.status(status).json({
             'error': error,
             'message': message
@@ -134,21 +166,5 @@ router.post("/:userId/articlerequests", async (req, res) => {
         })
     }
 })
-
-// update a single user
-router.put("/:userId", async (req, res) => {
-    try {
-        const response = await service.updateUser(req.body, req.params.userId);
-        res.status(response.status).json({
-            'data': response.data,
-            'message': response.message
-        });
-    } catch ({ error, status, message }) {
-        res.status(status).json({
-            'error': error,
-            'message': message
-        })
-    }
-});
 
 module.exports = router;
