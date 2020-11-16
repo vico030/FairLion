@@ -67,10 +67,10 @@ function getUserById(userId) {
 }
 
 // Move to ArticleService?
-function getOwnedArticles(userId) {
+function getArticles(userId, possesionType) {
     return new Promise(async (resolve, reject) => {
         try {
-            const articles = await articleModel.find({"owner": userId})
+            const articles = await articleModel.find({[possesionType]: userId})
                 .catch(err =>{throw err});
             return resolve({
                 data: articles,
@@ -236,7 +236,7 @@ module.exports = {
     getAllUsers,
     getUsersByName,
     getUserById,
-    getOwnedArticles,
+    getArticles,
     deleteAllUsers,
     deleteUser,
     createArticle,

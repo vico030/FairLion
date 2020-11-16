@@ -17,11 +17,11 @@ content-type: application/json
 ###
 
 
-POST http://localhost:3000/users/Hans/articles
+POST http://localhost:3000/users/5fafe18b9869fb2310fe103c/ownedArticles
 content-type: application/json
 
 {
-    "title" : "Nin Switch",
+    "title" : "mkfoauhdfabdsds",
     "description" : "Ein tolles Konsole",
     "duration" : "???",
     "owner": "5fafe18b9869fb2310fe103c",

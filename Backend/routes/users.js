@@ -84,10 +84,10 @@ router.delete("/:userId", async (req, res) =>{
     }
 });
 
-// Get all articles of a single user /// Divide in Owned and Borrowed?
-router.get("/:userId/articles", async (req, res) =>{
+// Get all articles owned by a single user
+router.get("/:userId/ownedArticles", async (req, res) =>{
     try {
-        const response = await service.getOwnedArticles(req.params.userId);
+        const response = await service.getArticles(req.params.userId, "owner");
         res.status(response.status).json({
             'data': response.data,
             'message': response.message
@@ -101,7 +101,7 @@ router.get("/:userId/articles", async (req, res) =>{
 });
 
 // Create a new article for one user
-router.post("/:userId/articles", async (req, res) => {
+router.post("/:userId/ownedArticles", async (req, res) => {
     try {
         const response = await service.createArticle(req.body, req.params.userId);
         res.status(response.status).json({
@@ -114,6 +114,22 @@ router.post("/:userId/articles", async (req, res) => {
             'error': error,
             'message': message
         })
+    }
+});
+
+// Get all articles borrowed by a single user
+router.get("/:userId/borrowedArticles", async (req, res) =>{
+    try {
+        const response = await service.getArticles(req.params.userId, "borrower");
+        res.status(response.status).json({
+            'data': response.data,
+            'message': response.message
+        });
+    } catch ({error, status, message}) {
+        res.status(status).json({
+            'error': error,
+            'message': message
+        });
     }
 });
 
