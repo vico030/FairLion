@@ -6,15 +6,18 @@ import {
   TextInput,
   TouchableOpacity,
   Image,
+  Dimensions,
 } from "react-native";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scrollview";
 
-export default class App extends React.Component {
-  state = {
-      username: "",
-      password: "",
-  };
-  render(){
-    return (
+const LoginScreen = ({ navigation }) => {
+  return (
+    <KeyboardAwareScrollView
+      resetScrollToCoords={{ x: 0, y: 0 }}
+      contentContainerStyle={styles.container}
+      style={{ height: Dimensions.get("window").height }}
+      automaticallyAdjustContentInsets={false}
+    >
       <View style={styles.container}>
         <View>
           <Image
@@ -22,12 +25,12 @@ export default class App extends React.Component {
             source={require("../assets/logo.png")}
           />
         </View>
-  
+
         <View style={styles.logoText}>
           <Text style={styles.fair}>fair</Text>
           <Text style={styles.lion}>LION</Text>
         </View>
-  
+
         <View style={styles.inputView}>
           <TextInput
             style={styles.inputText}
@@ -37,7 +40,7 @@ export default class App extends React.Component {
             onChangeText={(username) => this.setState({ username })}
           />
         </View>
-  
+
         <View style={styles.inputView}>
           <TextInput
             secureTextEntry
@@ -47,23 +50,29 @@ export default class App extends React.Component {
             onChangeText={(password) => this.setState({ password })}
           />
         </View>
-  
+
         <TouchableOpacity>
           <Text style={styles.forgot}>Passwort vergessen?</Text>
         </TouchableOpacity>
-  
+
         <TouchableOpacity style={styles.loginBtn}>
           <Text style={styles.loginText}>Login</Text>
         </TouchableOpacity>
-  
-        <TouchableOpacity style={styles.signUpBtn}>
+
+        <TouchableOpacity
+          style={styles.signUpBtn}
+          onPress={() => {
+            navigation.navigate("RegisterStackScreen");
+          }}
+        >
           <Text style={styles.loginText}>Registrieren</Text>
         </TouchableOpacity>
       </View>
-    );
-  }
-}
+    </KeyboardAwareScrollView>
+  );
+};
 
+export default LoginScreen;
 
 const styles = StyleSheet.create({
   container: {
@@ -71,6 +80,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
+    width: "100%",
   },
   logoImage: {
     width: 100,

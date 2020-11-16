@@ -156,12 +156,12 @@ const SearchStackScreen = () => (
   </SearchStack.Navigator>
 );
 
-const RegisterStackScreen = () => (
+const RegisterStackScreen = ({ navigation: { goBack} }) => (
   <RegisterStack.Navigator>
     <RegisterStack.Screen
       name="Registrieren"
       component={RegisterScreen}
-      options={{
+      options={{ 
         title: "Registrieren",
         headerStyle: {
           backgroundColor: inactiveTintColor,
@@ -172,7 +172,7 @@ const RegisterStackScreen = () => (
           fontFamily: "Roboto",
         },
         headerLeft: () => (
-          <Ionicons name="md-arrow-back" size={28} style={styles.leftIcon} />
+          <Ionicons name="md-arrow-back" size={28} style={styles.leftIcon} onPress={() => goBack()} />
         ),
       }}
     />

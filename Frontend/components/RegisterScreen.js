@@ -5,10 +5,7 @@ import {
   View,
   TextInput,
   TouchableOpacity,
-  SafeAreaView,
-  ScrollView,
 } from "react-native";
-import Constants from "expo-constants";
 import DropDownPicker from "react-native-dropdown-picker";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scrollview";
 
@@ -225,7 +222,15 @@ const RegisterScreen = ({ navigation }) => {
           />
         </View>
       </View>
+
+      <View style={styles.container}>
+        <TouchableOpacity style={styles.signUpBtn}>
+            <Text style={styles.loginText}>Registrieren</Text>
+        </TouchableOpacity>
+      </View>
     </KeyboardAwareScrollView>
+
+    
   );
 };
 
@@ -234,10 +239,8 @@ export default RegisterScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#C4C4C4",
     alignItems: "center",
     justifyContent: "center",
-    //marginTop: Constants.statusBarHeight,
   },
   ScrollView: {
     width: "100%",
@@ -286,5 +289,19 @@ const styles = StyleSheet.create({
     height: 50,
     justifyContent: "center",
     alignItems: "center",
+  },
+  signUpBtn: {
+    width: "80%",
+    backgroundColor: "#E77F23",
+    borderRadius: 25,
+    height: 50,
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 20,
+    marginBottom: 20,
+  },
+  loginText: {
+    color: "#fff",
+    fontSize: 20,
   },
 });

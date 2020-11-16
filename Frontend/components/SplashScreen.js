@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, Image, Text } from 'react-native';
-import AsyncStorage from '@react-native-community/async-storage';
 
 const SplashScreen = props => {
   //State for ActivityIndicator animation
@@ -9,15 +8,10 @@ const SplashScreen = props => {
   useEffect(() => {
     setTimeout(() => {
       setAnimating(false);
-      //Check if user_id is set or not
-      //If not then send for Authentication
-      //else send to Home Screen
-      AsyncStorage.getItem('user_id').then(value =>
         props.navigation.navigate(
           //value === null ? 'LoginScreen' : 'DrawerNavigationRoutes'
           "LoginScreen"
         )
-      );
     }, 5000);
   }, []);
 
