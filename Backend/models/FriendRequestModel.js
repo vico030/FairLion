@@ -3,8 +3,8 @@ const mongoose = require("mongoose");
 
 const friendRequest = mongoose.model("FriendRequest",
     {
-        requesterId : { type: String, required: true },
-        recieverId : { type: String, required: true },
+        requesterId : { type: ObjectId, required: true },
+        recieverId : { type: ObjectId, required: true },
         date : Date,
         comfirmed : { type: Boolean, default: false }
     });

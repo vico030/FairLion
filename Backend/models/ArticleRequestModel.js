@@ -7,7 +7,7 @@ const ArticleRequestSchema = mongoose.Schema({
         required: true
     },
     requesterId: {
-        type: String,
+        type: ObjectId,
         required: true
     },
     confirmed: {
