@@ -27,52 +27,45 @@ export default function ItemStock({besitzer,produktName,ausleihfrist,image}) {
             )
         }
         const styles = StyleSheet.create({
-            itemStyle:{
-                backgroundColor:'#ddd',
-                flexDirection:'row',
-                alignSelf:'stretch',
-                width:Dimensions.get('window').width-5,
-                marginVertical:3,
-                
+            itemStyle: {
+              backgroundColor: "#ddd",
+              flexDirection: "row",
+              alignSelf: "stretch",
+              width: Dimensions.get("window").width - 5,
+              marginVertical: 3,
             },
-            itemImage:{height:90,width:120},
-            itemBottom:{
-                marginLeft:10,
-                width:'68%',
-                flexDirection:'row',
-                justifyContent: 'space-between',
-                alignItems:'center',
+            itemImage: { height: 90, width: 120 },
+            itemBottom: {
+              paddingHorizontal: 10,
+              width: "100%",
+              flexDirection: "row",
+              justifyContent: "space-between",
+              alignItems: "center",
             },
-            itemUpper:{
-                width:'68%',
-                flexDirection:'row',
-                justifyContent: 'space-between',
-                marginTop:10,
-                marginLeft:10,
+            itemUpper: {
+              width: "100%",
+              flexDirection: "row",
+              justifyContent: "space-between",
+              paddingHorizontal: 10,
+              marginTop: 10
             },
-            itemButton:{
-                flexDirection:'row',
-                justifyContent: 'center',
-                alignItems: 'center',
-                borderColor: '#E77F23',
-                borderRadius:50,
-                
+            itemButton: {
+              flexDirection: "row",
+              justifyContent: "center",
+              alignItems: "center",
+              borderColor: "#E77F23",
+              borderRadius: 50,
             },
-            itemBottomView:{
-               
-                flexDirection:'column',
-                justifyContent:'space-between'
+            itemBottomView: {
+              width:Dimensions.get('window').width - 125,
+              flexDirection: "column",
+              justifyContent: "space-between",
             },
-            itemTime:{
-                fontSize:12,
-                marginBottom:10,
-                
-                
+            itemTime: {
+              fontSize: 12,
+              marginBottom: 10,
             },
-            itemName:{
-                fontWeight:'bold'
-            }
-    
-    
-            
-        })
+            itemName: {
+              fontWeight: "bold",
+            },
+          });

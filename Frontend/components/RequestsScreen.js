@@ -9,7 +9,7 @@ let arrayItems = [
   {
     image: "../assetstestprofilpic.jpg",
     besitzer: "peter",
-    produktName: "Stichsäge Holz Metall",
+    produktName: "Stichsäge",
     ausleihfrist: "2 Stunden",
     key: "1",
   },

@@ -21,24 +21,25 @@ const styles = StyleSheet.create({
         backgroundColor:'white',
         borderColor:'#e77e23',
         borderWidth:2,
-        height:30,
-        width:120,
+        height:32,
+        width:140,
         justifyContent:'center',
         marginBottom:10
     },
     buttonText:{
-        fontSize:16,
+        fontSize:14,
         textAlign:'center',
         borderColor:'#e77e23',
         alignSelf:'center',
-        color:'black'
+        color:'black',
+        left:5
     },
     profileImage:{
         position:'absolute',
-        left:5,
+        left:3,
         top:2,
         borderRadius:20,
-        height:25,
+        height:24,
         width:25,
     }
 

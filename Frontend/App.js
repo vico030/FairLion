@@ -23,8 +23,7 @@ const Tabs = createBottomTabNavigator();
 export default function App() {
   return (
     <NavigationContainer>
-      <RootStackScreen />
-      {/* <Tabs.Navigator screenOptions={({ route }) => ({
+      {<Tabs.Navigator screenOptions={({ route }) => ({
         tabBarIcon: ({ focused, color, size, horizontal }) => {
           let icon;
 
@@ -64,7 +63,7 @@ export default function App() {
         <Tabs.Screen name="Suche" component={SearchStackScreen} />
         <Tabs.Screen name="Anfragen" component={RequestsStackScreen} />
         <Tabs.Screen name="Freunde" component={FriendsStackScreen} />
-      </Tabs.Navigator> */}
+      </Tabs.Navigator>}
     </NavigationContainer>
   );
 }

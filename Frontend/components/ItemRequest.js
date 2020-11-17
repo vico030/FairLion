@@ -17,7 +17,7 @@ export default function ItemRequest({ besitzer, produktName, image }) {
         <View style={styles.itemUpper}>
           <Text style={styles.itemName} numberOfLines={1}>{produktName}</Text>
         </View>
-        <View style={styles.bottomRowRight}>
+        <View style={styles.itemBottom}>
           <UserButton userName={besitzer} />
           <View style={styles.icons}>
             <AntDesign name="check" size={24} color="green" />
@@ -37,19 +37,19 @@ const styles = StyleSheet.create({
     marginVertical: 3,
   },
   itemImage: { height: 90, width: 120 },
-  bottomRowRight: {
-    marginLeft: 10,
-    width: "72%",
+  itemBottom: {
+    paddingHorizontal: 10,
+    width: "100%",
     flexDirection: "row",
     justifyContent: "space-between",
-    alignItems: "center",
+    alignItems: "baseline",
   },
   itemUpper: {
-    width: "68%",
+    width: "100%",
     flexDirection: "row",
     justifyContent: "space-between",
     marginTop: 10,
-    marginLeft: 10,
+    paddingHorizontal: 10,
   },
   itemButton: {
     flexDirection: "row",
@@ -59,6 +59,7 @@ const styles = StyleSheet.create({
     borderRadius: 50,
   },
   itemBottomView: {
+    width:Dimensions.get('window').width - 125,
     flexDirection: "column",
     justifyContent: "space-between",
   },
@@ -72,6 +73,6 @@ const styles = StyleSheet.create({
   icons: {
     flexDirection: "row",
     justifyContent: "space-between",
-    width: "23%",
+    width: 72,
   },
 });

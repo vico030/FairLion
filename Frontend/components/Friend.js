@@ -31,8 +31,8 @@ const styles = StyleSheet.create({
       width: Dimensions.get("window").width - 5,
     },
     profilePicture: {
-      height: 75,
-      width: 75,
+      height: 70,
+      width: 70,
       borderRadius: 35,
       marginVertical: 5,
       marginLeft: 5
@@ -46,22 +46,27 @@ const styles = StyleSheet.create({
       fontFamily: "Roboto",
       width: 'auto'
     },
+    artikel: {
+      marginRight:5
+    },
     bottomRowRight: {
       marginLeft: 5,
-      width: "75%",
+      paddingRight: 5,
+      width: "100%",
       flexDirection: "row",
       justifyContent: "space-between",
       alignItems: "center",
     },
     upperRowRight: {
       marginLeft: 5,
-      width: "75%",
+      width: "100%",
       flexDirection: "row",
       justifyContent: "space-between",
     },
     wrapperRight: {
       justifyContent: "center",
-      marginLeft: 10,
+      width:Dimensions.get('window').width - 80,
+      paddingHorizontal: 10,
     },
     icons: {
       flexDirection: "row",

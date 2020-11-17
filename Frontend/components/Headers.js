@@ -117,7 +117,7 @@ const StockStackScreen = () => (
           fontFamily: "Roboto",
         },
         headerRight: () => (
-          <MaterialIcons name="add" size={28} style={styles.rightIcon} />
+          <MaterialIcons name="add" size={28} style={styles.rightIcon} onPress={() => alert("Add Item")}/>
         ),
         headerLeft: () => (
           <MaterialIcons name="menu" size={28} style={styles.leftIcon} />

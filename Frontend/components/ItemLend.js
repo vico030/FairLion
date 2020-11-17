@@ -41,18 +41,18 @@ const styles = StyleSheet.create({
   },
   itemImage: { height: 90, width: 120 },
   itemBottom: {
-    marginLeft: 10,
-    width: "68%",
+    paddingHorizontal: 10,
+    width: "100%",
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
   },
   itemUpper: {
-    width: "68%",
+    width: "100%",
     flexDirection: "row",
     justifyContent: "space-between",
-    marginTop: 10,
-    marginLeft: 10,
+    paddingHorizontal: 10,
+    marginTop: 10
   },
   itemButton: {
     flexDirection: "row",
@@ -62,6 +62,7 @@ const styles = StyleSheet.create({
     borderRadius: 50,
   },
   itemBottomView: {
+    width:Dimensions.get('window').width - 125,
     flexDirection: "column",
     justifyContent: "space-between",
   },
@@ -70,6 +71,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   itemName: {
+    fontSize:14,
     fontWeight: "bold",
   },
 });
