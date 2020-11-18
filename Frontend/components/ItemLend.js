@@ -19,11 +19,11 @@ export default function ItemLend({
         />
       </View>
       <View style={styles.itemBottomView}>
-        <View style={styles.itemUpper}>
+        <View style={styles.items}>
           <Text style={styles.itemName} numberOfLines={1}>{produktName}</Text>
-          <MaterialCommunityIcons name="heart-outline" size={24} />
+          <MaterialCommunityIcons name="heart-outline" size={24}/>
         </View>
-        <View style={styles.itemBottom}>
+        <View style={styles.items}>
           <UserButton userName={besitzer} />
           <Text style={styles.itemTime} numberOfLines={1}>Noch: {ausleihfrist}</Text>
         </View>
@@ -33,26 +33,20 @@ export default function ItemLend({
 }
 const styles = StyleSheet.create({
   itemStyle: {
-    backgroundColor: "#ddd",
+    backgroundColor: "#fff",
     flexDirection: "row",
     alignSelf: "stretch",
     width: Dimensions.get("window").width - 5,
     marginVertical: 3,
   },
   itemImage: { height: 90, width: 120 },
-  itemBottom: {
-    paddingHorizontal: 10,
+  items: {
+    flex: 1,
     width: "100%",
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-  },
-  itemUpper: {
-    width: "100%",
-    flexDirection: "row",
-    justifyContent: "space-between",
     paddingHorizontal: 10,
-    marginTop: 10
   },
   itemButton: {
     flexDirection: "row",
@@ -63,15 +57,16 @@ const styles = StyleSheet.create({
   },
   itemBottomView: {
     width:Dimensions.get('window').width - 125,
-    flexDirection: "column",
-    justifyContent: "space-between",
+    paddingVertical: 5,
   },
   itemTime: {
+    textAlign: "right",
     fontSize: 12,
-    marginBottom: 10,
+    width: "45%",
   },
   itemName: {
     fontSize:14,
     fontWeight: "bold",
+    width: "85%",
   },
 });

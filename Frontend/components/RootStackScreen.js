@@ -4,14 +4,15 @@ import { createStackNavigator } from "@react-navigation/stack";
 
 import LoginScreen from "./LoginScreen";
 import SplashScreen from "./SplashScreen";
-import { RegisterStackScreen } from "./Headers";
+import { RegisterStackScreen, DetailViewStackScreen } from "./Headers";
 
 
 const RootStack = createStackNavigator();
 
 const RootStackScreen = ({ navigation }) => (
-  <RootStack.Navigator headerMode="none">  
-    
+  <RootStack.Navigator headerMode="none">
+
+    <RootStack.Screen name="DetailViewStackScreen" component={DetailViewStackScreen} />
     <RootStack.Screen name="SplashScreen" component={SplashScreen} />
     <RootStack.Screen name="LoginScreen" component={LoginScreen} />
     <RootStack.Screen name="RegisterStackScreen" component={RegisterStackScreen} />

@@ -14,6 +14,7 @@ import SearchScreen from "./SearchScreen";
 import RequestsScreen from "./RequestsScreen";
 import FriendsScreen from "./FriendsScreen";
 import RegisterScreen from "./RegisterScreen";
+import DetailViewScreen from "./DetailViewScreen";
 
 const inactiveTintColor = "#333740";
 const BurrowedStack = createStackNavigator();
@@ -22,6 +23,7 @@ const SearchStack = createStackNavigator();
 const RequestStack = createStackNavigator();
 const FriendsStack = createStackNavigator();
 const RegisterStack = createStackNavigator();
+const DetailStack = createStackNavigator();
 
 const FriendsStackScreen = () => (
   <FriendsStack.Navigator>
@@ -179,6 +181,29 @@ const RegisterStackScreen = ({ navigation: { goBack} }) => (
   </RegisterStack.Navigator>
 );
 
+const DetailViewStackScreen = ({ navigation: {goBack} }) => (
+  <DetailStack.Navigator>
+    <DetailStack.Screen
+      name="Details"
+      component={DetailViewScreen}
+      options={{ 
+        title: "Details",
+        headerStyle: {
+          backgroundColor: inactiveTintColor,
+        },
+        headerTitleAlign: "center",
+        headerTintColor: "#fff",
+        headerTitleStyle: {
+          fontFamily: "Roboto",
+        },
+        headerLeft: () => (
+          <Ionicons name="md-arrow-back" size={28} style={styles.leftIcon} onPress={() => goBack()} />
+        ),
+      }}
+    />
+  </DetailStack.Navigator>
+);
+
 const styles = StyleSheet.create({
   leftIcon: {
     color: "#fff",
@@ -197,4 +222,5 @@ export {
   RequestsStackScreen,
   FriendsStackScreen,
   RegisterStackScreen,
+  DetailViewStackScreen,
 };
