@@ -14,6 +14,38 @@ content-type: application/json
     "image" : "https://www.br.de/puls/themen/netz/pepe-der-frosch-mem-100~_v-img__16__9__xl_-d31c35f8186ebeb80b0cd843a7c267a0e0c81647.jpg?version=4ca31"
 }
 
+POST http://localhost:3000/auth/register
+content-type: application/json
+
+{
+    "username" : "Gundula Gause",
+    "password" : "hjfdhjdsfkkhjdsfh",
+    "email" : "gg@gmail.com",
+    "phone" : "030 1234565",
+    "street" : "Hans-Rolfer-Weg 69",
+    "zipCode" : "42069",
+    "city" : "Hansestadt",
+    "country" : "Hansonia",
+    "info" : "Der gute Hans",
+    "image" : "https://www.br.de/puls/themen/netz/pepe-der-frosch-mem-100~_v-img__16__9__xl_-d31c35f8186ebeb80b0cd843a7c267a0e0c81647.jpg?version=4ca31"
+}
+
+
+POST http://localhost:3000/auth/register
+content-type: application/json
+
+{
+    "username" : "Claus Cleber",
+    "password" : "sdlkjflsöfj",
+    "email" : "cc@gmail.com",
+    "phone" : "030 1234565",
+    "street" : "Hans-Rolfer-Weg 69",
+    "zipCode" : "42069",
+    "city" : "Hansestadt",
+    "country" : "Hansonia",
+    "info" : "Der gute Hans",
+    "image" : "https://www.br.de/puls/themen/netz/pepe-der-frosch-mem-100~_v-img__16__9__xl_-d31c35f8186ebeb80b0cd843a7c267a0e0c81647.jpg?version=4ca31"
+}
 ###
 
 

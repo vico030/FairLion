@@ -213,7 +213,6 @@ function createArticleRequest(body, userId) {
 function updateUser(body, userId) {
     return new Promise(async (resolve, reject) => {
         try {
-            console.log(body);
             const user = await userModel.findByIdAndUpdate(userId, body, {new: true})
                 .catch(err => {throw err});
             return resolve({
@@ -231,15 +230,64 @@ function updateUser(body, userId) {
     });
 }
 
+// Move to ArticleService?
+function deleteAllUserArticles(userId) {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const aricles = await articleModel.find({"owner": userId})
+                .catch(err=>{throw err});
+            articleModel.deleteMany({"owner": userId})
+                .catch(err=>{throw err});
+            return resolve({
+                data: aricles,
+                message: 'Artikel wurden erfolgreich entfernt.',
+                status: 200
+            });
+        } catch (err) {
+            return reject({
+                error: err,
+                status: 500,
+                message: 'Artikel konnten nicht entfernt werden.'
+            })
+        }
+    });
+}
+
+function getFriends(userId) {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const user = await userModel.findById(userId)
+                .catch(err => {throw err});
+            const friendIds = user.friends;
+            const friends = await userModel.find({"_id": {$in: friendIds}})
+                .select('-password')
+                .catch(err => {throw err});
+            return resolve({
+                data: friends,
+                message: 'Freunde wurden gefunden.',
+                status: 201
+            });
+        } catch (err) {
+            return reject({
+                error: err,
+                status: 500,
+                message: 'Freunde konnten nicht gefunden werden. :('
+            });
+        }
+    });
+}
+
 
 module.exports = {
     getAllUsers,
     getUsersByName,
     getUserById,
     getArticles,
+    getFriends,
     deleteAllUsers,
     deleteUser,
     createArticle,
+    deleteAllUserArticles,
     createFriendRequest,
     createArticleRequest,
     updateUser

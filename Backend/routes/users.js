@@ -117,6 +117,22 @@ router.post("/:userId/ownedArticles", async (req, res) => {
     }
 });
 
+// Delete all articles owned by one user
+router.delete("/:userId/ownedArticles", async (req, res) => {
+    try {
+        const response = await service.deleteAllUserArticles(req.params.userId);
+        res.status(response.status).json({
+            'data': response.data,
+            'message': response.message
+        });
+    } catch ({error, status, message}) {
+        res.status(status).json({
+            'error': error,
+            'message': message
+        });
+    }
+});
+
 // Get all articles borrowed by a single user
 router.get("/:userId/borrowedArticles", async (req, res) =>{
     try {
@@ -130,22 +146,6 @@ router.get("/:userId/borrowedArticles", async (req, res) =>{
             'error': error,
             'message': message
         });
-    }
-});
-
-// Get all users with a certain username
-router.get("/query/:username", async (req, res) => {
-    try {
-        const response = await service.getUsersByName(req.params.username);
-        res.status(response.status).json({
-            'data': response.data,
-            'message': response.message
-        });
-    } catch ({error, status, message}) {
-        res.status(status).json({
-            'error': error,
-            'message': message
-        })
     }
 });
 
@@ -166,7 +166,7 @@ router.post("/:userId/friendrequests", async (req, res) => {
     }
 })
 
-// create a new article request for the user as requester
+// Create a new article request for the user as requester
 router.post("/:userId/articlerequests", async (req, res) => {
     try {
         const response = await service.createArticleRequest(req.body, req.params.userId);
@@ -182,5 +182,37 @@ router.post("/:userId/articlerequests", async (req, res) => {
         })
     }
 })
+
+// Get all friends of one user
+router.get("/:userId/friends", async (req, res) => {
+    try {
+        const response = await service.getFriends(req.params.userId);
+        res.status(response.status).json({
+            'data': response.data,
+            'message': response.message
+        });
+    } catch ({error, status, message}) {
+        res.status(status).json({
+            'error': error,
+            'message': message
+        });
+    }
+}); 
+
+// Get all users with a certain username
+router.get("/query/:username", async (req, res) => {
+    try {
+        const response = await service.getUsersByName(req.params.username);
+        res.status(response.status).json({
+            'data': response.data,
+            'message': response.message
+        });
+    } catch ({error, status, message}) {
+        res.status(status).json({
+            'error': error,
+            'message': message
+        })
+    }
+});
 
 module.exports = router;
