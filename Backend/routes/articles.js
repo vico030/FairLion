@@ -109,7 +109,7 @@ router.delete("/:articleId", async (req, res, next) => {
 });
 
 //get articles from friends by articlename
-router.get("/query/:articlename", auth.isAuthenticated, async (req, res, next) => {
+router.post("/query/:articlename", auth.isAuthenticated, async (req, res, next) => {
     try {
         const response = await articleService.getArticlesFromFriendsByName(req.userId);
         res.status(response.status).json({
