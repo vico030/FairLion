@@ -28,7 +28,7 @@ const getArticlesFromFriendsByName = function (userId, title) {
             const user = await User.findById(userId);
             for (let i = 0; i < user.friends.length; i++) {
                 const { username } = await User.findById(user.friends[i]);
-                const articlesFromFriend = await Article.find({ "owner": user.friends[i], 'username': { $regex: title, $options: 'i' } });
+                const articlesFromFriend = await Article.find({ "owner": user.friends[i], 'title': { $regex: title, $options: 'i' } });
                 articles[username] = articlesFromFriend;
             }
             return resolve({
