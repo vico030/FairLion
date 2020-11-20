@@ -158,6 +158,39 @@ function createArticle(body, userId) {
     });
 }
 
+function getFriendRequests(userId) {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let newFriendRequests = [];
+            const friendrequests = await friendRequestModel.find({"recieverId": userId})
+                .catch(err => {throw err});
+            await friendrequests.forEach(async friendrequest => {
+                try {
+                    const requester = await userModel.findById(friendrequest.requesterId)
+                        .select("username image")
+                        .catch(err => {throw err});
+                    newFriendRequests.push({...friendrequest._doc, requesterName: requester.username, requesterImage: requester.image});
+                    //console.log(newFriendRequests);
+                } catch (err) {
+                    throw err;
+                }
+            });
+            console.log(newFriendRequests);
+            return resolve({
+                data: newFriendRequests,
+                message: 'Freundesanfragen wurden gefunden.',
+                status: 200
+            })
+        } catch (err) {
+            return reject({
+                error: err,
+                status: 500,
+                message: 'Freundesanfragen konnten nicht gefunden werden.'
+            });
+        }
+    });
+}
+
 function createFriendRequest(body, userId) {
     return new Promise((resolve, reject) => {
         const request = new friendRequestModel({
@@ -284,6 +317,7 @@ module.exports = {
     getUserById,
     getArticles,
     getFriends,
+    getFriendRequests,
     deleteAllUsers,
     deleteUser,
     createArticle,

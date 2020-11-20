@@ -149,6 +149,23 @@ router.get("/:userId/borrowedArticles", async (req, res) =>{
     }
 });
 
+// Get all friendrequests for the user as reciever
+router.get("/:userId/friendrequests", async (req, res) => {
+    try {
+        const response = await service.getFriendRequests(req.params.userId);
+        res.status(response.status).json({
+            'data': response.data,
+            'message': response.message
+        });
+    } 
+    catch ({ error, status, message }) {
+        res.status(status).json({
+            'error': error,
+            'message': message
+        })
+    }
+});
+
 // Create a new friend request for the user as requester
 router.post("/:userId/friendrequests", async (req, res) => {
     try {
