@@ -161,21 +161,17 @@ function createArticle(body, userId) {
 function getFriendRequests(userId) {
     return new Promise(async (resolve, reject) => {
         try {
-            let newFriendRequests = [];
-            const friendrequests = await friendRequestModel.find({"recieverId": userId})
-                .catch(err => {throw err});
-            await friendrequests.forEach(async friendrequest => {
+            const newFriendRequests = [];
+            const friendrequests = await friendRequestModel.find({"receiverId": userId})
+            for (let friendrequest of friendrequests) {
                 try {
                     const requester = await userModel.findById(friendrequest.requesterId)
                         .select("username image")
-                        .catch(err => {throw err});
                     newFriendRequests.push({...friendrequest._doc, requesterName: requester.username, requesterImage: requester.image});
-                    //console.log(newFriendRequests);
                 } catch (err) {
                     throw err;
                 }
-            });
-            console.log(newFriendRequests);
+            }
             return resolve({
                 data: newFriendRequests,
                 message: 'Freundesanfragen wurden gefunden.',
