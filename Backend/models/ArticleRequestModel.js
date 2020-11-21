@@ -6,13 +6,17 @@ const ArticleRequestSchema = mongoose.Schema({
         type: ObjectId,
         required: true
     },
-    requesterId: {
+    owner: {
         type: ObjectId,
         required: true
     },
-    confirmed: {
-        type: Boolean,
-        default: false
+    borrower: {
+        type: ObjectId,
+        required: true
+    },
+    status: {
+        type: String,
+        default: "pending"
     },
     date: {
         type: Date,

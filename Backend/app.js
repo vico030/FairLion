@@ -19,6 +19,7 @@ app.use('/', allRoutes.indexRoute);
 app.use('/users', allRoutes.usersRoute);
 app.use('/articles', allRoutes.articlesRoute);
 app.use('/auth', allRoutes.authRoute);
+app.use("/articleRequest", allRoutes.articleRequestRoute);
 
 // Error Handling
 app.use((err, req, res, next) => {
