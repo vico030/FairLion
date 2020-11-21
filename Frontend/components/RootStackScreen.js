@@ -4,7 +4,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 
 import LoginScreen from "./LoginScreen";
 import SplashScreen from "./SplashScreen";
-import { RegisterStackScreen } from "./Headers";
+import { RegisterStackScreen, DetailViewStackScreen } from "./Headers";
 
 const RootStack = createStackNavigator();
 

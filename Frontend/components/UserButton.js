@@ -1,46 +1,49 @@
-import React from 'react'
-import { View, Text,StyleSheet,TouchableOpacity,Image} from 'react-native'
+import React from "react";
+import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 
 // change profile pic with correct link and not local
-export default function  UserButton({userName,image}) {
-    return (
-        <TouchableOpacity>
-            <View style={styles.button}>
-                <Image style={styles.profileImage} source={require(`../assets/testprofilpic.jpg`)}/>
-                <Text style={styles.buttonText}>{userName}</Text>
-            </View>
-        </TouchableOpacity>
-    )
+export default function UserButton({ userName, image }) {
+  return (
+    <TouchableOpacity>
+      <View style={styles.button}>
+        <Image
+          style={styles.profileImage}
+          source={require(`../assets/testprofilpic.jpg`)}
+        />
+        <Text style={styles.buttonText} numberOfLines={1}>Torsten Frenz</Text>
+      </View>
+    </TouchableOpacity>
+  );
 }
 
 const styles = StyleSheet.create({
-    button:{
-        flexDirection:'row',
-        borderRadius:30,
-        paddingVertical:14,
-        backgroundColor:'white',
-        borderColor:'#e77e23',
-        borderWidth:2,
-        height:32,
-        width:140,
-        justifyContent:'center',
-        marginBottom:10
-    },
-    buttonText:{
-        fontSize:14,
-        textAlign:'center',
-        borderColor:'#e77e23',
-        alignSelf:'center',
-        color:'black',
-        left:5
-    },
-    profileImage:{
-        position:'absolute',
-        left:3,
-        top:2,
-        borderRadius:20,
-        height:24,
-        width:25,
-    }
-
-})
+  button: {
+    flexDirection: "row",
+    borderRadius: 30,
+    backgroundColor: "white",
+    borderColor: "#e77e23",
+    borderWidth: 1,
+    height: 30,
+    width: 120,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+  },
+  buttonText: {
+    fontSize: 12,
+    textAlign: "left",
+    borderColor: "#e77e23",
+    alignSelf: "center",
+    color: "black",
+    width: "70%",
+    marginHorizontal: 5,
+  },
+  profileImage: {
+    marginLeft: 2,
+    borderRadius: 20,
+    height: 22,
+    width: 22,
+    alignSelf: "center",
+  },
+});

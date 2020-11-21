@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, StyleSheet, Image, Dimensions } from "react-native";
 import UserButton from "./UserButton";
-import { AntDesign, Feather } from "@expo/vector-icons";
+import { AntDesign, Feather, MaterialCommunityIcons } from "@expo/vector-icons";
 
 export default function ItemRequest({ besitzer, produktName, image }) {
   return (
@@ -14,10 +14,11 @@ export default function ItemRequest({ besitzer, produktName, image }) {
         />
       </View>
       <View style={styles.itemBottomView}>
-        <View style={styles.itemUpper}>
+        <View style={styles.items}>
           <Text style={styles.itemName} numberOfLines={1}>{produktName}</Text>
+          <MaterialCommunityIcons name="heart-outline" size={24} style={styles.hiddenIcon}/>
         </View>
-        <View style={styles.itemBottom}>
+        <View style={styles.items}>
           <UserButton userName={besitzer} />
           <View style={styles.icons}>
             <AntDesign name="check" size={24} color="green" />
@@ -30,25 +31,19 @@ export default function ItemRequest({ besitzer, produktName, image }) {
 }
 const styles = StyleSheet.create({
   wrapper: {
-    backgroundColor: "#ddd",
+    backgroundColor: "#fff",
     flexDirection: "row",
     alignSelf: "stretch",
     width: Dimensions.get("window").width - 5,
     marginVertical: 3,
   },
   itemImage: { height: 90, width: 120 },
-  itemBottom: {
-    paddingHorizontal: 10,
+  items: {
+    flex: 1,
     width: "100%",
     flexDirection: "row",
     justifyContent: "space-between",
-    alignItems: "baseline",
-  },
-  itemUpper: {
-    width: "100%",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginTop: 10,
+    alignItems: "center",
     paddingHorizontal: 10,
   },
   itemButton: {
@@ -60,19 +55,24 @@ const styles = StyleSheet.create({
   },
   itemBottomView: {
     width:Dimensions.get('window').width - 125,
-    flexDirection: "column",
-    justifyContent: "space-between",
+    paddingVertical: 5,
   },
   itemTime: {
+    textAlign: "right",
     fontSize: 12,
-    marginBottom: 10,
+    width: "45%",
   },
   itemName: {
+    fontSize:14,
     fontWeight: "bold",
+    width: "85%",
   },
   icons: {
     flexDirection: "row",
     justifyContent: "space-between",
     width: 72,
   },
+  hiddenIcon: {
+    color: "#fff"
+  }  
 });
