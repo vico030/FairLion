@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -9,8 +9,36 @@ import {
   Dimensions,
 } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scrollview";
+import { AuthContext } from "./context";
 
 const LoginScreen = ({ navigation }) => {
+  const [user, setUser] = useState({
+    userName: "",
+    password: "",
+  });
+  const { signIn } = useContext(AuthContext);
+
+  const handleUserNameChange = (val) => {
+    if (val.length != 0) {
+      setUser({
+        ...user,
+        userName: val,
+      });
+      console.log(val);
+    }
+  };
+  const handlePasswordChange = (val) => {
+    setUser({
+      ...user,
+      password: val,
+    });
+    console.log(val);
+  };
+
+  const handleLogin = (username, password) => {
+    signIn(username, password);
+  };
+
   return (
     <KeyboardAwareScrollView
       resetScrollToCoords={{ x: 0, y: 0 }}
@@ -37,7 +65,7 @@ const LoginScreen = ({ navigation }) => {
             placeholder="Username"
             placeholderTextColor="#003f5c"
             autoCapitalize="none"
-            onChangeText={(username) => this.setState({ username })}
+            onChangeText={(username) => handleUserNameChange(username)}
           />
         </View>
 
@@ -47,7 +75,7 @@ const LoginScreen = ({ navigation }) => {
             style={styles.inputText}
             placeholder="Passwort"
             placeholderTextColor="#003f5c"
-            onChangeText={(password) => this.setState({ password })}
+            onChangeText={(password) => handlePasswordChange(password)}
           />
         </View>
 
@@ -55,7 +83,12 @@ const LoginScreen = ({ navigation }) => {
           <Text style={styles.forgot}>Passwort vergessen?</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.loginBtn}>
+        <TouchableOpacity
+          style={styles.loginBtn}
+          onPress={() => {
+            handleLogin(user.userName, user.password);
+          }}
+        >
           <Text style={styles.loginText}>Login</Text>
         </TouchableOpacity>
 

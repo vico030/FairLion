@@ -20,12 +20,16 @@ export default function ItemLend({
       </View>
       <View style={styles.itemBottomView}>
         <View style={styles.itemUpper}>
-          <Text style={styles.itemName} numberOfLines={1}>{produktName}</Text>
+          <Text style={styles.itemName} numberOfLines={1}>
+            {produktName}
+          </Text>
           <MaterialCommunityIcons name="heart-outline" size={24} />
         </View>
         <View style={styles.itemBottom}>
           <UserButton userName={besitzer} />
-          <Text style={styles.itemTime} numberOfLines={1}>Noch: {ausleihfrist}</Text>
+          <Text style={styles.itemTime} numberOfLines={1}>
+            Noch: {ausleihfrist}
+          </Text>
         </View>
       </View>
     </View>
@@ -52,7 +56,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     paddingHorizontal: 10,
-    marginTop: 10
+    marginTop: 10,
   },
   itemButton: {
     flexDirection: "row",
@@ -62,7 +66,7 @@ const styles = StyleSheet.create({
     borderRadius: 50,
   },
   itemBottomView: {
-    width:Dimensions.get('window').width - 125,
+    width: Dimensions.get("window").width - 125,
     flexDirection: "column",
     justifyContent: "space-between",
   },
@@ -71,7 +75,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   itemName: {
-    fontSize:14,
+    fontSize: 14,
     fontWeight: "bold",
   },
 });

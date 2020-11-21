@@ -1,70 +1,120 @@
-import 'react-native-gesture-handler';
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { Image } from "react-native"
+import "react-native-gesture-handler";
+import React, { useEffect, useMemo, useReducer } from "react";
+
 import { NavigationContainer } from "@react-navigation/native";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
-// import BorrowedScreen from './components/BorrowedScreen';
-// import StockScreen from './components/StockScreen';
-// import SearchScreen from './components/SearchScreen';
-// import RequestsScreen from './components/RequestsScreen';
-// import FriendsScreen from './components/FriendsScreen';
-import {BurrowedStackScreen,
-  StockStackScreen,
-  SearchStackScreen,
-  RequestsStackScreen,
-  FriendsStackScreen} from './components/Headers';
 
 import RootStackScreen from "./components/RootStackScreen";
-const activeTintColor = "#E77F23";
-const inactiveTintColor = "#333740";
-const Tabs = createBottomTabNavigator();
-export default function App() {
-  return (
-    <NavigationContainer>
-      {<Tabs.Navigator screenOptions={({ route }) => ({
-        tabBarIcon: ({ focused, color, size, horizontal }) => {
-          let icon;
+import AppTabs from "./components/AppTabs";
+import AsyncStorage from "@react-native-community/async-storage";
+import { AuthContext } from "./components/context";
+import SplashScreen from "./components/SplashScreen";
+import { createDrawerNavigator } from "@react-navigation/drawer";
+import { Button, View } from "react-native";
+import DrawerContent from "./components/DrawerContent";
 
-          if (route.name === 'Ausgeliehen') {
-            //icon = require(`./assets/ausgeliehen_icon.png`);
-            icon = "home-import-outline";
-          } else if (route.name === 'Lager') {
-            //icon = require(`./assets/lager_icon.png`);
-            icon = "inbox-multiple-outline";
+const Drawer = createDrawerNavigator();
+
+const DrawerNavigator = () => {
+  return (
+    <Drawer.Navigator
+      // style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
+      drawerContent={(props) => <DrawerContent {...props} />}
+    >
+      <Drawer.Screen name="Home" component={AppTabs} />
+    </Drawer.Navigator>
+  );
+};
+
+export default function App() {
+  const initialLoginState = {
+    isLoading: true,
+    userName: null,
+    userToken: null,
+  };
+  const loginReducer = (prevState, action) => {
+    switch (action.type) {
+      case "RETRIEVE_TOKEN":
+        return {
+          ...prevState,
+          userToken: action.token,
+          isLoading: false,
+        };
+      case "LOGIN":
+        return {
+          ...prevState,
+          userName: action.id,
+          userToken: action.token,
+          isLoading: false,
+        };
+      case "LOGOUT":
+        return {
+          ...prevState,
+          userName: null,
+          userToken: null,
+          isLoading: false,
+        };
+      case "REGISTER":
+        return {
+          ...prevState,
+          userName: action.id,
+          userToken: action.token,
+          isLoading: false,
+        };
+    }
+  };
+  const [loginState, dispatch] = useReducer(loginReducer, initialLoginState);
+
+  const authContext = useMemo(
+    () => ({
+      signIn: async (username, password) => {
+        let userToken;
+        userToken = null;
+        if (username == "user" && password == "pass") {
+          try {
+            userToken = "dfadfaf";
+            await AsyncStorage.setItem("userToken", userToken);
+          } catch (e) {
+            console.log(e);
           }
-          else if (route.name === "Suche") {
-            //icon = require(`./assets/suche_icon.png`);
-            icon = "magnify";
-          }
-          else if (route.name === "Anfragen") {
-            //icon = require(`./assets/anfragen_icon.png`);
-            icon = "bell-ring";
-          }
-          else if (route.name === "Freunde") {
-            //icon = require(`./assets/freunde_icon.png`);
-            icon = "account-multiple-outline";
-          }
-          //return <Image source={icon} color={color} size={size} />
-          return <MaterialCommunityIcons name={icon} color={color} size={horizontal ? 20 : 25} />
-        },
-      })}
-        tabBarOptions={{
-          activeTintColor: activeTintColor,
-          inactiveTintColor: inactiveTintColor,
-          style: {
-            backgroundColor: "#FFFFFF"
-          }
-        }}
-      >
-        <Tabs.Screen name="Ausgeliehen" component={BurrowedStackScreen} />
-        <Tabs.Screen name="Lager" component={StockStackScreen} />
-        <Tabs.Screen name="Suche" component={SearchStackScreen} />
-        <Tabs.Screen name="Anfragen" component={RequestsStackScreen} />
-        <Tabs.Screen name="Freunde" component={FriendsStackScreen} />
-      </Tabs.Navigator>}
-    </NavigationContainer>
+        }
+
+        dispatch({ type: "LOGIN", id: username, token: userToken });
+      },
+      signOut: async () => {
+        try {
+          await AsyncStorage.removeItem("userToken");
+        } catch (e) {
+          console.log(e);
+        }
+        dispatch({ type: "LOGOUT" });
+      },
+      signUp: () => {},
+    }),
+    []
+  );
+
+  useEffect(() => {
+    setTimeout(async () => {
+      let userToken;
+      userToken = null;
+      try {
+        userToken = await AsyncStorage.getItem("userToken");
+      } catch (e) {
+        console.log(e);
+      }
+      dispatch({ type: "RETRIEVE_TOKEN", token: userToken });
+    }, 1000);
+  }, []);
+  if (loginState.isLoading) {
+    return <SplashScreen />;
+  }
+
+  return (
+    <AuthContext.Provider value={authContext}>
+      <NavigationContainer>
+        {loginState.userToken ? <DrawerNavigator /> : <RootStackScreen />}
+      </NavigationContainer>
+    </AuthContext.Provider>
   );
 }
 

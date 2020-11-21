@@ -23,7 +23,7 @@ const RequestStack = createStackNavigator();
 const FriendsStack = createStackNavigator();
 const RegisterStack = createStackNavigator();
 
-const FriendsStackScreen = () => (
+const FriendsStackScreen = ({ navigation }) => (
   <FriendsStack.Navigator>
     <FriendsStack.Screen
       name="Freunde"
@@ -48,14 +48,19 @@ const FriendsStackScreen = () => (
         ),
 
         headerLeft: () => (
-          <MaterialIcons name="menu" size={28} style={styles.leftIcon} />
+          <MaterialIcons
+            name="menu"
+            size={28}
+            style={styles.leftIcon}
+            onPress={() => navigation.openDrawer()}
+          />
         ),
       }}
     />
   </FriendsStack.Navigator>
 );
 
-const RequestsStackScreen = () => (
+const RequestsStackScreen = ({ navigation }) => (
   <RequestStack.Navigator>
     <RequestStack.Screen
       name="Anfragen"
@@ -72,14 +77,19 @@ const RequestsStackScreen = () => (
         },
 
         headerLeft: () => (
-          <MaterialIcons name="menu" size={28} style={styles.leftIcon} />
+          <MaterialIcons
+            name="menu"
+            size={28}
+            style={styles.leftIcon}
+            onPress={() => navigation.openDrawer()}
+          />
         ),
       }}
     />
   </RequestStack.Navigator>
 );
 
-const BurrowedStackScreen = () => (
+const BurrowedStackScreen = ({ navigation }) => (
   <BurrowedStack.Navigator>
     <BurrowedStack.Screen
       name="Ausgeliehen"
@@ -95,13 +105,18 @@ const BurrowedStackScreen = () => (
           fontFamily: "Roboto",
         },
         headerLeft: () => (
-          <MaterialIcons name="menu" size={28} style={styles.leftIcon} />
+          <MaterialIcons
+            name="menu"
+            size={28}
+            style={styles.leftIcon}
+            onPress={() => navigation.openDrawer()}
+          />
         ),
       }}
     />
   </BurrowedStack.Navigator>
 );
-const StockStackScreen = () => (
+const StockStackScreen = ({ navigation }) => (
   <StockStack.Navigator>
     <StockStack.Screen
       name="Lager"
@@ -117,16 +132,26 @@ const StockStackScreen = () => (
           fontFamily: "Roboto",
         },
         headerRight: () => (
-          <MaterialIcons name="add" size={28} style={styles.rightIcon} onPress={() => alert("Add Item")}/>
+          <MaterialIcons
+            name="add"
+            size={28}
+            style={styles.rightIcon}
+            onPress={() => alert("Add Item")}
+          />
         ),
         headerLeft: () => (
-          <MaterialIcons name="menu" size={28} style={styles.leftIcon} />
+          <MaterialIcons
+            name="menu"
+            size={28}
+            style={styles.leftIcon}
+            onPress={() => navigation.openDrawer()}
+          />
         ),
       }}
     />
   </StockStack.Navigator>
 );
-const SearchStackScreen = () => (
+const SearchStackScreen = ({ navigation }) => (
   <SearchStack.Navigator>
     <SearchStack.Screen
       name="Suche"
@@ -149,19 +174,24 @@ const SearchStackScreen = () => (
           />
         ),
         headerLeft: () => (
-          <MaterialIcons name="menu" size={28} style={styles.leftIcon} />
+          <MaterialIcons
+            name="menu"
+            size={28}
+            style={styles.leftIcon}
+            onPress={() => navigation.openDrawer()}
+          />
         ),
       }}
     />
   </SearchStack.Navigator>
 );
 
-const RegisterStackScreen = ({ navigation: { goBack} }) => (
+const RegisterStackScreen = ({ navigation: { goBack } }) => (
   <RegisterStack.Navigator>
     <RegisterStack.Screen
       name="Registrieren"
       component={RegisterScreen}
-      options={{ 
+      options={{
         title: "Registrieren",
         headerStyle: {
           backgroundColor: inactiveTintColor,
@@ -172,7 +202,12 @@ const RegisterStackScreen = ({ navigation: { goBack} }) => (
           fontFamily: "Roboto",
         },
         headerLeft: () => (
-          <Ionicons name="md-arrow-back" size={28} style={styles.leftIcon} onPress={() => goBack()} />
+          <Ionicons
+            name="md-arrow-back"
+            size={28}
+            style={styles.leftIcon}
+            onPress={() => goBack()}
+          />
         ),
       }}
     />
