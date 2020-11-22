@@ -10,7 +10,7 @@ export default function UserButton({ userName, image }) {
           style={styles.profileImage}
           source={require(`../assets/testprofilpic.jpg`)}
         />
-        <Text style={styles.buttonText} numberOfLines={1}>Torsten Frenz</Text>
+        <Text style={styles.buttonText} numberOfLines={1}>Kurt Steiger</Text>
       </View>
     </TouchableOpacity>
   );
@@ -32,11 +32,11 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     fontSize: 12,
-    textAlign: "left",
+    textAlign: "center",
     borderColor: "#e77e23",
     alignSelf: "center",
     color: "black",
-    width: "70%",
+    width: "65%",
     marginHorizontal: 5,
   },
   profileImage: {

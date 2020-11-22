@@ -14,7 +14,9 @@ import SearchScreen from "./SearchScreen";
 import RequestsScreen from "./RequestsScreen";
 import FriendsScreen from "./FriendsScreen";
 import RegisterScreen from "./RegisterScreen";
-import DetailViewScreen from "./DetailViewScreen";
+import DetailEditViewScreen from "./DetailEditViewScreen";
+import DetailReturnViewScreen from "./DetailReturnViewScreen";
+import ArticleRequestScreen from "./ArticleRequestScreen";
 
 const inactiveTintColor = "#333740";
 const BurrowedStack = createStackNavigator();
@@ -23,7 +25,9 @@ const SearchStack = createStackNavigator();
 const RequestStack = createStackNavigator();
 const FriendsStack = createStackNavigator();
 const RegisterStack = createStackNavigator();
-const DetailStack = createStackNavigator();
+const DetailEditStack = createStackNavigator();
+const DetailReturnStack = createStackNavigator();
+const ArticleRequestStack = createStackNavigator();
 
 const FriendsStackScreen = ({ navigation }) => (
   <FriendsStack.Navigator>
@@ -216,11 +220,11 @@ const RegisterStackScreen = ({ navigation: { goBack } }) => (
   </RegisterStack.Navigator>
 );
 
-const DetailViewStackScreen = ({ navigation: { goBack } }) => (
-  <DetailStack.Navigator>
-    <DetailStack.Screen
+const DetailEditViewStackScreen = ({ navigation: { goBack } }) => (
+  <DetailEditStack.Navigator>
+    <DetailEditStack.Screen
       name="Details"
-      component={DetailViewScreen}
+      component={DetailEditViewScreen}
       options={{
         title: "Details",
         headerStyle: {
@@ -232,8 +236,43 @@ const DetailViewStackScreen = ({ navigation: { goBack } }) => (
           fontFamily: "Roboto",
         },
         headerLeft: () => (
-          <Ionicons
-            name="md-arrow-back"
+          <MaterialCommunityIcons
+            name="arrow-left"
+            size={28}
+            style={styles.leftIcon}
+            onPress={() => goBack()}
+          />
+        ),
+        headerRight: () => (
+          <MaterialCommunityIcons
+            name="delete"
+            size={28}
+            style={styles.rightIcon}
+          />
+        ),
+      }}
+    />
+  </DetailEditStack.Navigator>
+);
+
+const DetailReturnViewStackScreen = ({ navigation: { goBack } }) => (
+  <DetailReturnStack.Navigator>
+    <DetailReturnStack.Screen
+      name="Details"
+      component={DetailReturnViewScreen}
+      options={{
+        title: "Details",
+        headerStyle: {
+          backgroundColor: inactiveTintColor,
+        },
+        headerTitleAlign: "center",
+        headerTintColor: "#fff",
+        headerTitleStyle: {
+          fontFamily: "Roboto",
+        },
+        headerLeft: () => (
+          <MaterialCommunityIcons
+            name="arrow-left"
             size={28}
             style={styles.leftIcon}
             onPress={() => goBack()}
@@ -241,7 +280,35 @@ const DetailViewStackScreen = ({ navigation: { goBack } }) => (
         ),
       }}
     />
-  </DetailStack.Navigator>
+  </DetailReturnStack.Navigator>
+);
+
+const ArticleRequestStackScreen = ({ navigation: { goBack } }) => (
+  <ArticleRequestStack.Navigator>
+    <ArticleRequestStack.Screen
+      name="Details"
+      component={ArticleRequestScreen}
+      options={{
+        title: "Details",
+        headerStyle: {
+          backgroundColor: inactiveTintColor,
+        },
+        headerTitleAlign: "center",
+        headerTintColor: "#fff",
+        headerTitleStyle: {
+          fontFamily: "Roboto",
+        },
+        headerLeft: () => (
+          <MaterialCommunityIcons
+            name="arrow-left"
+            size={28}
+            style={styles.leftIcon}
+            onPress={() => goBack()}
+          />
+        ),
+      }}
+    />
+  </ArticleRequestStack.Navigator>
 );
 
 const styles = StyleSheet.create({
@@ -262,5 +329,7 @@ export {
   RequestsStackScreen,
   FriendsStackScreen,
   RegisterStackScreen,
-  DetailViewStackScreen,
+  DetailEditViewStackScreen,
+  DetailReturnViewStackScreen,
+  ArticleRequestStackScreen,
 };
