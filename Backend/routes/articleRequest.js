@@ -38,7 +38,7 @@ router.post("/", isAuthenticated, async (req, res, next) => {
     }
 });
 
-//update an article-request, where you are the article owner
+//update an article-request, where you are the article owner / accepting or declining request?
 router.put("/:requestId", isAuthenticated, async (req, res, next) => {
     try {
         const response = await service.updateArticleRequest(req.body, req.params.requestId, req.userId);

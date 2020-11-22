@@ -28,6 +28,9 @@ const articleSchema = mongoose.Schema({
     },
     borrower: {
         type: ObjectId
+    },
+    returnDate: {
+        type: Date
     }
 })
 
