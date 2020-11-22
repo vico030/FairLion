@@ -63,16 +63,16 @@ content-type: application/json
 
 ###
 
-POST http://localhost:3000/users/5fb2e57d824eae2150e63677/friendrequests
+POST http://localhost:3000/users/5fb519908a4bcb5220bb6363/friendrequests
 content-type: application/json
 
 {
-    "recieverId" : "5fb519808a4bcb5220bb6361"
+    "receiverId" : "5fb519908a4bcb5220bb6363"
 }
 
 ###
 
-POST http://localhost:3000/users/Hans/articlerequests
+POST http://localhost:3000/users/5fb519908a4bcb5220bb6363/articlerequests
 content-type: application/json
 
 {

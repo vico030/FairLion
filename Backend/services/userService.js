@@ -213,6 +213,54 @@ function createFriendRequest(body, userId) {
     });
 }
 
+function deleteFriendRequest(requestId) {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const friendrequest = await friendRequestModel.findById(requestId)
+                .catch(err => {throw err});
+            friendRequestModel.findByIdAndDelete(requestId)
+                .catch(err => {throw err});
+            return resolve({
+                data: friendrequest,
+                message: 'Freundesanfrage wurde gelöscht.',
+                status: 201
+            });
+        } catch (err) {
+            return reject({
+                error: err,
+                status: 500,
+                message: 'Freundesanfrage konnte nicht gelöscht werden.'
+            });
+        }
+    });
+}
+
+function confirmFriendRequest(requestId) {
+    return new Promise(async (resolve, reject) =>{
+        try {
+            const friendrequest = await friendRequestModel.findByIdAndUpdate(requestId, {"confirmed": true}, {new: true})
+                .catch(err => {throw err});
+            userModel.findByIdAndUpdate(friendrequest.receiverId,  {"$push":{friends: friendrequest.requesterId}}, {new: true})
+                .catch(err => {throw err});
+            userModel.findByIdAndUpdate(friendrequest.requesterId,  {"$push":{friends: friendrequest.receiverId}}, {new: true})
+                .catch(err => {throw err});
+            friendRequestModel.findByIdAndDelete(requestId)
+                .catch(err => {throw err});
+            return resolve({
+                data: friendrequest,
+                message: 'Freundesanfrage wurde bestätigt.',
+                status: 201
+            });
+        } catch (err) {
+            return reject({
+                error: err,
+                status: 500,
+                message: 'Freundesanfrage konnte nicht bestätigt werden.'
+            });
+        }
+    });
+}
+
 function createArticleRequest(body, userId) {
     return new Promise((resolve, reject) => {
         const request = new articleRequestModel({
@@ -316,9 +364,11 @@ module.exports = {
     getFriendRequests,
     deleteAllUsers,
     deleteUser,
+    deleteFriendRequest,
     createArticle,
     deleteAllUserArticles,
     createFriendRequest,
     createArticleRequest,
+    confirmFriendRequest,
     updateUser
 };
