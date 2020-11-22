@@ -8,8 +8,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { AuthContext } from "./context";
-import { MaterialIcons, Ionicons, Feather } from "@expo/vector-icons";
-
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 export default function DrawerContent() {
   const { signOut } = useContext(AuthContext);
   return (
@@ -39,30 +38,32 @@ export default function DrawerContent() {
 
       <View style={styles.dividerBottom} />
       <TouchableOpacity style={styles.buttonContainer}>
-        <Ionicons
+        <MaterialCommunityIcons
           style={styles.icon}
-          name="md-person"
-          size={18}
+          name="account"
+          size={24}
           color="black"
         />
 
         <Text style={styles.buttonText}>Profil bearbeiten</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.buttonContainer}>
-        <MaterialIcons
+        <MaterialCommunityIcons
           style={styles.icon}
           name="settings"
-          size={18}
+          size={24}
           color="black"
         />
+
         <Text style={styles.buttonText}>Einstellungen</Text>
       </TouchableOpacity>
-      <TouchableOpacity
-        style={styles.buttonContainer}
-        onPress={() => signOut()}
-      >
-        <Feather style={styles.icon} name="log-out" size={18} color="black" />
-
+      <TouchableOpacity style={styles.buttonContainer} onPress={signOut}>
+        <MaterialCommunityIcons
+          style={styles.icon}
+          name="exit-to-app"
+          size={24}
+          color="black"
+        />
         <Text style={styles.buttonText}>Abmelden</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.footer}>
@@ -140,6 +141,7 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     width: "90%",
   },
+
   icon: {
     alignSelf: "center",
     marginRight: 10,

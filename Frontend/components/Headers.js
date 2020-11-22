@@ -216,12 +216,12 @@ const RegisterStackScreen = ({ navigation: { goBack } }) => (
   </RegisterStack.Navigator>
 );
 
-const DetailViewStackScreen = ({ navigation: {goBack} }) => (
+const DetailViewStackScreen = ({ navigation: { goBack } }) => (
   <DetailStack.Navigator>
     <DetailStack.Screen
       name="Details"
       component={DetailViewScreen}
-      options={{ 
+      options={{
         title: "Details",
         headerStyle: {
           backgroundColor: inactiveTintColor,
@@ -232,7 +232,12 @@ const DetailViewStackScreen = ({ navigation: {goBack} }) => (
           fontFamily: "Roboto",
         },
         headerLeft: () => (
-          <Ionicons name="md-arrow-back" size={28} style={styles.leftIcon} onPress={() => goBack()} />
+          <Ionicons
+            name="md-arrow-back"
+            size={28}
+            style={styles.leftIcon}
+            onPress={() => goBack()}
+          />
         ),
       }}
     />
