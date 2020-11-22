@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import { AuthContext } from "./context";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-export default function DrawerContent() {
+export default function DrawerContent({ navigation }) {
   const { signOut } = useContext(AuthContext);
   return (
     <View style={styles.container}>
@@ -25,7 +25,10 @@ export default function DrawerContent() {
       </View>
       <View style={styles.divider} />
 
-      <TouchableOpacity style={styles.profilButton}>
+      <TouchableOpacity
+        style={styles.profilButton}
+        onPress={() => navigation.navigate("Profile")}
+      >
         <Image
           style={styles.profilImage}
           source={require("../assets/testprofilpic.jpg")}
