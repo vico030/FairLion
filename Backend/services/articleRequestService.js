@@ -131,7 +131,7 @@ async function addReturnDateToArticle(id) {
 
 async function addBorrowerToArticle(articleId, borrowerId) {
     try {
-        await ArticleModel.findByIdAndUpdate(articleId, { borrower: borrowerId, status: "borrowed" })
+        await ArticleModel.findByIdAndUpdate(articleId, { borrower: borrowerId, status: "Verliehen" })
     }
     catch (err) {
         console.log(err)
