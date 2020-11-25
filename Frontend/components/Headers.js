@@ -17,12 +17,9 @@ import RegisterScreen from "./RegisterScreen";
 import DetailEditViewScreen from "./DetailEditViewScreen";
 import DetailReturnViewScreen from "./DetailReturnViewScreen";
 import ArticleRequestScreen from "./ArticleRequestScreen";
-<<<<<<< HEAD
 import AddItemScreen from "./AddItemScreen";
-=======
 import ProfileScreen from "./ProfileScreen";
 import HinzufügenScreen from "./HinzufügenScreen";
->>>>>>> FrontendTest
 
 const inactiveTintColor = "#333740";
 const BurrowedStack = createStackNavigator();
