@@ -25,7 +25,7 @@ export default function Friend({ name, wohnort, artikelzahl, image }) {
 
 const styles = StyleSheet.create({
     wrapper: {
-      backgroundColor: "#ddd",
+      backgroundColor: "#fff",
       flexDirection: "row",
       marginVertical: 3,
       width: Dimensions.get("window").width - 5,

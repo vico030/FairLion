@@ -17,6 +17,7 @@ import RegisterScreen from "./RegisterScreen";
 import DetailEditViewScreen from "./DetailEditViewScreen";
 import DetailReturnViewScreen from "./DetailReturnViewScreen";
 import ArticleRequestScreen from "./ArticleRequestScreen";
+import AddItemScreen from "./AddItemScreen";
 
 const inactiveTintColor = "#333740";
 const BurrowedStack = createStackNavigator();
@@ -142,7 +143,7 @@ const StockStackScreen = ({ navigation }) => (
             name="add"
             size={28}
             style={styles.rightIcon}
-            onPress={() => alert("Add Item")}
+            onPress={() => navigation.navigate("AddItem")}
           />
         ),
         headerLeft: () => (
@@ -155,8 +156,34 @@ const StockStackScreen = ({ navigation }) => (
         ),
       }}
     />
+
+    <StockStack.Screen
+          name="AddItem"
+          component={AddItemScreen}
+          options={{
+            title: "Artikel hinzufügen",
+            headerStyle: {
+              backgroundColor: inactiveTintColor,
+            },
+            headerTitleAlign: "center",
+            headerTintColor: "#fff",
+            headerTitleStyle: {
+              fontFamily: "Roboto",
+            },
+            /* headerRight: () => (
+              <MaterialIcons
+                name="close"
+                size={28}
+                style={styles.rightIcon}
+                onPress={() => navigation.goBack()}
+              />
+            ), */
+            
+          }}
+      />
   </StockStack.Navigator>
 );
+
 const SearchStackScreen = ({ navigation }) => (
   <SearchStack.Navigator>
     <SearchStack.Screen
