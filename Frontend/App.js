@@ -11,7 +11,8 @@ import SplashScreen from "./components/SplashScreen";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { Button, View } from "react-native";
 import DrawerContent from "./components/DrawerContent";
-import ProfileScreen from "./components/ProfileScreen";
+
+import { ProfileStackScreen } from "./components/Headers";
 
 const Drawer = createDrawerNavigator();
 
@@ -22,7 +23,7 @@ const DrawerNavigator = () => {
       drawerContent={(props) => <DrawerContent {...props} />}
     >
       <Drawer.Screen name="Home" component={AppTabs} />
-      <Drawer.Screen name="Profile" component={ProfileScreen} />
+      <Drawer.Screen name="Profile" component={ProfileStackScreen} />
     </Drawer.Navigator>
   );
 };
