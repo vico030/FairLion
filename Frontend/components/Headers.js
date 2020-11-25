@@ -6,8 +6,8 @@ import {
   MaterialIcons,
   Ionicons,
   MaterialCommunityIcons,
+  AntDesign,
 } from "@expo/vector-icons";
-
 import BorrowedScreen from "./BorrowedScreen";
 import StockScreen from "./StockScreen";
 import SearchScreen from "./SearchScreen";
@@ -17,7 +17,12 @@ import RegisterScreen from "./RegisterScreen";
 import DetailEditViewScreen from "./DetailEditViewScreen";
 import DetailReturnViewScreen from "./DetailReturnViewScreen";
 import ArticleRequestScreen from "./ArticleRequestScreen";
+<<<<<<< HEAD
 import AddItemScreen from "./AddItemScreen";
+=======
+import ProfileScreen from "./ProfileScreen";
+import HinzufügenScreen from "./HinzufügenScreen";
+>>>>>>> FrontendTest
 
 const inactiveTintColor = "#333740";
 const BurrowedStack = createStackNavigator();
@@ -29,6 +34,46 @@ const RegisterStack = createStackNavigator();
 const DetailEditStack = createStackNavigator();
 const DetailReturnStack = createStackNavigator();
 const ArticleRequestStack = createStackNavigator();
+const ProfileStack = createStackNavigator();
+
+function ProfileStackScreen({ navigation }) {
+  return (
+    <ProfileStack.Navigator>
+      <ProfileStack.Screen
+        name="Profile"
+        component={ProfileScreen}
+        options={{
+          title: "Profile",
+          headerStyle: {
+            backgroundColor: inactiveTintColor,
+          },
+          headerTitleAlign: "center",
+          headerTintColor: "#fff",
+          headerTitleStyle: {
+            fontFamily: "Roboto",
+          },
+          headerRight: () => (
+            <AntDesign
+              name="close"
+              size={28}
+              color="black"
+              style={styles.rightIcon}
+              onPress={() => navigation.goBack()}
+            />
+          ),
+          headerLeft: () => (
+            <MaterialIcons
+              name="add"
+              size={28}
+              style={styles.leftIcon}
+              onPress={() => alert("This is a button!")}
+            />
+          ),
+        }}
+      />
+    </ProfileStack.Navigator>
+  );
+}
 
 const FriendsStackScreen = ({ navigation }) => (
   <FriendsStack.Navigator>
@@ -50,7 +95,7 @@ const FriendsStackScreen = ({ navigation }) => (
             name="add"
             size={28}
             style={styles.rightIcon}
-            onPress={() => alert("This is a button!")}
+            onPress={() => navigation.navigate("Freunde-Hinzufügen")}
           />
         ),
 
@@ -62,6 +107,21 @@ const FriendsStackScreen = ({ navigation }) => (
             onPress={() => navigation.openDrawer()}
           />
         ),
+      }}
+    />
+    <FriendsStack.Screen
+      name="Freunde-Hinzufügen"
+      component={HinzufügenScreen}
+      options={{
+        title: "Hinzufügen",
+        headerStyle: {
+          backgroundColor: inactiveTintColor,
+        },
+        headerTitleAlign: "center",
+        headerTintColor: "#fff",
+        headerTitleStyle: {
+          fontFamily: "Roboto",
+        },
       }}
     />
   </FriendsStack.Navigator>
@@ -359,4 +419,5 @@ export {
   DetailEditViewStackScreen,
   DetailReturnViewStackScreen,
   ArticleRequestStackScreen,
+  ProfileStackScreen,
 };

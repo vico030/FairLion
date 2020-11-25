@@ -1,7 +1,6 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import React from "react";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-
 import {
   BurrowedStackScreen,
   StockStackScreen,
