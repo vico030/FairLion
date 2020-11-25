@@ -18,6 +18,7 @@ import DetailEditViewScreen from "./DetailEditViewScreen";
 import DetailReturnViewScreen from "./DetailReturnViewScreen";
 import ArticleRequestScreen from "./ArticleRequestScreen";
 import ProfileScreen from "./ProfileScreen";
+import HinzufügenScreen from "./HinzufügenScreen";
 
 const inactiveTintColor = "#333740";
 const BurrowedStack = createStackNavigator();
@@ -90,7 +91,7 @@ const FriendsStackScreen = ({ navigation }) => (
             name="add"
             size={28}
             style={styles.rightIcon}
-            onPress={() => alert("This is a button!")}
+            onPress={() => navigation.navigate("Freunde-Hinzufügen")}
           />
         ),
 
@@ -102,6 +103,21 @@ const FriendsStackScreen = ({ navigation }) => (
             onPress={() => navigation.openDrawer()}
           />
         ),
+      }}
+    />
+    <FriendsStack.Screen
+      name="Freunde-Hinzufügen"
+      component={HinzufügenScreen}
+      options={{
+        title: "Hinzufügen",
+        headerStyle: {
+          backgroundColor: inactiveTintColor,
+        },
+        headerTitleAlign: "center",
+        headerTintColor: "#fff",
+        headerTitleStyle: {
+          fontFamily: "Roboto",
+        },
       }}
     />
   </FriendsStack.Navigator>
