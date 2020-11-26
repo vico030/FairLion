@@ -1,11 +1,4 @@
-import {
-  View,
-  Text,
-  FlatList,
-  Image,
-  StyleSheet,
-  Dimensions,
-} from "react-native";
+import { View, FlatList } from "react-native";
 import React from "react";
 import ItemLend from "./ItemLend";
 const BorrowedScreen = ({ navigation }) => {

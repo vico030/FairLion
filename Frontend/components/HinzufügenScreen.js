@@ -1,7 +1,6 @@
 import React from "react";
-import { Text, View } from "react-native";
+import { View } from "react-native";
 import { SearchBar } from "react-native-elements";
-import { Feather } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import AddFriend from "./AddFriend";
 export default function HinzufügenScreen() {

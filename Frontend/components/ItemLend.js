@@ -7,7 +7,7 @@ export default function ItemLend({
   besitzer,
   produktName,
   ausleihfrist,
-  image,
+  favored,
 }) {
   return (
     // change image link to correct parameter url
@@ -23,10 +23,15 @@ export default function ItemLend({
           <Text style={styles.itemName} numberOfLines={1}>
             {produktName}
           </Text>
-          <MaterialCommunityIcons name="heart-outline" size={24} />
+          {favored == true ? (
+            <MaterialCommunityIcons name="heart" size={24} color="#333740" />
+          ) : (
+            <MaterialCommunityIcons name="heart-outline" size={24} />
+          )}
         </View>
         <View style={styles.items}>
           <UserButton userName={besitzer} />
+
           <Text style={styles.itemTime} numberOfLines={1}>
             Noch: {ausleihfrist}
           </Text>
