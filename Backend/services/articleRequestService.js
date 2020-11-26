@@ -1,6 +1,7 @@
 const ArticleRequest = require("../models/ArticleRequestModel");
 const Article = require("../models/ArticleModel");
 const ArticleModel = require("../models/ArticleModel");
+const ArticleRequestModel = require("../models/ArticleRequestModel");
 
 const getArticleRequests = function (userId, type) {
     return new Promise((resolve, reject) => {
@@ -53,14 +54,17 @@ function updateArticleRequest(body, requestId, userId) {
     return new Promise(async (resolve, reject) => {
         try {
             const oldArticleRequest = await ArticleRequest.findById(requestId);
-            const articleRequest = await ArticleRequest.findByIdAndUpdate(requestId, body, { new: true })
-                .catch(err => { throw err });
-
-            if (oldArticleRequest.status !== "confimed" && body.status === "confirmed") { //if updating status to confirmed
-                addReturnDateToArticle(articleRequest.articleId);
-                addBorrowerToArticle(articleRequest.articleId, articleRequest.borrower);
-            }
-            if (articleRequest.owner == userId) {
+            if (oldArticleRequest.owner == userId) {
+                const articleRequest = await ArticleRequest.findByIdAndUpdate(requestId, body, { new: true })
+                    .catch(err => { throw err });
+                if (oldArticleRequest.status !== "confimed" && body.status === "confirmed") { //if updating status to confirmed
+                    addReturnDateToArticle(articleRequest.articleId);
+                    addBorrowerToArticle(articleRequest.articleId, articleRequest.borrower);
+                }
+                if (oldArticleRequest.status === "confirmed" && body.status === "returned") { //oder das lieber zu delete?
+                    await ArticleModel.findByIdAndUpdate(articleRequest.articleId, { borrower: null, returnDate: null, status: "Vorhanden" });
+                    await ArticleRequestModel.findByIdAndDelete(articleRequest._id);
+                }
                 return resolve({
                     data: articleRequest,
                     message: 'Article-Request-Update wurde durchgeführt.',
@@ -75,6 +79,7 @@ function updateArticleRequest(body, requestId, userId) {
                 });
             }
         } catch (err) {
+            console.log(err)
             return reject({
                 error: err,
                 status: 500,
