@@ -149,7 +149,24 @@ router.get("/:userId/borrowedArticles", async (req, res) =>{
     }
 });
 
-// Create a new friend request for the user as requester
+// Get all friendrequests for the user as receiver
+router.get("/:userId/friendrequests", async (req, res) => {
+    try {
+        const response = await service.getFriendRequests(req.params.userId);
+        res.status(response.status).json({
+            'data': response.data,
+            'message': response.message
+        });
+    } 
+    catch ({ error, status, message }) {
+        res.status(status).json({
+            'error': error,
+            'message': message
+        })
+    }
+});
+
+// Create a new friendrequest for the user as requester
 router.post("/:userId/friendrequests", async (req, res) => {
     try {
         const response = await service.createFriendRequest(req.body, req.params.userId);
@@ -165,6 +182,40 @@ router.post("/:userId/friendrequests", async (req, res) => {
         })
     }
 })
+
+// Delete a friendrequest for the user as receiver
+router.delete("/:userId/friendrequests/:requestId", async (req, res) => {
+    try {
+        const response = await service.deleteFriendRequest(req.params.requestId);
+        res.status(response.status).json({
+            'data': response.data,
+            'message': response.message
+        });
+    }
+    catch ({ error, status, message }) {
+        res.status(status).json({
+            'error': error,
+            'message': message
+        });
+    }
+});
+
+// Confirm friendrequest and add each user as a friend
+router.put("/:userId/friendrequests/:requestId", async (req, res) =>{
+    try {
+        const response = await service.confirmFriendRequest(req.params.requestId);
+        res.status(response.status).json({
+            'data': response.data,
+            'message': response.message
+        });
+    }
+    catch ({ error, status, message }) {
+        res.status(status).json({
+            'error': error,
+            'message': message
+        });
+    }
+});
 
 // Create a new article request for the user as requester
 router.post("/:userId/articlerequests", async (req, res) => {

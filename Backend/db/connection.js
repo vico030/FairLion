@@ -8,6 +8,12 @@ const serveradress = "mongodb://" + process.env.HOST + ":" + process.env.PORT + 
 
 const database = mongoose.connect(
     serveradress,
+    {
+        useNewUrlParser: true,
+        useFindAndModify: false,
+        retryWrites: true,
+        w: "majority",
+    },
     () => console.log("Verbindung mit Datenbank wurde hergestellt.")
 );
 
