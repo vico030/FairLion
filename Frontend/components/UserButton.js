@@ -11,7 +11,7 @@ export default function UserButton({ userName, image }) {
           source={require(`../assets/testprofilpic.jpg`)}
         />
         <Text style={styles.buttonText} numberOfLines={1}>
-          Kurt Steiger
+          {userName}
         </Text>
       </View>
     </TouchableOpacity>

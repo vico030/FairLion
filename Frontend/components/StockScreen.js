@@ -82,6 +82,7 @@ const StockScreen = ({ navigation }) => {
         data={array}
         renderItem={({ item }) => (
           <ItemStock
+            navigation={navigation}
             besitzer={item.besitzer}
             produktName={item.produktName}
             ausleihfrist={item.ausleihfrist}

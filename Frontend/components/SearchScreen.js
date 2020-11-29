@@ -68,6 +68,7 @@ const SearchScreen = ({ navigation }) => {
         data={array}
         renderItem={({ item }) => (
           <ItemLend
+            navigation={navigation}
             besitzer={item.besitzer}
             produktName={item.produktName}
             ausleihfrist={item.ausleihfrist}

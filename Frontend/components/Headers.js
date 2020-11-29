@@ -20,7 +20,7 @@ import ArticleRequestScreen from "./ArticleRequestScreen";
 import AddItemScreen from "./AddItemScreen";
 import ProfileScreen from "./ProfileScreen";
 import HinzufügenScreen from "./HinzufügenScreen";
-
+import DetailViewScreen from "./DetailViewScreen";
 const inactiveTintColor = "#333740";
 const BurrowedStack = createStackNavigator();
 const StockStack = createStackNavigator();
@@ -178,6 +178,29 @@ const BurrowedStackScreen = ({ navigation }) => (
         ),
       }}
     />
+    <BurrowedStack.Screen
+      name="Details"
+      component={DetailReturnViewScreen}
+      options={{
+        title: "Details",
+        headerStyle: {
+          backgroundColor: inactiveTintColor,
+        },
+        headerTitleAlign: "center",
+        headerTintColor: "#fff",
+        headerTitleStyle: {
+          fontFamily: "Roboto",
+        },
+        headerLeft: () => (
+          <MaterialIcons
+            name="menu"
+            size={28}
+            style={styles.leftIcon}
+            onPress={() => navigation.openDrawer()}
+          />
+        ),
+      }}
+    />
   </BurrowedStack.Navigator>
 );
 const StockStackScreen = ({ navigation }) => (
@@ -213,21 +236,44 @@ const StockStackScreen = ({ navigation }) => (
         ),
       }}
     />
+    <StockStack.Screen
+      name="StockDetails"
+      component={DetailEditViewScreen}
+      options={{
+        title: "Details",
+        headerStyle: {
+          backgroundColor: inactiveTintColor,
+        },
+        headerTitleAlign: "center",
+        headerTintColor: "#fff",
+        headerTitleStyle: {
+          fontFamily: "Roboto",
+        },
+        headerLeft: () => (
+          <MaterialIcons
+            name="menu"
+            size={28}
+            style={styles.leftIcon}
+            onPress={() => navigation.openDrawer()}
+          />
+        ),
+      }}
+    />
 
     <StockStack.Screen
-          name="AddItem"
-          component={AddItemScreen}
-          options={{
-            title: "Artikel hinzufügen",
-            headerStyle: {
-              backgroundColor: inactiveTintColor,
-            },
-            headerTitleAlign: "center",
-            headerTintColor: "#fff",
-            headerTitleStyle: {
-              fontFamily: "Roboto",
-            },
-            /* headerRight: () => (
+      name="AddItem"
+      component={AddItemScreen}
+      options={{
+        title: "Artikel hinzufügen",
+        headerStyle: {
+          backgroundColor: inactiveTintColor,
+        },
+        headerTitleAlign: "center",
+        headerTintColor: "#fff",
+        headerTitleStyle: {
+          fontFamily: "Roboto",
+        },
+        /* headerRight: () => (
               <MaterialIcons
                 name="close"
                 size={28}
@@ -235,9 +281,8 @@ const StockStackScreen = ({ navigation }) => (
                 onPress={() => navigation.goBack()}
               />
             ), */
-            
-          }}
-      />
+      }}
+    />
   </StockStack.Navigator>
 );
 
@@ -263,6 +308,29 @@ const SearchStackScreen = ({ navigation }) => (
             style={styles.rightIcon}
           />
         ),
+        headerLeft: () => (
+          <MaterialIcons
+            name="menu"
+            size={28}
+            style={styles.leftIcon}
+            onPress={() => navigation.openDrawer()}
+          />
+        ),
+      }}
+    />
+    <SearchStack.Screen
+      name="Details"
+      component={DetailViewScreen}
+      options={{
+        title: "Details",
+        headerStyle: {
+          backgroundColor: inactiveTintColor,
+        },
+        headerTitleAlign: "center",
+        headerTintColor: "#fff",
+        headerTitleStyle: {
+          fontFamily: "Roboto",
+        },
         headerLeft: () => (
           <MaterialIcons
             name="menu"

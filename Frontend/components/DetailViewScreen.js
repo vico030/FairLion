@@ -13,7 +13,7 @@ import UserButton from "./UserButton";
 
 const windowHeight = Dimensions.get("window").height;
 
-const DetailEditViewScreen = ({
+const DetailViewScreen = ({
   route,
   produktName,
   ausleihfrist,
@@ -86,18 +86,12 @@ const DetailEditViewScreen = ({
             <Text style={styles.elementTextRight}>Noch: 13 Stunde(n)</Text>
           </View>
         </View>
-
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.signUpBtn}>
-            <Text style={styles.loginText}>Zurückgeben</Text>
-          </TouchableOpacity>
-        </View>
       </View>
     </ScrollView>
   );
 };
 
-export default DetailEditViewScreen;
+export default DetailViewScreen;
 
 const styles = StyleSheet.create({
   main: {
@@ -184,11 +178,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     marginTop: 10,
   },
-  buttonContainer: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "flex-start",
-  },
+
   signUpBtn: {
     width: "60%",
     backgroundColor: "#E77F23",

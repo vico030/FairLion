@@ -14,12 +14,13 @@ import UserButton from "./UserButton";
 const windowHeight = Dimensions.get("window").height;
 
 const DetailEditViewScreen = ({
-  besitzer,
-  produktName,
+  route,
+
   ausleihfrist,
   images,
   navigation,
 }) => {
+  const { besitzer, produktName } = route.params;
   return (
     <ScrollView style={styles.container}>
       <View style={styles.main}>
@@ -28,12 +29,12 @@ const DetailEditViewScreen = ({
         <View style={styles.titleCard}>
           <View style={styles.items}>
             <Text style={styles.headerText} numberOfLines={2}>
-              Bohrmaschine Bosch Schlagbohrmaschine Super Plus Max
+              {produktName}
             </Text>
           </View>
 
           <View style={styles.items}>
-            <UserButton username={besitzer} />
+            <UserButton userName={besitzer} />
             <TouchableOpacity>
               <MaterialCommunityIcons
                 name="eye-off-outline"

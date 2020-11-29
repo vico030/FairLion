@@ -1,9 +1,17 @@
 import React from "react";
-import { View, Text, StyleSheet, Image, Dimensions } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  Dimensions,
+  TouchableOpacity,
+} from "react-native";
 import UserButton from "./UserButton";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 export default function ItemLend({
+  navigation,
   besitzer,
   produktName,
   ausleihfrist,
@@ -11,7 +19,15 @@ export default function ItemLend({
 }) {
   return (
     // change image link to correct parameter url
-    <View style={styles.itemStyle}>
+    <TouchableOpacity
+      style={styles.itemStyle}
+      onPress={() =>
+        navigation.navigate("Details", {
+          besitzer: besitzer,
+          images: "test",
+        })
+      }
+    >
       <View>
         <Image
           style={styles.itemImage}
@@ -30,14 +46,14 @@ export default function ItemLend({
           )}
         </View>
         <View style={styles.items}>
-          <UserButton userName={besitzer} />
+          <UserButton userName={String(besitzer)} />
 
           <Text style={styles.itemTime} numberOfLines={1}>
             Noch: {ausleihfrist}
           </Text>
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 }
 const styles = StyleSheet.create({
