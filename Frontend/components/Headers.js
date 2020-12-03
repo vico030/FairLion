@@ -1,12 +1,12 @@
 import React from "react";
 import { StyleSheet } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
-
 import {
   MaterialIcons,
   Ionicons,
   MaterialCommunityIcons,
   AntDesign,
+  Feather,
 } from "@expo/vector-icons";
 import BorrowedScreen from "./BorrowedScreen";
 import StockScreen from "./StockScreen";
@@ -21,6 +21,7 @@ import AddItemScreen from "./AddItemScreen";
 import ProfileScreen from "./ProfileScreen";
 import HinzufügenScreen from "./HinzufügenScreen";
 import DetailViewScreen from "./DetailViewScreen";
+import { Header } from "react-native/Libraries/NewAppScreen";
 const inactiveTintColor = "#333740";
 const BurrowedStack = createStackNavigator();
 const StockStack = createStackNavigator();
@@ -191,14 +192,6 @@ const BurrowedStackScreen = ({ navigation }) => (
         headerTitleStyle: {
           fontFamily: "Roboto",
         },
-        headerLeft: () => (
-          <MaterialIcons
-            name="menu"
-            size={28}
-            style={styles.leftIcon}
-            onPress={() => navigation.openDrawer()}
-          />
-        ),
       }}
     />
   </BurrowedStack.Navigator>
@@ -244,17 +237,19 @@ const StockStackScreen = ({ navigation }) => (
         headerStyle: {
           backgroundColor: inactiveTintColor,
         },
+
         headerTitleAlign: "center",
         headerTintColor: "#fff",
         headerTitleStyle: {
           fontFamily: "Roboto",
         },
-        headerLeft: () => (
-          <MaterialIcons
-            name="menu"
-            size={28}
-            style={styles.leftIcon}
-            onPress={() => navigation.openDrawer()}
+
+        headerRight: () => (
+          <Feather
+            name="trash"
+            style={styles.rightIcon}
+            size={22}
+            color="black"
           />
         ),
       }}
@@ -331,14 +326,6 @@ const SearchStackScreen = ({ navigation }) => (
         headerTitleStyle: {
           fontFamily: "Roboto",
         },
-        headerLeft: () => (
-          <MaterialIcons
-            name="menu"
-            size={28}
-            style={styles.leftIcon}
-            onPress={() => navigation.openDrawer()}
-          />
-        ),
       }}
     />
   </SearchStack.Navigator>

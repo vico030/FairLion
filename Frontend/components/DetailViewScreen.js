@@ -86,6 +86,11 @@ const DetailViewScreen = ({
             <Text style={styles.elementTextRight}>Noch: 13 Stunde(n)</Text>
           </View>
         </View>
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity style={styles.signUpBtn}>
+            <Text style={styles.loginText}>Anfragen</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </ScrollView>
   );
@@ -110,6 +115,11 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.1,
     shadowRadius: 4,
+  },
+  buttonContainer: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "flex-start",
   },
   headerText: {
     fontSize: 18,
