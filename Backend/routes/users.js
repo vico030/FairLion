@@ -5,14 +5,14 @@ const { isAuthenticated } = require("../services/authService");
 
 // Get all users
 router.get("/", async (req, res) => {
-    try{
+    try {
         const response = await service.getAllUsers();
         res.status(response.status).json({
             'data': response.data,
             'message': response.message
         });
     }
-    catch({error, status, message}){
+    catch ({ error, status, message }) {
         res.status(status).json({
             'error': error,
             'message': message
@@ -28,7 +28,7 @@ router.delete("/", async (req, res) => {
             'data': response.data,
             'message': response.message
         });
-    } catch ({error, status, message}) {
+    } catch ({ error, status, message }) {
         res.status(status).json({
             'error': error,
             'message': message
@@ -44,7 +44,7 @@ router.get("/:userId", async (req, res) => {
             'data': response.data,
             'message': response.message
         });
-    } catch ({error, status, message}) {
+    } catch ({ error, status, message }) {
         res.status(status).json({
             'error': error,
             'message': message
@@ -69,14 +69,14 @@ router.put("/:userId", async (req, res) => {
 });
 
 // Delete single user
-router.delete("/:userId", async (req, res) =>{
+router.delete("/:userId", async (req, res) => {
     try {
         const response = await service.deleteUser(req.params.userId);
         res.status(response.status).json({
             'data': response.data,
             'message': response.message
         });
-    } catch ({error, status, message}) {
+    } catch ({ error, status, message }) {
         res.status(status).json({
             'error': error,
             'message': message
@@ -85,14 +85,14 @@ router.delete("/:userId", async (req, res) =>{
 });
 
 // Get all articles owned by a single user
-router.get("/:userId/ownedArticles", async (req, res) =>{
+router.get("/:userId/ownedArticles", async (req, res) => {
     try {
         const response = await service.getArticles(req.params.userId, "owner");
         res.status(response.status).json({
             'data': response.data,
             'message': response.message
         });
-    } catch ({error, status, message}) {
+    } catch ({ error, status, message }) {
         res.status(status).json({
             'error': error,
             'message': message
@@ -125,7 +125,7 @@ router.delete("/:userId/ownedArticles", async (req, res) => {
             'data': response.data,
             'message': response.message
         });
-    } catch ({error, status, message}) {
+    } catch ({ error, status, message }) {
         res.status(status).json({
             'error': error,
             'message': message
@@ -134,14 +134,14 @@ router.delete("/:userId/ownedArticles", async (req, res) => {
 });
 
 // Get all articles borrowed by a single user
-router.get("/:userId/borrowedArticles", async (req, res) =>{
+router.get("/:userId/borrowedArticles", async (req, res) => {
     try {
         const response = await service.getArticles(req.params.userId, "borrower");
         res.status(response.status).json({
             'data': response.data,
             'message': response.message
         });
-    } catch ({error, status, message}) {
+    } catch ({ error, status, message }) {
         res.status(status).json({
             'error': error,
             'message': message
@@ -157,7 +157,7 @@ router.get("/:userId/friendrequests", async (req, res) => {
             'data': response.data,
             'message': response.message
         });
-    } 
+    }
     catch ({ error, status, message }) {
         res.status(status).json({
             'error': error,
@@ -201,7 +201,7 @@ router.delete("/:userId/friendrequests/:requestId", async (req, res) => {
 });
 
 // Confirm friendrequest and add each user as a friend
-router.put("/:userId/friendrequests/:requestId", async (req, res) =>{
+router.put("/:userId/friendrequests/:requestId", async (req, res) => {
     try {
         const response = await service.confirmFriendRequest(req.params.requestId);
         res.status(response.status).json({
@@ -242,13 +242,13 @@ router.get("/:userId/friends", async (req, res) => {
             'data': response.data,
             'message': response.message
         });
-    } catch ({error, status, message}) {
+    } catch ({ error, status, message }) {
         res.status(status).json({
             'error': error,
             'message': message
         });
     }
-}); 
+});
 
 // Get all users with a certain username
 router.get("/query/:username", async (req, res) => {
@@ -258,7 +258,7 @@ router.get("/query/:username", async (req, res) => {
             'data': response.data,
             'message': response.message
         });
-    } catch ({error, status, message}) {
+    } catch ({ error, status, message }) {
         res.status(status).json({
             'error': error,
             'message': message

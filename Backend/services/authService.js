@@ -1,5 +1,7 @@
 const userModel = require("../models/UserModel");
 const jwt = require("jsonwebtoken");
+const crypto = require("crypto");
+const sendEmail = require("./emailVerification");
 
 const privateAuthKey = process.env.PRIVATE_AUTH_KEY;
 const privateRefreshKey = process.env.PRIVATE_REFRESH_KEY;
@@ -7,6 +9,9 @@ const privateRefreshKey = process.env.PRIVATE_REFRESH_KEY;
 const registerUser = (body) => {
     return new Promise(async (resolve, reject) => {
         try {
+            const verificationHash = crypto.randomBytes(64).toString("hex") //random hash
+            body.verificationHash = verificationHash;
+
             const user = new userModel(body);
             const savedUser = await user.save();
             generateTokens({ username: savedUser.username, userId: savedUser._id }, async (err, authToken, refreshToken) => {
@@ -18,6 +23,7 @@ const registerUser = (body) => {
                     //message: "Verify your account please. We have sent you an email."
                     message: "Succesfully created account."
                 })*/
+                sendEmail(savedUser.email, savedUser.verificationHash);
                 return resolve({
                     data: { userId: savedUser._id, username: savedUser.username },
                     status: 201,
@@ -43,6 +49,8 @@ const loginUser = ({ username, password }) => {
                     if (err === true) return reject({ error: "Password invalid", status: 400, message: "Password invalid" }); //passwords arent equal
                     else return reject({ error: err, status: 500, message: "Internal Server Error. Try later again." }); //some unexpected error
                 }
+                //check if verified
+                if (!user.isVerified) return reject({ error: null, status: 401, message: "Please verify your email address first." })
                 generateTokens({ username: user.username, userId: user._id }, async (err, authToken, refreshToken) => {
                     if (err) return reject({ error: err, status: 500, message: "Internal Server Error. Try later again." }); //some unexpected error
                     try {
@@ -56,6 +64,19 @@ const loginUser = ({ username, password }) => {
             })
         }
         catch (err) {
+            return reject({ error: err, message: "Server error. Try later again.", status: 500 })
+        }
+    })
+}
+
+const verifyUser = hash => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const user = await userModel.findOneAndUpdate({ verificationHash: hash }, { isVerified: true, $unset: { verificationHash: "" } })
+            return resolve({ data: user, status: 200, message: "Successfully verified user." });
+        }
+        catch (err) {
+            console.log(err);
             return reject({ error: err, message: "Server error. Try later again.", status: 500 })
         }
     })
@@ -163,8 +184,11 @@ const generateTokens = (userDetails, callback) => {
     })
 }
 
+
+
 module.exports = {
     registerUser,
     isAuthenticated,
-    loginUser
+    loginUser,
+    verifyUser
 };
