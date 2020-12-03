@@ -2,9 +2,9 @@ POST http://localhost:3000/auth/register
 content-type: application/json
 
 {
-    "username" : "Hans Rolf der Kleine",
+    "username" : "Barbara Brausebär",
     "password" : "Hat scheinbar funktioniert",
-    "email" : "hansiderKleine@gmail.com",
+    "email" : "bb@gmail.com",
     "phone" : "030 1234565",
     "street" : "Hans-Rolfer-Weg 69",
     "zipCode" : "42069",

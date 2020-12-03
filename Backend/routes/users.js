@@ -1,7 +1,34 @@
 const express = require("express");
 const router = express.Router();
 const service = require("../services/userService");
+const multer = require('multer');
 const { isAuthenticated } = require("../services/authService");
+
+var storage = multer.diskStorage({
+    destination: (req, file, callback) => {
+        callback(null, './files')
+    },
+    filename: (req, file, callback) => {
+        callback(null, Date.now() + file.originalname)
+    }
+})
+
+var fileFilter = (req, file, callback) => {
+    if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png' || file.mimetype === 'image/bmp') {
+        callback(null, true);
+    } else {
+        callback(new Error('Only jpeg, bmp or png formats are supported.'), false);
+    }
+}
+
+var upload = multer({
+    storage: storage,
+    limits: {
+        fileSize: 1024 * 1024 * 5
+    },
+    fileFilter: fileFilter
+});
+
 
 // Get all users
 router.get("/", async (req, res) => {
@@ -53,8 +80,11 @@ router.get("/:userId", async (req, res) => {
 });
 
 // update a single user
-router.put("/:userId", async (req, res) => {
+router.put("/:userId", upload.single('image'), async (req, res) => {
     try {
+        if (req.file) {
+            req.body.image = req.file.path;
+        }
         const response = await service.updateUser(req.body, req.params.userId);
         res.status(response.status).json({
             'data': response.data,
@@ -101,8 +131,15 @@ router.get("/:userId/ownedArticles", async (req, res) => {
 });
 
 // Create a new article for one user
-router.post("/:userId/ownedArticles", async (req, res) => {
+router.post("/:userId/ownedArticles", upload.array("images"), async (req, res) => {
     try {
+        if (req.files) {
+            req.body.images = [];
+            for(var file of req.files)
+            {
+                req.body.images.push(file.path);
+            }
+        }
         const response = await service.createArticle(req.body, req.params.userId);
         res.status(response.status).json({
             'data': response.data,

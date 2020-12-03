@@ -1,9 +1,38 @@
 const express = require("express");
 const router = express.Router();
 const service = require("../services/authService");
+const multer = require('multer');
 
-router.post("/register", async (req, res) => {
+var storage = multer.diskStorage({
+    destination: (req, file, callback) => {
+        callback(null, './files')
+    },
+    filename: (req, file, callback) => {
+        callback(null, Date.now() + file.originalname)
+    }
+})
+
+var fileFilter = (req, file, callback) => {
+    if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png' || file.mimetype === 'image/bmp') {
+        callback(null, true);
+    } else {
+        callback(new Error('Only jpeg, bmp or png formats are supported.'), false);
+    }
+}
+
+var upload = multer({
+    storage: storage,
+    limits: {
+        fileSize: 1024 * 1024 * 5
+    },
+    fileFilter: fileFilter
+});
+
+router.post("/register", upload.single('image'), async (req, res) => {
     try {
+        if (req.file) {
+            req.body.image = req.file.path;
+        }
         const { data, status, message, refreshToken, authToken } = await service.registerUser(req.body);
         res.cookie("authToken", authToken, { httpOnly: true, maxAge: 9999999999 });
         res.cookie("refreshToken", refreshToken, { httpOnly: true, maxAge: 9999999999 });
