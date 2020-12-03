@@ -68,12 +68,8 @@ router.get("/verify/:hash", async (req, res) => { //verify through email, hash s
 
 
 router.get("/logout", async (req, res) => {
-    try {
-
-    }
-    catch (err) {
-
-    }
+    res.clearCookie("authToken");
+    res.clearCookie("refreshToken");
 })
 
 module.exports = router;
