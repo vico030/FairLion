@@ -1,9 +1,10 @@
 import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
+
 // change profile pic with correct link and not local
-export default function UserButton({ navigation, userName, image }) {
+export default function UserButton({ navigation, userName, image, route }) {
   return (
-    <TouchableOpacity onPress={() => navigation.navigate("Profile")}>
+    <View>
       <View style={styles.button}>
         <Image
           style={styles.profileImage}
@@ -13,7 +14,7 @@ export default function UserButton({ navigation, userName, image }) {
           {userName}
         </Text>
       </View>
-    </TouchableOpacity>
+    </View>
   );
 }
 

@@ -53,6 +53,7 @@ const RequestsScreen = ({ navigation }) => {
         data={arrayItems}
         renderItem={({ item }) => (
           <ItemRequest
+            navigation={navigation}
             besitzer={item.besitzer}
             produktName={item.produktName}
           />

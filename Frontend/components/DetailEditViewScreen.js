@@ -34,7 +34,7 @@ const DetailEditViewScreen = ({
           </View>
 
           <View style={styles.items}>
-            <UserButton userName={besitzer} />
+            <UserButton userName={besitzer} navigation={navigation} />
             <TouchableOpacity>
               <MaterialCommunityIcons
                 name="eye-off-outline"

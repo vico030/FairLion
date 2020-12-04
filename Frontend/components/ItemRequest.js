@@ -3,7 +3,12 @@ import { View, Text, StyleSheet, Image, Dimensions } from "react-native";
 import UserButton from "./UserButton";
 import { AntDesign, Feather, MaterialCommunityIcons } from "@expo/vector-icons";
 
-export default function ItemRequest({ besitzer, produktName, image }) {
+export default function ItemRequest({
+  besitzer,
+  produktName,
+  image,
+  navigation,
+}) {
   return (
     // change image link to correct parameter url
     <View style={styles.wrapper}>
@@ -15,11 +20,17 @@ export default function ItemRequest({ besitzer, produktName, image }) {
       </View>
       <View style={styles.itemBottomView}>
         <View style={styles.items}>
-          <Text style={styles.itemName} numberOfLines={1}>{produktName}</Text>
-          <MaterialCommunityIcons name="heart-outline" size={24} style={styles.hiddenIcon}/>
+          <Text style={styles.itemName} numberOfLines={1}>
+            {produktName}
+          </Text>
+          <MaterialCommunityIcons
+            name="heart-outline"
+            size={24}
+            style={styles.hiddenIcon}
+          />
         </View>
         <View style={styles.items}>
-          <UserButton userName={besitzer} />
+          <UserButton userName={besitzer} navigation={navigation} />
           <View style={styles.icons}>
             <AntDesign name="check" size={24} color="green" />
             <Feather name="x" size={24} color="red" />
@@ -54,7 +65,7 @@ const styles = StyleSheet.create({
     borderRadius: 50,
   },
   itemBottomView: {
-    width:Dimensions.get('window').width - 125,
+    width: Dimensions.get("window").width - 125,
     paddingVertical: 5,
   },
   itemTime: {
@@ -63,7 +74,7 @@ const styles = StyleSheet.create({
     width: "45%",
   },
   itemName: {
-    fontSize:14,
+    fontSize: 14,
     fontWeight: "bold",
     width: "85%",
   },
@@ -73,6 +84,6 @@ const styles = StyleSheet.create({
     width: 72,
   },
   hiddenIcon: {
-    color: "#fff"
-  }  
+    color: "#fff",
+  },
 });

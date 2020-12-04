@@ -1,6 +1,9 @@
 import React from "react";
 import { StyleSheet } from "react-native";
-import { createStackNavigator } from "@react-navigation/stack";
+import {
+  createStackNavigator,
+  HeaderBackButton,
+} from "@react-navigation/stack";
 import {
   MaterialIcons,
   Ionicons,
@@ -21,7 +24,7 @@ import AddItemScreen from "./AddItemScreen";
 import ProfileScreen from "./ProfileScreen";
 import HinzufügenScreen from "./HinzufügenScreen";
 import DetailViewScreen from "./DetailViewScreen";
-import { Header } from "react-native/Libraries/NewAppScreen";
+
 const inactiveTintColor = "#333740";
 const BurrowedStack = createStackNavigator();
 const StockStack = createStackNavigator();
@@ -50,23 +53,27 @@ function ProfileStackScreen({ navigation }) {
           headerTitleStyle: {
             fontFamily: "Roboto",
           },
-          headerRight: () => (
-            <AntDesign
-              name="close"
-              size={28}
-              color="black"
-              style={styles.rightIcon}
-              onPress={() => navigation.goBack()}
-            />
-          ),
           headerLeft: () => (
-            <MaterialIcons
-              name="add"
-              size={28}
-              style={styles.leftIcon}
-              onPress={() => alert("This is a button!")}
+            <HeaderBackButton
+              onPress={() => navigation.goBack()}
+              tintColor={"white"}
             />
           ),
+        }}
+      />
+      <ProfileStack.Screen
+        name="Details"
+        component={DetailViewScreen}
+        options={{
+          title: "Details",
+          headerStyle: {
+            backgroundColor: inactiveTintColor,
+          },
+          headerTitleAlign: "center",
+          headerTintColor: "#fff",
+          headerTitleStyle: {
+            fontFamily: "Roboto",
+          },
         }}
       />
     </ProfileStack.Navigator>
@@ -112,6 +119,21 @@ const FriendsStackScreen = ({ navigation }) => (
       component={HinzufügenScreen}
       options={{
         title: "Hinzufügen",
+        headerStyle: {
+          backgroundColor: inactiveTintColor,
+        },
+        headerTitleAlign: "center",
+        headerTintColor: "#fff",
+        headerTitleStyle: {
+          fontFamily: "Roboto",
+        },
+      }}
+    />
+    <FriendsStack.Screen
+      name="Profile"
+      component={ProfileScreen}
+      options={{
+        title: "Profile",
         headerStyle: {
           backgroundColor: inactiveTintColor,
         },
@@ -184,6 +206,21 @@ const BurrowedStackScreen = ({ navigation }) => (
       component={DetailReturnViewScreen}
       options={{
         title: "Details",
+        headerStyle: {
+          backgroundColor: inactiveTintColor,
+        },
+        headerTitleAlign: "center",
+        headerTintColor: "#fff",
+        headerTitleStyle: {
+          fontFamily: "Roboto",
+        },
+      }}
+    />
+    <BurrowedStack.Screen
+      name="Profile"
+      component={ProfileScreen}
+      options={{
+        title: "Profile",
         headerStyle: {
           backgroundColor: inactiveTintColor,
         },
@@ -278,6 +315,21 @@ const StockStackScreen = ({ navigation }) => (
             ), */
       }}
     />
+    <StockStack.Screen
+      name="Profile"
+      component={ProfileScreen}
+      options={{
+        title: "Profile",
+        headerStyle: {
+          backgroundColor: inactiveTintColor,
+        },
+        headerTitleAlign: "center",
+        headerTintColor: "#fff",
+        headerTitleStyle: {
+          fontFamily: "Roboto",
+        },
+      }}
+    />
   </StockStack.Navigator>
 );
 
@@ -318,6 +370,21 @@ const SearchStackScreen = ({ navigation }) => (
       component={DetailViewScreen}
       options={{
         title: "Details",
+        headerStyle: {
+          backgroundColor: inactiveTintColor,
+        },
+        headerTitleAlign: "center",
+        headerTintColor: "#fff",
+        headerTitleStyle: {
+          fontFamily: "Roboto",
+        },
+      }}
+    />
+    <SearchStack.Screen
+      name="Profile"
+      component={ProfileScreen}
+      options={{
+        title: "Profile",
         headerStyle: {
           backgroundColor: inactiveTintColor,
         },

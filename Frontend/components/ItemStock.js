@@ -48,7 +48,7 @@ export default function ItemStock({
           />
         </View>
         <View style={styles.items}>
-          <UserButton userName={besitzer} />
+          <UserButton userName={besitzer} navigation={navigation} />
           <Text style={styles.itemTime} numberOfLines={1}>
             Noch: {ausleihfrist}
           </Text>
