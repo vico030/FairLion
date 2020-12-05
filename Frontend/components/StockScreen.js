@@ -9,6 +9,7 @@ const StockScreen = ({ navigation }) => {
       besitzer: "peter",
       produktName: "Stichsäge Holz Metall",
       ausleihfrist: "2 Stunden",
+      kategorie: "Werkzeug",
       key: "1",
     },
     {
@@ -16,6 +17,7 @@ const StockScreen = ({ navigation }) => {
       besitzer: "frank",
       produktName: "supercooles mega Produkt mit langem Namen",
       ausleihfrist: "3 Stunden",
+      kategorie: "Sonstiges",
       key: "2",
     },
     {
@@ -23,6 +25,7 @@ const StockScreen = ({ navigation }) => {
       besitzer: "langerName",
       produktName: "Stichsäge Holz Metall",
       ausleihfrist: "2 Stunden",
+      kategorie: "Werkzeug",
       key: "3",
     },
     {
@@ -30,6 +33,7 @@ const StockScreen = ({ navigation }) => {
       besitzer: "franz",
       produktName: "Stichsäge Holz Metall",
       ausleihfrist: "2 Stunden",
+      kategorie: "Werkzeug",
       key: "4",
     },
     {
@@ -37,6 +41,7 @@ const StockScreen = ({ navigation }) => {
       besitzer: "peter",
       produktName: "Stichsäge Holz Metall",
       ausleihfrist: "2 Stunden",
+      kategorie: "Werkzeug",
       key: "5",
     },
     {
@@ -44,6 +49,7 @@ const StockScreen = ({ navigation }) => {
       besitzer: "peter",
       produktName: "Stichsäge Holz Metall",
       ausleihfrist: "2 Stunden",
+      kategorie: "Werkzeug",
       key: "6",
     },
     {
@@ -51,6 +57,7 @@ const StockScreen = ({ navigation }) => {
       besitzer: "1234567890",
       produktName: "Stichsäge Holz Metall",
       ausleihfrist: "2 Stunden",
+      kategorie: "Werkzeug",
       key: "7",
     },
     {
@@ -58,6 +65,7 @@ const StockScreen = ({ navigation }) => {
       besitzer: "peter",
       produktName: "Stichsäge Holz Metall",
       ausleihfrist: "2 Stunden",
+      kategorie: "Werkzeug",
       key: "8",
     },
     {
@@ -65,6 +73,7 @@ const StockScreen = ({ navigation }) => {
       besitzer: "abcdefghij",
       produktName: "Stichsäge Holz Metall",
       ausleihfrist: "2 Stunden",
+      kategorie: "Werkzeug",
       key: "9",
     },
   ];
@@ -87,6 +96,7 @@ const StockScreen = ({ navigation }) => {
             produktName={item.produktName}
             ausleihfrist={item.ausleihfrist}
             image={item.image}
+            kategorie={item.kategorie}
           />
         )}
       />

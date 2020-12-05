@@ -11,7 +11,19 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scrollview"
 import { Picker } from "@react-native-picker/picker";
 import ImageChooser from "./ImageChooser";
 
-const AddItemScreen = ({ navigation }) => {
+const EditItemScreen = ({
+  route,
+  navigation,
+}) => {
+  const {
+    titel,
+    beschreibung,
+    frist,
+    kategorie,
+  } = route.params;
+
+  const ausleihfrist = frist.match(/\d/g).join("");
+
   const [timeFrame, setTimeFrame] = useState();
   const [category, setCategory] = useState();
 
@@ -31,6 +43,10 @@ const AddItemScreen = ({ navigation }) => {
     console.log(value);
   };
 
+  function test() {
+    console.log({ titel });
+  }
+
   return (
     <KeyboardAwareScrollView style={{ flex: 1 }}>
       <ImageChooser />
@@ -39,7 +55,7 @@ const AddItemScreen = ({ navigation }) => {
         <View style={styles.inputView}>
           <TextInput
             style={styles.titleInputText}
-            placeholder="Gib einen aussagekräftigen Titel ein"
+            placeholder={titel}
             placeholderTextColor="#7E7E7E"
             onChangeText={(value) => titleChange(value)}
           />
@@ -49,7 +65,7 @@ const AddItemScreen = ({ navigation }) => {
           <TextInput
             style={styles.inputText}
             multiline={true}
-            placeholder="Beschreibe den Artikel, den du verleihen möchtest"
+            placeholder={beschreibung}
             placeholderTextColor="#7E7E7E"
             onChangeText={(value) => descriptionChange(value)}
           />
@@ -61,7 +77,7 @@ const AddItemScreen = ({ navigation }) => {
           <TextInput
             style={styles.timeInputText}
             keyboardType="number-pad"
-            placeholder="..."
+            placeholder={ausleihfrist}
             placeholderTextColor="#7E7E7E"
             onChangeText={(value) => timeFrameChange(value)}
           />
@@ -71,7 +87,7 @@ const AddItemScreen = ({ navigation }) => {
               selectedValue={timeFrame}
               style={styles.datePicker}
               itemStyle={styles.datePickerItems}
-              placeholder="Wähle eine Kategorie aus."
+              placeholder="Wähle ein Zeiteinheit aus."
               onValueChange={(itemValue, itemIndex) => setTimeFrame(itemValue)}
             >
               <Picker.Item label="Tag(e)" value="tage" />
@@ -89,7 +105,7 @@ const AddItemScreen = ({ navigation }) => {
               selectedValue={category}
               style={styles.picker}
               itemStyle={styles.pickerItems}
-              placeholder="Wähle eine Kategorie aus."
+              placeholder={kategorie}
               onValueChange={(itemValue, itemIndex) => setCategory(itemValue)}
             >
               <Picker.Item label="Filme" value="filme" />
@@ -115,7 +131,7 @@ const AddItemScreen = ({ navigation }) => {
   );
 };
 
-export default AddItemScreen;
+export default EditItemScreen;
 
 const styles = StyleSheet.create({
   // TITLE INPUT ELEMENT

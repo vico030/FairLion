@@ -15,12 +15,10 @@ const windowHeight = Dimensions.get("window").height;
 
 const DetailEditViewScreen = ({
   route,
-
-  ausleihfrist,
-  images,
   navigation,
 }) => {
-  const { besitzer, produktName } = route.params;
+  const { besitzer, images, produktName, produktBeschreibung, ausleihfrist, kategorie} = route.params;
+
   return (
     <ScrollView style={styles.container}>
       <View style={styles.main}>
@@ -88,7 +86,16 @@ const DetailEditViewScreen = ({
         </View>
 
         <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.signUpBtn}>
+          <TouchableOpacity
+            style={styles.signUpBtn}
+            onPress={() => navigation.navigate("EditItem", {
+                titel: produktName,
+                beschreibung: produktBeschreibung,
+                frist: ausleihfrist,
+                kategorie: kategorie,
+              })
+            }
+          >
             <Text style={styles.loginText}>Bearbeiten</Text>
           </TouchableOpacity>
         </View>

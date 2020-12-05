@@ -13,7 +13,7 @@ import UserButton from "./UserButton";
 
 const windowHeight = Dimensions.get("window").height;
 
-const DetailEditViewScreen = ({
+const ArticleRequestScreen = ({
   besitzer,
   produktName,
   ausleihfrist,
@@ -92,7 +92,7 @@ const DetailEditViewScreen = ({
   );
 };
 
-export default DetailEditViewScreen;
+export default ArticleRequestScreen;
 
 const styles = StyleSheet.create({
   main: {

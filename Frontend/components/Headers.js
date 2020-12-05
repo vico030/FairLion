@@ -22,6 +22,7 @@ import ProfileScreen from "./ProfileScreen";
 import HinzufügenScreen from "./HinzufügenScreen";
 import DetailViewScreen from "./DetailViewScreen";
 import { Header } from "react-native/Libraries/NewAppScreen";
+import EditItemScreen from "./EditItemScreen";
 const inactiveTintColor = "#333740";
 const BurrowedStack = createStackNavigator();
 const StockStack = createStackNavigator();
@@ -278,6 +279,31 @@ const StockStackScreen = ({ navigation }) => (
             ), */
       }}
     />
+
+    <StockStack.Screen
+      name="EditItem"
+      component={EditItemScreen}
+      options={{
+        title: "Bearbeiten",
+        headerStyle: {
+          backgroundColor: inactiveTintColor,
+        },
+        headerTitleAlign: "center",
+        headerTintColor: "#fff",
+        headerTitleStyle: {
+          fontFamily: "Roboto",
+        },
+        headerLeft: () => (
+          <MaterialIcons
+                name="arrow-back"
+                size={28}
+                style={styles.leftIcon}
+                onPress={() => navigation.goBack()}
+              />
+        ),
+      }}
+    />
+
   </StockStack.Navigator>
 );
 

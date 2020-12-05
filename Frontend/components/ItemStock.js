@@ -15,8 +15,10 @@ export default function ItemStock({
   produktName,
   ausleihfrist,
   image,
+  kategorie,
   navigation,
 }) {
+
   return (
     // change image link to correct parameter url
     <TouchableOpacity
@@ -27,6 +29,7 @@ export default function ItemStock({
           images: image,
           produktName: produktName,
           ausleihfrist: ausleihfrist,
+          kategorie: kategorie,
         })
       }
     >
