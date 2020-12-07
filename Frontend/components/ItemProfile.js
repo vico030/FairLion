@@ -1,9 +1,17 @@
 import React from "react";
-import { View, Text, StyleSheet, Image, Dimensions } from "react-native";
-import UserButton from "./UserButton";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  Dimensions,
+  TouchableOpacity,
+} from "react-native";
+import ProfileUserButton from "./ProfileUserButton";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 export default function ItemProfile({
+  navigation,
   besitzer,
   produktName,
   verliehen,
@@ -11,7 +19,15 @@ export default function ItemProfile({
 }) {
   return (
     // change image link to correct parameter url
-    <View style={styles.itemStyle}>
+    <TouchableOpacity
+      style={styles.itemStyle}
+      onPress={() =>
+        navigation.navigate("Details", {
+          besitzer: besitzer,
+          produktName: produktName,
+        })
+      }
+    >
       <View>
         <Image
           style={styles.itemImage}
@@ -30,13 +46,13 @@ export default function ItemProfile({
           />
         </View>
         <View style={styles.items}>
-          <UserButton userName={besitzer} />
+          <ProfileUserButton userName={besitzer} />
           <Text style={styles.itemTime} numberOfLines={1}>
             {verliehen}
           </Text>
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 }
 const styles = StyleSheet.create({

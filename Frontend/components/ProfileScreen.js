@@ -6,7 +6,7 @@ const ProfileScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <ProfileInfoBox />
-      <ProfileStockItemList />
+      <ProfileStockItemList navigation={navigation} />
     </View>
   );
 };

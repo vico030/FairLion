@@ -24,6 +24,7 @@ export default function ItemLend({
       onPress={() =>
         navigation.navigate("Details", {
           besitzer: besitzer,
+          produktName: produktName,
           images: "test",
         })
       }
@@ -46,7 +47,7 @@ export default function ItemLend({
           )}
         </View>
         <View style={styles.items}>
-          <UserButton userName={String(besitzer)} />
+          <UserButton userName={String(besitzer)} navigation={navigation} />
 
           <Text style={styles.itemTime} numberOfLines={1}>
             Noch: {ausleihfrist}
