@@ -6,7 +6,7 @@ const BorrowedScreen = ({ navigation }) => {
   let array = [
     {
       image: "../assets/testprofilpic.jpg",
-      besitzer: "peter",
+      besitzer: "peter Lustig",
       produktName: "Stichsäge Holz Metall",
       ausleihfrist: "2 Stunden",
       key: "1",
@@ -54,6 +54,7 @@ const BorrowedScreen = ({ navigation }) => {
         data={array}
         renderItem={({ item }) => (
           <ItemLend
+            navigation={navigation}
             besitzer={item.besitzer}
             produktName={item.produktName}
             ausleihfrist={item.ausleihfrist}

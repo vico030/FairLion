@@ -67,7 +67,7 @@ var array = [
   },
 ];
 
-export default function ProfileStockItemList() {
+export default function ProfileStockItemList({ navigation }) {
   return (
     <View style={{ flex: 1 }}>
       <Text style={styles.ItemCountText}>{array.length} Artikel:</Text>
@@ -77,6 +77,7 @@ export default function ProfileStockItemList() {
         data={array}
         renderItem={({ item }) => (
           <ItemProfile
+            navigation={navigation}
             besitzer={item.besitzer}
             produktName={item.produktName}
             verliehen={item.verliehen}

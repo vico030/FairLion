@@ -1,5 +1,12 @@
 import React from "react";
-import { View, Text, StyleSheet, Image, Dimensions } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  Dimensions,
+  TouchableOpacity,
+} from "react-native";
 import UserButton from "./UserButton";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
@@ -8,10 +15,24 @@ export default function ItemStock({
   produktName,
   ausleihfrist,
   image,
+  kategorie,
+  navigation,
 }) {
+
   return (
     // change image link to correct parameter url
-    <View style={styles.itemStyle}>
+    <TouchableOpacity
+      style={styles.itemStyle}
+      onPress={() =>
+        navigation.navigate("StockDetails", {
+          besitzer: besitzer,
+          images: image,
+          produktName: produktName,
+          ausleihfrist: ausleihfrist,
+          kategorie: kategorie,
+        })
+      }
+    >
       <View>
         <Image
           style={styles.itemImage}
@@ -23,16 +44,20 @@ export default function ItemStock({
           <Text style={styles.itemName} numberOfLines={1}>
             {produktName}
           </Text>
-          <MaterialCommunityIcons name="heart-outline" size={24} style={styles.icon}/>
+          <MaterialCommunityIcons
+            name="heart-outline"
+            size={24}
+            style={styles.icon}
+          />
         </View>
         <View style={styles.items}>
-          <UserButton userName={besitzer} />
+          <UserButton userName={besitzer} navigation={navigation} />
           <Text style={styles.itemTime} numberOfLines={1}>
             Noch: {ausleihfrist}
           </Text>
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 }
 const styles = StyleSheet.create({
@@ -60,7 +85,7 @@ const styles = StyleSheet.create({
     borderRadius: 50,
   },
   itemBottomView: {
-    width:Dimensions.get('window').width - 125,
+    width: Dimensions.get("window").width - 125,
     paddingVertical: 5,
   },
   itemTime: {
@@ -69,11 +94,11 @@ const styles = StyleSheet.create({
     width: "45%",
   },
   itemName: {
-    fontSize:14,
+    fontSize: 14,
     fontWeight: "bold",
     width: "85%",
   },
   icon: {
     color: "#fff",
-  }
+  },
 });

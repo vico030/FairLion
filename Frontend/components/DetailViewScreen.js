@@ -13,13 +13,7 @@ import UserButton from "./UserButton";
 
 const windowHeight = Dimensions.get("window").height;
 
-const DetailReturnViewScreen = ({
-  route,
-
-  ausleihfrist,
-  images,
-  navigation,
-}) => {
+const DetailViewScreen = ({ route, ausleihfrist, images, navigation }) => {
   const { besitzer, produktName } = route.params;
   return (
     <ScrollView style={styles.container}>
@@ -86,10 +80,9 @@ const DetailReturnViewScreen = ({
             <Text style={styles.elementTextRight}>Noch: 13 Stunde(n)</Text>
           </View>
         </View>
-
         <View style={styles.buttonContainer}>
           <TouchableOpacity style={styles.signUpBtn}>
-            <Text style={styles.loginText}>Zurückgeben</Text>
+            <Text style={styles.loginText}>Anfragen</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -97,7 +90,7 @@ const DetailReturnViewScreen = ({
   );
 };
 
-export default DetailReturnViewScreen;
+export default DetailViewScreen;
 
 const styles = StyleSheet.create({
   main: {
@@ -116,6 +109,11 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.1,
     shadowRadius: 4,
+  },
+  buttonContainer: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "flex-start",
   },
   headerText: {
     fontSize: 18,
@@ -184,11 +182,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     marginTop: 10,
   },
-  buttonContainer: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "flex-start",
-  },
+
   signUpBtn: {
     width: "60%",
     backgroundColor: "#E77F23",

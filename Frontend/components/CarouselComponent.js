@@ -11,7 +11,7 @@ const { width: windowWidth, height: windowHeight } = Dimensions.get("window");
 
 const slideList = Array.from({ length: 5 }).map((_, i) => {
   return {
-    id: i,
+    id: i.toString(),
     image: `https://picsum.photos/1440/2842?random=${i}`,
     title: "Bohrmaschine Bosch",
   };
