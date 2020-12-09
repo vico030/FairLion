@@ -72,4 +72,14 @@ router.get("/logout", async (req, res) => {
     res.clearCookie("refreshToken");
 })
 
+router.post("/pwreset", async (req, res) => {
+    try {
+        const { data, message, status } = await service.resetPassword(req.body.email);
+        res.status(status).json({ data, message });
+    }
+    catch ({ error, status, message }) {
+        res.status(status).json({ error, message })
+    }
+})
+
 module.exports = router;

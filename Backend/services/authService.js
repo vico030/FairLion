@@ -82,6 +82,35 @@ const verifyUser = hash => {
     })
 }
 
+const resetPassword = email => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const newPassword = generateUID();
+            const user = await userModel.findOne({ email });
+            if (!user) return reject({ error: null, message: "User does not exist.", status: 200 });
+            //await userModel.findOneAndUpdate({ email }, { password: newPassword });
+            user.overwrite({ ...user.toObject(), password: newPassword });
+            await user.save()
+            sendEmail(user.email, newPassword, "pwreset");
+            return resolve({ data: null, message: "Successfully reset password.", status: 200 });
+        }
+        catch (err) {
+            console.log(err);
+            return reject({ error: err, message: "Server error. Try later again.", status: 500 })
+        }
+    })
+}
+
+function generateUID() {
+    // I generate the UID from two parts here 
+    // to ensure the random number provide enough bits.
+    var firstPart = (Math.random() * 46656) | 0;
+    var secondPart = (Math.random() * 46656) | 0;
+    firstPart = ("000" + firstPart.toString(36)).slice(-3);
+    secondPart = ("000" + secondPart.toString(36)).slice(-3);
+    return firstPart + secondPart;
+}
+
 //idee cookie has long expiration date, jwt expiration short, so a hacker cant use the token for more than 5 minutes, if he manages to get the token
 const isAuthenticated = async (req, res, next) => {
     if (!req.cookies.authToken || !req.cookies.refreshToken) return res.status(401).send("Please Login first"); //no cookie
@@ -124,6 +153,7 @@ const isAuthenticated = async (req, res, next) => {
         }
     }
 }
+
 
 function handleNewUserError(err) {
     if (err.code === 11000) { //err code for duplication
@@ -190,5 +220,6 @@ module.exports = {
     registerUser,
     isAuthenticated,
     loginUser,
-    verifyUser
+    verifyUser,
+    resetPassword
 };

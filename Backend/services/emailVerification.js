@@ -19,19 +19,35 @@ const transporter = mailer.createTransport({
     }
 })
 
-const sendEmail = async (to, hash) => {
-    const link = `http://${host}:${port}/auth/verify/${hash}`;
-    try {
-        const info = await transporter.sendMail({
-            to,
-            subject: "Confirm Email",
-            html: `<a href="${link}">Confirm email</a>`
-        })
-        console.log(info.messageId);
+const sendEmail = async (to, hash, type) => {
+    if (type === "pwreset") {
+        try {
+            const info = await transporter.sendMail({
+                to,
+                subject: "New password",
+                text: `New password: ${hash}`
+            })
+            console.log(info.messageId);
+        }
+        catch (err) {
+            console.log(err.message)
+        }
     }
-    catch (err) {
-        console.log(err.message)
+    else {
+        const link = `http://${host}:${port}/auth/verify/${hash}`;
+        try {
+            const info = await transporter.sendMail({
+                to,
+                subject: "Confirm Email",
+                html: `<a href="${link}">Confirm email</a>`
+            })
+            console.log(info.messageId);
+        }
+        catch (err) {
+            console.log(err.message)
+        }
     }
+
 }
 
 module.exports = sendEmail;
