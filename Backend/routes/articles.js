@@ -4,7 +4,33 @@ const {
 } = require("../helpers/error");
 const router = express.Router();
 const articleService = require('../services/articleService');
-const { isAuthenticated } = require("../services/authService");
+const {isAuthenticated} = require("../services/authService");
+const multer = require('multer');
+
+var storage = multer.diskStorage({
+    destination: (req, file, callback) => {
+        callback(null, './files')
+    },
+    filename: (req, file, callback) => {
+        callback(null, Date.now() + file.originalname)
+    }
+})
+
+var fileFilter = (req, file, callback) => {
+    if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png' || file.mimetype === 'image/bmp') {
+        callback(null, true);
+    } else {
+        callback(new Error('Only jpeg, bmp or png formats are supported.'), false);
+    }
+}
+
+var upload = multer({
+    storage: storage,
+    limits: {
+        fileSize: 1024 * 1024 * 5
+    },
+    fileFilter: fileFilter
+});
 
 //get all articles
 router.get("/", isAuthenticated, async (req, res, next) => {
@@ -75,8 +101,15 @@ router.get("/:articleId", isAuthenticated, async (req, res, next) => {
 });
 
 //update a single article
-router.put("/:articleId", isAuthenticated, async (req, res, next) => {
+router.put("/:articleId", isAuthenticated, upload.array("images"), async (req, res, next) => {
     try {
+        if (req.files) {
+            req.body.images = [];
+            for(var file of req.files)
+            {
+                req.body.images.push(file.path);
+            }
+        }
         const response = await articleService.updateArticleById(req.body, req.params.articleId);
         res.status(response.status).json({
             'data': response.data,

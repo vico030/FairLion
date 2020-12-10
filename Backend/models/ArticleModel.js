@@ -29,7 +29,11 @@ const articleSchema = mongoose.Schema({
     borrower: {
         type: ObjectId
     },
-    favourite: Boolean
+    favourite: Boolean,
+
+    returnDate: {
+        type: Date
+    }
 })
 
 module.exports = mongoose.model("Article", articleSchema);

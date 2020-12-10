@@ -1,5 +1,7 @@
 const userModel = require("../models/UserModel");
 const jwt = require("jsonwebtoken");
+const crypto = require("crypto");
+const sendEmail = require("./emailVerification");
 
 const privateAuthKey = process.env.PRIVATE_AUTH_KEY;
 const privateRefreshKey = process.env.PRIVATE_REFRESH_KEY;
@@ -7,6 +9,9 @@ const privateRefreshKey = process.env.PRIVATE_REFRESH_KEY;
 const registerUser = (body) => {
     return new Promise(async (resolve, reject) => {
         try {
+            const verificationHash = crypto.randomBytes(64).toString("hex") //random hash
+            body.verificationHash = verificationHash;
+
             const user = new userModel(body);
             const savedUser = await user.save();
             generateTokens({ username: savedUser.username, userId: savedUser._id }, async (err, authToken, refreshToken) => {
@@ -18,6 +23,7 @@ const registerUser = (body) => {
                     //message: "Verify your account please. We have sent you an email."
                     message: "Succesfully created account."
                 })*/
+                sendEmail(savedUser.email, savedUser.verificationHash);
                 return resolve({
                     data: { userId: savedUser._id, username: savedUser.username },
                     status: 201,
@@ -43,6 +49,8 @@ const loginUser = ({ username, password }) => {
                     if (err === true) return reject({ error: "Password invalid", status: 400, message: "Password invalid" }); //passwords arent equal
                     else return reject({ error: err, status: 500, message: "Internal Server Error. Try later again." }); //some unexpected error
                 }
+                //check if verified
+                if (!user.isVerified) return reject({ error: null, status: 401, message: "Please verify your email address first." })
                 generateTokens({ username: user.username, userId: user._id }, async (err, authToken, refreshToken) => {
                     if (err) return reject({ error: err, status: 500, message: "Internal Server Error. Try later again." }); //some unexpected error
                     try {
@@ -59,6 +67,48 @@ const loginUser = ({ username, password }) => {
             return reject({ error: err, message: "Server error. Try later again.", status: 500 })
         }
     })
+}
+
+const verifyUser = hash => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const user = await userModel.findOneAndUpdate({ verificationHash: hash }, { isVerified: true, $unset: { verificationHash: "" } })
+            return resolve({ data: user, status: 200, message: "Successfully verified user." });
+        }
+        catch (err) {
+            console.log(err);
+            return reject({ error: err, message: "Server error. Try later again.", status: 500 })
+        }
+    })
+}
+
+const resetPassword = email => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const newPassword = generateUID();
+            const user = await userModel.findOne({ email });
+            if (!user) return reject({ error: null, message: "User does not exist.", status: 200 });
+            //await userModel.findOneAndUpdate({ email }, { password: newPassword });
+            user.overwrite({ ...user.toObject(), password: newPassword });
+            await user.save()
+            sendEmail(user.email, newPassword, "pwreset");
+            return resolve({ data: null, message: "Successfully reset password.", status: 200 });
+        }
+        catch (err) {
+            console.log(err);
+            return reject({ error: err, message: "Server error. Try later again.", status: 500 })
+        }
+    })
+}
+
+function generateUID() {
+    // I generate the UID from two parts here 
+    // to ensure the random number provide enough bits.
+    var firstPart = (Math.random() * 46656) | 0;
+    var secondPart = (Math.random() * 46656) | 0;
+    firstPart = ("000" + firstPart.toString(36)).slice(-3);
+    secondPart = ("000" + secondPart.toString(36)).slice(-3);
+    return firstPart + secondPart;
 }
 
 //idee cookie has long expiration date, jwt expiration short, so a hacker cant use the token for more than 5 minutes, if he manages to get the token
@@ -104,6 +154,7 @@ const isAuthenticated = async (req, res, next) => {
     }
 }
 
+
 function handleNewUserError(err) {
     if (err.code === 11000) { //err code for duplication
         //err.keyPattern object with attributes that are duplicates
@@ -147,24 +198,28 @@ function handleNewUserError(err) {
 }
 
 const generateAuthToken = (userDetails, key, callback) => {
-    jwt.sign(userDetails, key, { expiresIn: "5s" }, (err, result) => {
+    jwt.sign(userDetails, key, { expiresIn: "5m" }, (err, result) => {
         if (err) return callback(err);
         callback(null, result)
     })
 }
 
 const generateTokens = (userDetails, callback) => {
-    jwt.sign(userDetails, privateAuthKey, { expiresIn: "5s" }, (err, authToken) => { //generate authToken
+    jwt.sign(userDetails, privateAuthKey, { expiresIn: "5m" }, (err, authToken) => { //generate authToken
         if (err) return callback(err);
-        jwt.sign(userDetails, privateRefreshKey, { expiresIn: "1m" }, (err, refreshToken) => {
+        jwt.sign(userDetails, privateRefreshKey, { expiresIn: "3d" }, (err, refreshToken) => {
             if (err) callback(err);
             callback(null, authToken, refreshToken);
         })
     })
 }
 
+
+
 module.exports = {
     registerUser,
     isAuthenticated,
-    loginUser
+    loginUser,
+    verifyUser,
+    resetPassword
 };

@@ -134,6 +134,14 @@ function updateArticleById(body, articleId) {
                 status: 201
             });
         } catch (err) {
+            //Delete images from storage if upload is faulty
+            if(body.images){
+                for(var image of body.images){
+                    fs.unlink(image,(err)=>{
+                        // in case of error, skip and continue
+                    });
+                }
+            }
             return reject({
                 error: err,
                 status: 500,
@@ -150,6 +158,17 @@ const deleteAllArticles = function () {
         Article.find({}).then(findings => { articles = findings })
         Article.deleteMany({})
             .then(() => {
+                // Delete images in storage
+                for(var article of articles)
+                {
+                    if(article.images){
+                        for(var image of article.images){
+                            fs.unlink(image,(err)=>{
+                                // in case of error, skip and continue
+                            });
+                        }
+                    }
+                }
                 return resolve({
                     data: articles,
                     message: 'Einträge wurden gelöscht.',
@@ -170,9 +189,17 @@ const deleteArticleById = function (articleId) {
     return new Promise(async (resolve, reject) => {
         await User.updateMany({}, { $pull: { favourites: articleId } }, { new: true });
         Article.findById(articleId)
-            .then((articles) => {
-                copy = articles;
-                articles.delete();
+            .then((article) => {
+                copy = article;
+                article.delete();
+                // Delete images in storage
+                if(copy.images){
+                    for(var image of copy.images){
+                        fs.unlink(image,(err)=>{
+                            // in case of error, skip and continue
+                        });
+                    }
+                }
                 return resolve({
                     data: copy,
                     message: 'Artikel wurde entfernt.',

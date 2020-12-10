@@ -3,7 +3,7 @@ const router = express.Router();
 const service = require("../services/favouritesService");
 const { isAuthenticated } = require("../services/authService");
 
-
+//Get favourites from logged in User
 router.get("/", isAuthenticated, async (req, res) => {
     try {
         const response = await service.getFavouriteFromUser(req.userId);
@@ -20,6 +20,8 @@ router.get("/", isAuthenticated, async (req, res) => {
     }
 });
 
+
+//add favourite to logged in user
 router.put("/", isAuthenticated, async (req, res) => {
     try {
         const response = await service.addFavouriteArticle(req.userId, req.body.articleId);
@@ -36,6 +38,7 @@ router.put("/", isAuthenticated, async (req, res) => {
     }
 });
 
+//remove favourite from logged in user
 router.delete("/", isAuthenticated, async (req, res) => {
     try {
         const response = await service.removeFavouriteArticle(req.userId, req.body.articleId);
