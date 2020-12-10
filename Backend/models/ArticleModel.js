@@ -28,7 +28,8 @@ const articleSchema = mongoose.Schema({
     },
     borrower: {
         type: ObjectId
-    }
+    },
+    favourite: Boolean
 })
 
 module.exports = mongoose.model("Article", articleSchema);

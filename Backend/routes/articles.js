@@ -4,12 +4,12 @@ const {
 } = require("../helpers/error");
 const router = express.Router();
 const articleService = require('../services/articleService');
-const auth = require("../services/authService");
+const { isAuthenticated } = require("../services/authService");
 
 //get all articles
-router.get("/", async (req, res, next) => {
+router.get("/", isAuthenticated, async (req, res, next) => {
     try {
-        const response = await articleService.getAllArticles();
+        const response = await articleService.getAllArticles(req.userId);
         res.status(response.status).json({
             'data': response.data,
             'message': response.message
@@ -24,7 +24,7 @@ router.get("/", async (req, res, next) => {
 });
 
 //update all articles
-router.put("/", async (req, res, next) => {
+router.put("/", isAuthenticated, async (req, res, next) => {
     try {
         const response = await articleService.updateAllArticles(req.body);
         res.status(response.status).json({
@@ -41,7 +41,7 @@ router.put("/", async (req, res, next) => {
 });
 
 //delete all articles
-router.delete("/", async (req, res, next) => {
+router.delete("/", isAuthenticated, async (req, res, next) => {
     try {
         const response = await articleService.deleteAllArticles();
         res.status(response.status).json({
@@ -58,9 +58,9 @@ router.delete("/", async (req, res, next) => {
 });
 
 //get a single article by id
-router.get("/:articleId", async (req, res, next) => {
+router.get("/:articleId", isAuthenticated, async (req, res, next) => {
     try {
-        const response = await articleService.getArticleById(req.params.articleId);
+        const response = await articleService.getArticleById(req.userId, req.params.articleId);
         res.status(response.status).json({
             'data': response.data,
             'message': response.message
@@ -75,7 +75,7 @@ router.get("/:articleId", async (req, res, next) => {
 });
 
 //update a single article
-router.put("/:articleId", async (req, res, next) => {
+router.put("/:articleId", isAuthenticated, async (req, res, next) => {
     try {
         const response = await articleService.updateArticleById(req.body, req.params.articleId);
         res.status(response.status).json({
@@ -92,7 +92,7 @@ router.put("/:articleId", async (req, res, next) => {
 });
 
 //delete a single article
-router.delete("/:articleId", async (req, res, next) => {
+router.delete("/:articleId", isAuthenticated, async (req, res, next) => {
     try {
         const response = await articleService.deleteArticleById(req.params.articleId);
         res.status(response.status).json({
@@ -109,7 +109,7 @@ router.delete("/:articleId", async (req, res, next) => {
 });
 
 //get articles from friends by articlename
-router.get("/query/:articlename", auth.isAuthenticated, async (req, res, next) => {
+router.get("/query/:articlename", isAuthenticated, async (req, res, next) => {
     try {
         const response = await articleService.getArticlesFromFriendsByName(req.userId, req.params.articlename);
         res.status(response.status).json({
