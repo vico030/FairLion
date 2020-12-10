@@ -26,6 +26,7 @@ import HinzufügenScreen from "./HinzufügenScreen";
 import DetailViewScreen from "./DetailViewScreen";
 import { Header } from "react-native/Libraries/NewAppScreen";
 import EditItemScreen from "./EditItemScreen";
+import SettingsScreen from "./SettingsScreen";
 const inactiveTintColor = "#333740";
 const BurrowedStack = createStackNavigator();
 const StockStack = createStackNavigator();
@@ -37,6 +38,7 @@ const DetailEditStack = createStackNavigator();
 const DetailReturnStack = createStackNavigator();
 const ArticleRequestStack = createStackNavigator();
 const ProfileStack = createStackNavigator();
+const SettingsStack = createStackNavigator();
 
 function ProfileStackScreen({ navigation }) {
   return (
@@ -45,7 +47,7 @@ function ProfileStackScreen({ navigation }) {
         name="Profile"
         component={ProfileScreen}
         options={{
-          title: "Profile",
+          title: "Profil",
           headerStyle: {
             backgroundColor: inactiveTintColor,
           },
@@ -134,7 +136,7 @@ const FriendsStackScreen = ({ navigation }) => (
       name="Profile"
       component={ProfileScreen}
       options={{
-        title: "Profile",
+        title: "Profil",
         headerStyle: {
           backgroundColor: inactiveTintColor,
         },
@@ -221,7 +223,7 @@ const BurrowedStackScreen = ({ navigation }) => (
       name="Profile"
       component={ProfileScreen}
       options={{
-        title: "Profile",
+        title: "Profil",
         headerStyle: {
           backgroundColor: inactiveTintColor,
         },
@@ -321,7 +323,7 @@ const StockStackScreen = ({ navigation }) => (
       name="Profile"
       component={ProfileScreen}
       options={{
-        title: "Profile",
+        title: "Profil",
         headerStyle: {
           backgroundColor: inactiveTintColor,
         },
@@ -411,7 +413,7 @@ const SearchStackScreen = ({ navigation }) => (
       name="Profile"
       component={ProfileScreen}
       options={{
-        title: "Profile",
+        title: "Profil",
         headerStyle: {
           backgroundColor: inactiveTintColor,
         },
@@ -544,6 +546,34 @@ const ArticleRequestStackScreen = ({ navigation: { goBack } }) => (
   </ArticleRequestStack.Navigator>
 );
 
+function SettingsStackScreen({ navigation }) {
+  return (
+    <SettingsStack.Navigator>
+      <SettingsStack.Screen 
+        name="Settings"
+        component={SettingsScreen}
+        options={{
+          title: "Einstellungen",
+          headerStyle: {
+            backgroundColor: inactiveTintColor,
+          },
+          headerTitleAlign: "center",
+          headerTintColor: "#fff",
+          headerTitleStyle: {
+            fontFamily: "Roboto",
+          },
+          headerLeft: () => (
+            <HeaderBackButton
+              onPress={() => navigation.goBack()}
+              tintColor={"white"}
+            />
+          ),
+        }}
+      />      
+    </SettingsStack.Navigator>
+  );
+}
+
 const styles = StyleSheet.create({
   leftIcon: {
     color: "#fff",
@@ -566,4 +596,5 @@ export {
   DetailReturnViewStackScreen,
   ArticleRequestStackScreen,
   ProfileStackScreen,
+  SettingsStackScreen,
 };

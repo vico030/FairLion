@@ -6,23 +6,32 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
+  Platform,
 } from "react-native";
 import { AuthContext } from "./context";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+
+
 export default function DrawerContent({ navigation }) {
   const { signOut } = useContext(AuthContext);
+
   return (
     <View style={styles.container}>
-      <View>
+
+      <View style={styles.logoContainer}>
+
         <Image
           style={styles.logoImage}
           source={require("../assets/logo.png")}
         />
+
+        <View style={styles.logoText}>
+          <Text style={styles.fair}>fair</Text>
+          <Text style={styles.lion}>LION</Text>
+        </View>
+
       </View>
-      <View style={styles.logoText}>
-        <Text style={styles.fair}>fair</Text>
-        <Text style={styles.lion}>LION</Text>
-      </View>
+      
       <View style={styles.divider} />
 
       <TouchableOpacity
@@ -39,7 +48,8 @@ export default function DrawerContent({ navigation }) {
         </View>
       </TouchableOpacity>
 
-      <View style={styles.dividerBottom} />
+      {/* <View style={styles.divider} /> */}
+
       <TouchableOpacity style={styles.buttonContainer}>
         <MaterialCommunityIcons
           style={styles.icon}
@@ -50,7 +60,11 @@ export default function DrawerContent({ navigation }) {
 
         <Text style={styles.buttonText}>Profil bearbeiten</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.buttonContainer}>
+
+      <TouchableOpacity
+        style={styles.buttonContainer}
+        onPress={() => navigation.navigate("Settings")}
+      >
         <MaterialCommunityIcons
           style={styles.icon}
           name="settings"
@@ -60,6 +74,7 @@ export default function DrawerContent({ navigation }) {
 
         <Text style={styles.buttonText}>Einstellungen</Text>
       </TouchableOpacity>
+
       <TouchableOpacity style={styles.buttonContainer} onPress={signOut}>
         <MaterialCommunityIcons
           style={styles.icon}
@@ -68,9 +83,6 @@ export default function DrawerContent({ navigation }) {
           color="black"
         />
         <Text style={styles.buttonText}>Abmelden</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.footer}>
-        <Text>Impressum & Datenschutz</Text>
       </TouchableOpacity>
     </View>
   );
@@ -81,40 +93,49 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     alignItems: "center",
   },
-  divider: {
-    width: "80%",
-    borderBottomColor: "black",
-    borderWidth: 0.5,
-  },
-  dividerBottom: {
-    width: "80%",
-    borderBottomColor: "black",
-    borderWidth: 0.5,
-    marginBottom: 6,
+  logoContainer: {
+    justifyContent: "center",
+    alignItems: "center",
+    ...Platform.select({
+      ios: {
+        marginTop: 70,
+      },
+      android: {
+        marginTop: 50,
+      },
+      default: {
+        marginTop: 50,
+      },
+    }),
   },
   logoImage: {
-    width: 53,
-    height: 53,
-    marginTop: 29,
+    width: 70,
+    height: 70,
+    marginBottom: 5,
   },
   logoText: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    marginBottom: 5,
   },
   fair: {
     fontWeight: "normal",
-    fontSize: 20,
+    fontSize: 30,
     color: "#333740",
   },
   lion: {
     fontWeight: "bold",
-    fontSize: 20,
+    fontSize: 30,
     color: "#E77F23",
   },
+  divider: {
+    width: "80%",
+    borderBottomColor: "#ccc",
+    borderBottomWidth: 0.8,
+    marginTop: 10,
+    marginBottom: 15,
+  },
   profilButton: {
-    marginVertical: 10,
     backgroundColor: "#E77F23",
     width: "100%",
     flexDirection: "row",
@@ -123,38 +144,37 @@ const styles = StyleSheet.create({
     height: 49,
     width: 49,
     borderRadius: 49,
-    marginVertical: 5,
-    marginLeft: "6%",
+    marginVertical: 10,
+    marginLeft: 15,
+  },
+  rightContainer: {
+    justifyContent: "center",
+    marginLeft: 10,
   },
   profilTextName: {
     color: "white",
     fontWeight: "700",
+    fontSize: 16,
   },
   profilTextWohnort: {
     color: "white",
-    fontWeight: "400",
-  },
-  rightContainer: {
-    justifyContent: "center",
-    paddingHorizontal: 10,
-  },
-  buttonContainer: {
-    flexDirection: "row",
-    alignContent: "flex-start",
-    marginVertical: 10,
-    width: "90%",
+    fontWeight: "300",
   },
 
+  buttonContainer: {
+    flexDirection: "row",
+    alignContent: "center",
+    marginVertical: 10,
+    width: "100%",
+  },
   icon: {
     alignSelf: "center",
     marginRight: 10,
+    marginLeft: 15,
   },
   buttonText: {
+    alignSelf: "center",
     fontSize: 16,
-  },
-  footer: {
-    position: "absolute",
-    bottom: 5,
     fontWeight: "300",
   },
 });

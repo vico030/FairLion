@@ -63,7 +63,10 @@ const styles = StyleSheet.create({
     width: Dimensions.get("window").width - 5,
     marginVertical: 3,
   },
-  itemImage: { height: 90, width: 120 },
+  itemImage: {
+    height: 90,
+    width: 120
+  },
   items: {
     flex: 1,
     width: "100%",

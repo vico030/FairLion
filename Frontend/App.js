@@ -12,7 +12,7 @@ import { createDrawerNavigator } from "@react-navigation/drawer";
 import { Button, View } from "react-native";
 import DrawerContent from "./components/DrawerContent";
 
-import { ProfileStackScreen } from "./components/Headers";
+import { ProfileStackScreen, SettingsStackScreen } from "./components/Headers";
 
 const Drawer = createDrawerNavigator();
 
@@ -24,6 +24,7 @@ const DrawerNavigator = () => {
     >
       <Drawer.Screen name="Home" component={AppTabs} />
       <Drawer.Screen name="Profile" component={ProfileStackScreen} />
+      <Drawer.Screen name="Settings" component={SettingsStackScreen} />
     </Drawer.Navigator>
   );
 };
