@@ -1,9 +1,15 @@
-var indexRoute = require('./index');
-var usersRoute = require('./users');
-var articlesRoute = require('./articles');
+const indexRoute = require('./index');
+const usersRoute = require('./users');
+const articlesRoute = require('./articles');
+const authRoute = require('./auth');
+const articleRequestRoute = require("./articleRequest");
+const favoritesRoute = require("./favourites");
 
 module.exports = {
     indexRoute,
     usersRoute,
-    articlesRoute
+    articlesRoute,
+    authRoute,
+    articleRequestRoute,
+    favoritesRoute
 };

@@ -27,8 +27,12 @@ const articleSchema = mongoose.Schema({
         type: ObjectId
     },
     borrower: {
-        required: true,
         type: ObjectId
+    },
+    favourite: Boolean,
+
+    returnDate: {
+        type: Date
     }
 })
 
