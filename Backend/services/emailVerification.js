@@ -23,6 +23,7 @@ const sendEmail = async (to, hash, type) => {
     if (type === "pwreset") {
         try {
             const info = await transporter.sendMail({
+                from: user,
                 to,
                 subject: "New password",
                 text: `New password: ${hash}`
@@ -37,6 +38,7 @@ const sendEmail = async (to, hash, type) => {
         const link = `http://${host}:${port}/auth/verify/${hash}`;
         try {
             const info = await transporter.sendMail({
+                from: user,
                 to,
                 subject: "Confirm Email",
                 html: `<a href="${link}">Confirm email</a>`

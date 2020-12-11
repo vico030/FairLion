@@ -70,6 +70,7 @@ router.get("/verify/:hash", async (req, res) => { //verify through email, hash s
 router.get("/logout", async (req, res) => {
     res.clearCookie("authToken");
     res.clearCookie("refreshToken");
+    res.status(200).send("Success")
 })
 
 router.post("/pwreset", async (req, res) => {
