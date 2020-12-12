@@ -1,10 +1,19 @@
 const Article = require('../models/ArticleModel');
 const User = require("../models/UserModel");
 
-const getAllArticles = function () {
+const getAllArticles = function (userId) {
     return new Promise((resolve, reject) => {
         Article.find({})
-            .then((articles) => {
+            .then(async (articles) => {
+                const user = await User.findById(userId);
+                articles.forEach(article => {
+                    if (user.favourites.includes(article._id)) {
+                        article.favourite = true;
+                    }
+                    else {
+                        article.favourite = false;
+                    }
+                });
                 return resolve({
                     data: articles,
                     message: 'Einträge wurden gefunden.',
@@ -29,7 +38,17 @@ const getArticlesFromFriendsByName = function (userId, title) {
             for (let i = 0; i < user.friends.length; i++) {
                 const { username } = await User.findById(user.friends[i]);
                 const articlesFromFriend = await Article.find({ "owner": user.friends[i], 'title': { $regex: title, $options: 'i' } });
-                articles[username] = articlesFromFriend;
+                if (articlesFromFriend.length != null) {
+                    articlesFromFriend.forEach(article => {
+                        if (user.favourites.includes(article._id)) {
+                            article.favourite = true;
+                        }
+                        else {
+                            article.favourite = false;
+                        }
+                    });
+                    articles[username] = articlesFromFriend;
+                }
             }
             return resolve({
                 data: articles,
@@ -47,10 +66,17 @@ const getArticlesFromFriendsByName = function (userId, title) {
     });
 }
 
-const getArticleById = function (articleId) {
+const getArticleById = function (userId, articleId) {
     return new Promise((resolve, reject) => {
         Article.findById(articleId)
-            .then((articles) => {
+            .then(async (articles) => {
+                const user = await User.findById(userId);
+                if (user.favourites.includes(articleId)) {
+                    articles.favourite = true;
+                }
+                else {
+                    articles.favourite = false;
+                }
                 return resolve({
                     data: articles,
                     message: 'Einträge wurden gefunden.',
@@ -126,7 +152,8 @@ function updateArticleById(body, articleId) {
 }
 
 const deleteAllArticles = function () {
-    return new Promise((resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
+        await User.updateMany({}, { $set: { favourites: [] } });
         articles = {}
         Article.find({}).then(findings => { articles = findings })
         Article.deleteMany({})
@@ -159,7 +186,8 @@ const deleteAllArticles = function () {
 }
 
 const deleteArticleById = function (articleId) {
-    return new Promise((resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
+        await User.updateMany({}, { $pull: { favourites: articleId } }, { new: true });
         Article.findById(articleId)
             .then((article) => {
                 copy = article;

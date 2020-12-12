@@ -35,7 +35,7 @@ var upload = multer({
 //get all articles
 router.get("/", isAuthenticated, async (req, res, next) => {
     try {
-        const response = await articleService.getAllArticles();
+        const response = await articleService.getAllArticles(req.userId);
         res.status(response.status).json({
             'data': response.data,
             'message': response.message
@@ -86,7 +86,7 @@ router.delete("/", isAuthenticated, async (req, res, next) => {
 //get a single article by id
 router.get("/:articleId", isAuthenticated, async (req, res, next) => {
     try {
-        const response = await articleService.getArticleById(req.params.articleId);
+        const response = await articleService.getArticleById(req.userId, req.params.articleId);
         res.status(response.status).json({
             'data': response.data,
             'message': response.message

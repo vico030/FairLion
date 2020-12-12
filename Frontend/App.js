@@ -1,59 +1,124 @@
-import 'react-native-gesture-handler';
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { Image } from "react-native"
+import "react-native-gesture-handler";
+import React, { useEffect, useMemo, useReducer } from "react";
+
 import { NavigationContainer } from "@react-navigation/native";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
-import BorrowedScreen from './components/BorrowedScreen';
-import StockScreen from './components/StockScreen';
-import SearchScreen from './components/SearchScreen';
-import RequestsScreen from './components/RequestsScreen';
-import FriendsScreen from './components/FriendsScreen';
 
-const Tabs = createBottomTabNavigator();
+import RootStackScreen from "./components/RootStackScreen";
+import AppTabs from "./components/AppTabs";
+import AsyncStorage from "@react-native-community/async-storage";
+import { AuthContext } from "./components/context";
+import SplashScreen from "./components/SplashScreen";
+import { createDrawerNavigator } from "@react-navigation/drawer";
+import { Button, View } from "react-native";
+import DrawerContent from "./components/DrawerContent";
 
-const activeTintColor = "#E77F23";
-const inactiveTintColor = "#333740";
+import { ProfileStackScreen, SettingsStackScreen } from "./components/Headers";
+
+const Drawer = createDrawerNavigator();
+
+const DrawerNavigator = () => {
+  return (
+    <Drawer.Navigator
+      // style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
+      drawerContent={(props) => <DrawerContent {...props} />}
+    >
+      <Drawer.Screen name="Home" component={AppTabs} />
+      <Drawer.Screen name="Profile" component={ProfileStackScreen} />
+      <Drawer.Screen name="Settings" component={SettingsStackScreen} />
+    </Drawer.Navigator>
+  );
+};
 
 export default function App() {
-  return (
-    <NavigationContainer>
-      <Tabs.Navigator screenOptions={({ route }) => ({
-        tabBarIcon: ({ focused, color, size }) => {
-          let icon;
+  const initialLoginState = {
+    isLoading: true,
+    userName: null,
+    userToken: null,
+  };
+  const loginReducer = (prevState, action) => {
+    switch (action.type) {
+      case "RETRIEVE_TOKEN":
+        return {
+          ...prevState,
+          userToken: action.token,
+          isLoading: false,
+        };
+      case "LOGIN":
+        return {
+          ...prevState,
+          userName: action.id,
+          userToken: action.token,
+          isLoading: false,
+        };
+      case "LOGOUT":
+        return {
+          ...prevState,
+          userName: null,
+          userToken: null,
+          isLoading: false,
+        };
+      case "REGISTER":
+        return {
+          ...prevState,
+          userName: action.id,
+          userToken: action.token,
+          isLoading: false,
+        };
+    }
+  };
+  const [loginState, dispatch] = useReducer(loginReducer, initialLoginState);
 
-          if (route.name === 'Ausgeliehen') {
-            icon = require(`./assets/ausgeliehen_icon.png`);
-          } else if (route.name === 'Lager') {
-            icon = require(`./assets/lager_icon.png`);
+  const authContext = useMemo(
+    () => ({
+      signIn: async (username, password) => {
+        let userToken;
+        userToken = null;
+        if (username == "user" && password == "pass") {
+          try {
+            userToken = "dfadfaf";
+            await AsyncStorage.setItem("userToken", userToken);
+          } catch (e) {
+            console.log(e);
           }
-          else if (route.name === "Suche") {
-            icon = require(`./assets/suche_icon.png`);
-          }
-          else if (route.name === "Anfragen") {
-            icon = require(`./assets/anfragen_icon.png`);
-          }
-          else if (route.name === "Freunde") {
-            icon = require(`./assets/freunde_icon.png`);
-          }
-          return <Image source={icon} tintColor={color} size={size} />
-        },
-      })}
-        tabBarOptions={{
-          activeTintColor: activeTintColor,
-          inactiveTintColor: inactiveTintColor,
-          style: {
-            backgroundColor: "#FFFFFF"
-          }
-        }}
-      >
-        <Tabs.Screen name="Ausgeliehen" component={BorrowedScreen} />
-        <Tabs.Screen name="Lager" component={StockScreen} />
-        <Tabs.Screen name="Suche" component={SearchScreen} />
-        <Tabs.Screen name="Anfragen" component={RequestsScreen} />
-        <Tabs.Screen name="Freunde" component={FriendsScreen} />
-      </Tabs.Navigator>
-    </NavigationContainer>
+        }
+
+        dispatch({ type: "LOGIN", id: username, token: userToken });
+      },
+      signOut: async () => {
+        try {
+          await AsyncStorage.removeItem("userToken");
+        } catch (e) {
+          console.log(e);
+        }
+        dispatch({ type: "LOGOUT" });
+      },
+      signUp: () => {},
+    }),
+    []
+  );
+
+  useEffect(() => {
+    setTimeout(async () => {
+      let userToken;
+      userToken = null;
+      try {
+        userToken = await AsyncStorage.getItem("userToken");
+      } catch (e) {
+        console.log(e);
+      }
+      dispatch({ type: "RETRIEVE_TOKEN", token: userToken });
+    }, 1000);
+  }, []);
+  if (loginState.isLoading) {
+    return <SplashScreen />;
+  }
+
+  return (
+    <AuthContext.Provider value={authContext}>
+      <NavigationContainer>
+        {loginState.userToken ? <DrawerNavigator /> : <RootStackScreen />}
+      </NavigationContainer>
+    </AuthContext.Provider>
   );
 }
 

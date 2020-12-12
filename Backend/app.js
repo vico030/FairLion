@@ -16,6 +16,7 @@ app.use(bodyparser.json());
 
 // Routes
 app.use('/', allRoutes.indexRoute);
+app.use("/favourites", allRoutes.favoritesRoute);
 app.use('/users', allRoutes.usersRoute);
 app.use('/articles', allRoutes.articlesRoute);
 app.use('/auth', allRoutes.authRoute);
