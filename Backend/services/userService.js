@@ -239,7 +239,7 @@ function createFriendRequest(body, userId) {
     return new Promise((resolve, reject) => {
         const request = new friendRequestModel({
             requesterId: userId,
-            recieverId: body.recieverId,
+            receiverId: body.receiverId,
             date: Date.now(),
             confirmed: false
         })
@@ -334,32 +334,6 @@ function confirmFriendRequest(requestId) {
                 message: 'Freundesanfrage konnte nicht bestätigt werden.'
             });
         }
-    });
-}
-
-function createArticleRequest(body, userId) {
-    return new Promise((resolve, reject) => {
-        const request = new articleRequestModel({
-            articleId: body.articleId,
-            requesterId: userId,
-            confirmed: false,
-            date: Date.now()
-        })
-        request.save()
-            .then((articleRequest) => {
-                return resolve({
-                    data: articleRequest,
-                    message: 'Artikelanfrage wurde erstellt.',
-                    status: 201
-                })
-            })
-            .catch((err) => {
-                return reject({
-                    error: err,
-                    status: 500,
-                    message: 'Artikelanfrage konnte nicht erstellt werden.'
-                })
-            });
     });
 }
 
@@ -476,7 +450,6 @@ module.exports = {
     createArticle,
     deleteAllUserArticles,
     createFriendRequest,
-    createArticleRequest,
     confirmFriendRequest,
     updateUser
 };

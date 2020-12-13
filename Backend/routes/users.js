@@ -254,23 +254,6 @@ router.put("/:userId/friendrequests/:requestId", isAuthenticated, async (req, re
     }
 });
 
-// Create a new article request for the user as requester
-router.post("/:userId/articlerequests", isAuthenticated, async (req, res) => {
-    try {
-        const response = await service.createArticleRequest(req.body, req.params.userId);
-        res.status(response.status).json({
-            'data': response.data,
-            'message': response.message
-        });
-    }
-    catch ({ error, status, message }) {
-        res.status(status).json({
-            'error': error,
-            'message': message
-        })
-    }
-})
-
 // Get all friends of one user
 router.get("/:userId/friends", isAuthenticated, async (req, res) => {
     try {
