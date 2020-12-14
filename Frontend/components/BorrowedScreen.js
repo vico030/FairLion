@@ -1,6 +1,8 @@
 import { View, FlatList } from "react-native";
 import React from "react";
 import ItemLend from "./ItemLend";
+import AsyncStorage from "@react-native-community/async-storage";
+
 const BorrowedScreen = ({ navigation }) => {
   // Test data to display
   let array = [
@@ -40,7 +42,10 @@ const BorrowedScreen = ({ navigation }) => {
       key: "5",
     },
   ];
-
+  let peter = async () => {
+    console.log(await AsyncStorage.getItem("userToken"));
+  };
+  peter();
   return (
     <View
       style={{

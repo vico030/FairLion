@@ -70,18 +70,30 @@ export default function App() {
 
   const authContext = useMemo(
     () => ({
-      signIn: async (username, password) => {
-        let userToken;
-        userToken = null;
-        if (username == "user" && password == "pass") {
-          try {
-            userToken = "dfadfaf";
-            await AsyncStorage.setItem("userToken", userToken);
-          } catch (e) {
-            console.log(e);
-          }
+      signIn: (username, password) => {
+        var userToken;
+        // fetch api call to check username and password
+        let requestOptions = {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+          body: JSON.stringify({ username: username, password: password }),
+        };
+        try {
+          fetch("http://10.0.2.2:3000/auth/login", requestOptions).then(
+            async (response) => {
+              await AsyncStorage.setItem(
+                "userToken",
+                response.headers.get("set-cookie").split(";")[0].split("=")[1]
+              );
+            }
+          );
+        } catch (e) {
+          console.log(e);
         }
-
+        userToken = AsyncStorage.getItem("userToken");
         dispatch({ type: "LOGIN", id: username, token: userToken });
       },
       signOut: async () => {
