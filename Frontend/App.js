@@ -1,3 +1,4 @@
+import {BACKEND_URL} from "@env";
 import "react-native-gesture-handler";
 import React, { useEffect, useMemo, useReducer } from "react";
 
@@ -71,7 +72,7 @@ export default function App() {
   const authContext = useMemo(
     () => ({
       signIn: (username, password) => {
-        var userToken;
+        var user;
         // fetch api call to check username and password
         let requestOptions = {
           method: "POST",
@@ -82,23 +83,26 @@ export default function App() {
           body: JSON.stringify({ username: username, password: password }),
         };
         try {
-          fetch("http://10.0.2.2:3000/auth/login", requestOptions).then(
+          fetch(BACKEND_URL+"auth/login", requestOptions).then(
             async (response) => {
               await AsyncStorage.setItem(
-                "userToken",
-                response.headers.get("set-cookie").split(";")[0].split("=")[1]
+                "user",
+                await response.json().then((payload)=>{
+                  return JSON.stringify(payload.data);
+                })
               );
+              console.log(await AsyncStorage.getItem('user'));
             }
           );
         } catch (e) {
           console.log(e);
         }
-        userToken = AsyncStorage.getItem("userToken");
-        dispatch({ type: "LOGIN", id: username, token: userToken });
+        user = AsyncStorage.getItem("user");
+        dispatch({ type: "LOGIN", id: username, token: user });
       },
       signOut: async () => {
         try {
-          await AsyncStorage.removeItem("userToken");
+          await AsyncStorage.removeItem("user");
         } catch (e) {
           console.log(e);
         }
@@ -111,14 +115,14 @@ export default function App() {
 
   useEffect(() => {
     setTimeout(async () => {
-      let userToken;
-      userToken = null;
+      let user;
+      user = null;
       try {
-        userToken = await AsyncStorage.getItem("userToken");
+        user = await AsyncStorage.getItem("user");
       } catch (e) {
         console.log(e);
       }
-      dispatch({ type: "RETRIEVE_TOKEN", token: userToken });
+      dispatch({ type: "RETRIEVE_TOKEN", token: user });
     }, 1000);
   }, []);
   if (loginState.isLoading) {

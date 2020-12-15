@@ -42,10 +42,8 @@ const BorrowedScreen = ({ navigation }) => {
       key: "5",
     },
   ];
-  let peter = async () => {
-    console.log(await AsyncStorage.getItem("userToken"));
-  };
-  peter();
+
+  
   return (
     <View
       style={{
