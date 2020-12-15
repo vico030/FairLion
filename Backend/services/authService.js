@@ -54,8 +54,8 @@ const loginUser = ({ username, password }) => {
                 generateTokens({ username: user.username, userId: user._id }, async (err, authToken, refreshToken) => {
                     if (err) return reject({ error: err, status: 500, message: "Internal Server Error. Try later again." }); //some unexpected error
                     try {
-                        await userModel.findOneAndUpdate({ username: user.username }, { refreshToken });
-                        return resolve({ data: { userId: user._id, username: user.username }, status: 200, message: "Successfully logged in", authToken, refreshToken });
+                        const newUser = await userModel.findOneAndUpdate({ username: user.username }, { refreshToken }).select('-password');
+                        return resolve({ data: newUser, status: 200, message: "Successfully logged in", authToken, refreshToken });
                     }
                     catch (err) {
                         return reject({ error: err, status: 500, message: "Internal Server Error. Try later again." })
