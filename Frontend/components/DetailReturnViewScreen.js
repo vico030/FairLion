@@ -88,8 +88,8 @@ const DetailReturnViewScreen = ({
         </View>
 
         <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.signUpBtn}>
-            <Text style={styles.loginText}>Zurückgeben</Text>
+          <TouchableOpacity style={styles.button}>
+            <Text style={styles.buttonText}>Zurückgeben</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -189,25 +189,22 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "flex-start",
   },
-  signUpBtn: {
+  button: {
     width: "60%",
     backgroundColor: "#E77F23",
-    borderRadius: 25,
-    height: 45,
+    borderRadius: 20,
+    height: 60,
     alignItems: "center",
     justifyContent: "center",
-    marginVertical: 20,
+    marginTop: 20,
+    marginBottom: 50,
     shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
+    shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.25,
     shadowRadius: 4,
   },
-  loginText: {
+  buttonText: {
     color: "#fff",
-    fontSize: 18,
-    fontWeight: "bold",
+    fontSize: 20,
   },
 });

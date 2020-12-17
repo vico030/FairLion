@@ -224,13 +224,11 @@ const RegisterScreen = ({ navigation }) => {
       </View>
 
       <View style={styles.container}>
-        <TouchableOpacity style={styles.signUpBtn}>
-            <Text style={styles.loginText}>Registrieren</Text>
+        <TouchableOpacity style={styles.button}>
+          <Text style={styles.buttonText}>Registrieren</Text>
         </TouchableOpacity>
       </View>
     </KeyboardAwareScrollView>
-
-    
   );
 };
 
@@ -290,17 +288,21 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  signUpBtn: {
-    width: "80%",
+  button: {
+    width: "60%",
     backgroundColor: "#E77F23",
-    borderRadius: 25,
-    height: 50,
+    borderRadius: 20,
+    height: 60,
     alignItems: "center",
     justifyContent: "center",
     marginTop: 20,
-    marginBottom: 20,
+    marginBottom: 50,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
   },
-  loginText: {
+  buttonText: {
     color: "#fff",
     fontSize: 20,
   },
