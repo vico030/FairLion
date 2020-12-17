@@ -14,7 +14,7 @@ const registerUser = (body) => {
 
             const user = new userModel(body);
             const savedUser = await user.save();
-            generateTokens({ username: savedUser.username, userId: savedUser._id }, async (err, authToken, refreshToken) => {
+            generateTokens({ username: savedUser.username, userId: savedUser._id }, { expiresIn: "3d" }, async (err, authToken, refreshToken) => {
                 if (err) return res.status(500).send("Internal Server error.");
                 //sendEmail(req.body.email, verificationHash);
                 await userModel.findOneAndUpdate({ username: user.username }, { refreshToken }) //we dont care about the response, set refreshToken
@@ -51,7 +51,7 @@ const loginUser = ({ username, password }) => {
                 }
                 //check if verified
                 if (!user.isVerified) return reject({ error: null, status: 401, message: "Please verify your email address first." })
-                generateTokens({ username: user.username, userId: user._id }, async (err, authToken, refreshToken) => {
+                generateTokens({ username: user.username, userId: user._id }, { expiresIn: "30d" }, async (err, authToken, refreshToken) => {
                     if (err) return reject({ error: err, status: 500, message: "Internal Server Error. Try later again." }); //some unexpected error
                     try {
                         const newUser = await userModel.findOneAndUpdate({ username: user.username }, { refreshToken }).select('-password');
@@ -204,10 +204,10 @@ const generateAuthToken = (userDetails, key, callback) => {
     })
 }
 
-const generateTokens = (userDetails, callback) => {
+const generateTokens = (userDetails, options, callback) => {
     jwt.sign(userDetails, privateAuthKey, { expiresIn: "5m" }, (err, authToken) => { //generate authToken
         if (err) return callback(err);
-        jwt.sign(userDetails, privateRefreshKey, { expiresIn: "3d" }, (err, refreshToken) => {
+        jwt.sign(userDetails, privateRefreshKey, options, (err, refreshToken) => {
             if (err) callback(err);
             callback(null, authToken, refreshToken);
         })
