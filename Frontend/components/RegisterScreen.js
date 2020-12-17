@@ -1,4 +1,6 @@
-import React from "react";
+import {BACKEND_URL} from "@env";
+import AsyncStorage from "@react-native-community/async-storage";
+import React, { useReducer } from "react";
 import {
   StyleSheet,
   Text,
@@ -10,6 +12,7 @@ import DropDownPicker from "react-native-dropdown-picker";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scrollview";
 
 const RegisterScreen = ({ navigation }) => {
+  const [loginState, dispatch] = useReducer(loginReducer, initialLoginState);
   const [data, setData] = React.useState({
     username: "",
     password: "",
@@ -104,6 +107,53 @@ const RegisterScreen = ({ navigation }) => {
       aboutMe: value,
     });
   };
+
+  const handleRegistration = async () => {
+    var user;
+    const formdata = new FormData();
+    if (data.picture) formdata.append('picture', picture);
+    formdata.append('username', data.username);
+    formdata.append('password', data.password);
+    formdata.append('email', data.email);
+    formdata.append('phone', data.phone);
+    formdata.append('street', data.street);
+    formdata.append('zipCode', data.PLZ);
+    formdata.append('city', data.city);
+    formdata.append('country', data.country);
+    formdata.append('info', data.aboutMe);
+
+    let requestOptions = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+      },
+      body: JSON.stringify({
+        'username': data.username,
+        'password': data.password,
+        'email': data.email,
+        'phone': data.phone,
+        'street': data.street,
+        'zipCode': data.PLZ,
+        'city': data.city,
+        'country': data.country,
+        'info': data.aboutMe
+        })
+      }
+    console.log(BACKEND_URL);
+    try{
+      const res = await fetch(BACKEND_URL+"auth/register", requestOptions);
+      const resJson = await res.json();
+      AsyncStorage.setItem("user", JSON.stringify(resJson));
+      console.log(await AsyncStorage.getItem("user"));
+    }
+    catch(err){
+      console.log(err);
+    }
+    user = await AsyncStorage.getItem("user");
+    dispatch({ type: "LOGIN", id: username, token: user });
+    navigation.goBacK();
+  }
 
   return (
     <KeyboardAwareScrollView style={{ flex: 1 }}>
@@ -207,7 +257,7 @@ const RegisterScreen = ({ navigation }) => {
             dropDownStyle={{ backgroundColor: "#fff", width: "95%" }}
             zIndex={100000}
             labelStyle={{ color: "#7E7E7E", fontSize: 14 }}
-            onChangeItem={(value) => handleCountryChange(value)}
+            onChangeItem={item => handleCountryChange(item.label)}
           />
         </View>
       </View>
@@ -224,7 +274,7 @@ const RegisterScreen = ({ navigation }) => {
       </View>
 
       <View style={styles.container}>
-        <TouchableOpacity style={styles.signUpBtn}>
+        <TouchableOpacity style={styles.signUpBtn} onPress={handleRegistration}>
             <Text style={styles.loginText}>Registrieren</Text>
         </TouchableOpacity>
       </View>
