@@ -54,13 +54,23 @@ export default function App() {
       } catch (e) {
         console.log(e);
       }
-      if(res.status===200)
-      {
+      if (res.status === 200) {
         const resJson = await res.json();
-        AsyncStorage.setItem("user", JSON.stringify(resJson.data));
-        console.log(await AsyncStorage.getItem("user"));
-        user = AsyncStorage.getItem("user");
-        dispatch({ type: "LOGIN", id: username, token: user });
+        const data = resJson.data;
+        AsyncStorage.multiSet([
+          ["userId", data._id],
+          ["username", data.username],
+          ["email", data.email],
+          ["phone", data.phone],
+          ["street", data.street],
+          ["zipCode", data.zipCode],
+          ["city", data.city],
+          ["country", data.country],
+          ["info", data.info]
+        ]);
+        console.log(await AsyncStorage.getItem("userId"));
+        user = JSON.stringify(data);
+        dispatch({type: "LOGIN", user: user});
       }
       else {
         const errMess = await res.json();
@@ -70,7 +80,7 @@ export default function App() {
 
     signOut: async () => {
       try {
-        await AsyncStorage.removeItem("user");
+        await AsyncStorage.multiRemove(["userId", "username", "email", "phone", "street", "zipCode", "city", "country", "info"]);
       } catch (e) {
         console.log(e);
       }
@@ -95,13 +105,23 @@ export default function App() {
       catch (err) {
         console.log(err);
       }
-      if(res.status===201)
-      {
+      if (res.status === 201) {
         const resJson = await res.json();
-        AsyncStorage.setItem("user", JSON.stringify(resJson.data));
-        console.log(await AsyncStorage.getItem("user"));
-        user = await AsyncStorage.getItem("user");
-        dispatch({ type: "LOGIN", id: data.username, token: user });
+        const data = resJson.data;
+        AsyncStorage.multiSet([
+          ["userId", data._id],
+          ["username", data.username],
+          ["email", data.email],
+          ["phone", data.phone],
+          ["street", data.street],
+          ["zipCode", data.zipCode],
+          ["city", data.city],
+          ["country", data.country],
+          ["info", data.info]
+        ]);
+        console.log(await AsyncStorage.getItem("userId"));
+        user = JSON.stringify(data);
+        dispatch({ type: "LOGIN", user: user });
       }
       else {
         const errMess = await res.json();
@@ -117,11 +137,11 @@ export default function App() {
       let user;
       user = null;
       try {
-        user = await AsyncStorage.getItem("user");
+        user = await AsyncStorage.getItem("userId");
       } catch (e) {
         console.log(e);
       }
-      dispatch({ type: "RETRIEVE_TOKEN", token: user });
+      dispatch({ type: "RETRIEVE_TOKEN", user: user });
     }, 1000);
   }, []);
   if (loginState.isLoading) {
@@ -131,21 +151,8 @@ export default function App() {
   return (
     <AuthContext.Provider value={authContext}>
       <NavigationContainer>
-        {loginState.userToken ? <DrawerNavigator /> : <RootStackScreen />}
+        {loginState.user ? <DrawerNavigator /> : <RootStackScreen />}
       </NavigationContainer>
     </AuthContext.Provider>
   );
 }
-
-/*const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  text: {
-    color: "blue",
-    fontSize: 50
-  }
-});*/
