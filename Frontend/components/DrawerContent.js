@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   Platform,
 } from "react-native";
-import { AuthContext } from "./context";
+import { AuthContext } from "../context";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 

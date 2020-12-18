@@ -17,7 +17,7 @@ const registerUser = (body) => {
             generateTokens({ username: savedUser.username, userId: savedUser._id }, async (err, authToken, refreshToken) => {
                 if (err) return res.status(500).send("Internal Server error.");
                 //sendEmail(req.body.email, verificationHash);
-                await userModel.findOneAndUpdate({ username: user.username }, { refreshToken }) //we dont care about the response, set refreshToken
+                var newUser = await userModel.findOneAndUpdate({ username: user.username }, { refreshToken }).select("-password") //we dont care about the response, set refreshToken
                 /*return res.status(201).json({
                     data: { userId: user._id, username: user.username },
                     //message: "Verify your account please. We have sent you an email."
@@ -25,7 +25,7 @@ const registerUser = (body) => {
                 })*/
                 sendEmail(savedUser.email, savedUser.verificationHash);
                 return resolve({
-                    data: { userId: savedUser._id, username: savedUser.username },
+                    data: newUser,//{ userId: savedUser._id, username: savedUser.username },
                     status: 201,
                     message: "Successfully created user.",
                     refreshToken,
@@ -43,7 +43,7 @@ const loginUser = ({ username, password }) => {
     return new Promise(async (resolve, reject) => {
         try {
             const user = await userModel.findOne({ username });
-            if (!user) return reject({ data: [], message: "User does not exist.", status: 200 })
+            if (!user) return reject({ data: [], message: "User does not exist.", status: 401 })
             user.comparePasswords(password, err => {
                 if (err) {
                     if (err === true) return reject({ error: "Password invalid", status: 400, message: "Password invalid" }); //passwords arent equal

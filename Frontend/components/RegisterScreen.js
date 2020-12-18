@@ -1,6 +1,8 @@
-import {BACKEND_URL} from "@env";
+import { BACKEND_URL } from "@env";
 import AsyncStorage from "@react-native-community/async-storage";
-import React, { useReducer } from "react";
+import React, { useContext, useReducer } from "react";
+import { loginReducer, initialLoginState } from "../reducers/loginReducer";
+import { AuthContext } from "../context"
 import {
   StyleSheet,
   Text,
@@ -8,11 +10,11 @@ import {
   TextInput,
   TouchableOpacity,
 } from "react-native";
-import DropDownPicker from "react-native-dropdown-picker";
+import { Picker } from "@react-native-picker/picker";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scrollview";
 
 const RegisterScreen = ({ navigation }) => {
-  const [loginState, dispatch] = useReducer(loginReducer, initialLoginState);
+  const { signUp } = useContext(AuthContext);
   const [data, setData] = React.useState({
     username: "",
     password: "",
@@ -109,7 +111,6 @@ const RegisterScreen = ({ navigation }) => {
   };
 
   const handleRegistration = async () => {
-    var user;
     const formdata = new FormData();
     if (data.picture) formdata.append('picture', picture);
     formdata.append('username', data.username);
@@ -122,37 +123,18 @@ const RegisterScreen = ({ navigation }) => {
     formdata.append('country', data.country);
     formdata.append('info', data.aboutMe);
 
-    let requestOptions = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Accept": "application/json",
-      },
-      body: JSON.stringify({
-        'username': data.username,
-        'password': data.password,
-        'email': data.email,
-        'phone': data.phone,
-        'street': data.street,
-        'zipCode': data.PLZ,
-        'city': data.city,
-        'country': data.country,
-        'info': data.aboutMe
-        })
-      }
-    console.log(BACKEND_URL);
-    try{
-      const res = await fetch(BACKEND_URL+"auth/register", requestOptions);
-      const resJson = await res.json();
-      AsyncStorage.setItem("user", JSON.stringify(resJson));
-      console.log(await AsyncStorage.getItem("user"));
-    }
-    catch(err){
-      console.log(err);
-    }
-    user = await AsyncStorage.getItem("user");
-    dispatch({ type: "LOGIN", id: username, token: user });
-    navigation.goBacK();
+    const jsondata = JSON.stringify({
+      'username': data.username,
+      'password': data.password,
+      'email': data.email,
+      'phone': data.phone,
+      'street': data.street,
+      'zipCode': data.PLZ,
+      'city': data.city,
+      'country': data.country,
+      'info': data.aboutMe
+    });
+    signUp(jsondata);
   }
 
   return (
@@ -241,24 +223,18 @@ const RegisterScreen = ({ navigation }) => {
         </View>
 
         <View style={styles.picker}>
-          <DropDownPicker
-            items={[
-              { label: "Deutschland", value: "de" },
-              { label: "Österreich", value: "au" },
-              { label: "Schweiz", value: "ch" },
-            ]}
-            placeholder="Deutschland"
-            defaultValue={"de"}
-            containerStyle={{ height: 40 }}
-            style={{ backgroundColor: "#fff", width: "95%" }}
-            itemStyle={{
-              justifyContent: "flex-start",
-            }}
-            dropDownStyle={{ backgroundColor: "#fff", width: "95%" }}
-            zIndex={100000}
-            labelStyle={{ color: "#7E7E7E", fontSize: 14 }}
-            onChangeItem={item => handleCountryChange(item.label)}
-          />
+          <Picker
+            selectedValue={data.country}
+            style={{ backgroundColor: "#fff", width: "95%", height: 40 }}
+            itemStyle={{ justifyContent: "flex-start" }}
+            mode={"dropdown"}
+            onValueChange={(itemValue, itemIndex) => handleCountryChange(itemValue)}
+          >
+            <Picker.Item label="Land auswählen..." value="xx" />
+            <Picker.Item label="Deutschland" value="de" />
+            <Picker.Item label="Österreich" value="au" />
+            <Picker.Item label="Schweiz" value="ch" />
+          </Picker>
         </View>
       </View>
 
@@ -275,12 +251,12 @@ const RegisterScreen = ({ navigation }) => {
 
       <View style={styles.container}>
         <TouchableOpacity style={styles.signUpBtn} onPress={handleRegistration}>
-            <Text style={styles.loginText}>Registrieren</Text>
+          <Text style={styles.loginText}>Registrieren</Text>
         </TouchableOpacity>
       </View>
     </KeyboardAwareScrollView>
 
-    
+
   );
 };
 
