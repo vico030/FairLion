@@ -115,9 +115,8 @@ function deleteAllUsers() {
                     throw err
                 });
             // Delete images in storage
-            for(var user of users)
-            {
-                fs.unlink(user.image,(err)=>{
+            for (var user of users) {
+                fs.unlink(user.image, (err) => {
                     // in case of error, skip and continue
                 });
             }
@@ -149,7 +148,7 @@ function deleteUser(userId) {
                     throw err
                 });
             // Delete image in storage
-            fs.unlink(user.image,(err)=>{
+            fs.unlink(user.image, (err) => {
                 // in case of error, skip and continue
             });
             return resolve({
@@ -184,9 +183,9 @@ function createArticle(body, userId) {
             });
         } catch (err) {
             //Delete images from storage if upload is faulty
-            if(body.images){
-                for(var image of body.images){
-                    fs.unlink(image,(err)=>{
+            if (body.images) {
+                for (var image of body.images) {
+                    fs.unlink(image, (err) => {
                         // in case of error, skip and continue
                     });
                 }
@@ -352,6 +351,12 @@ function updateUser(body, userId) {
                 status: 201
             });
         } catch (err) {
+            if (body.image) {
+                // Delete image in storage
+                fs.unlink(body.image, (err) => {
+                    // in case of error, skip and continue
+                });
+            }
             return reject({
                 error: err,
                 status: 500,
@@ -378,17 +383,16 @@ function deleteAllUserArticles(userId) {
                     throw err
                 });
             // Delete images in storage
-            for (var article of articles)
-            {
-                if(article.images){
-                    for(var image of article.images){
-                        fs.unlink(image,(err)=>{
+            for (var article of articles) {
+                if (article.images) {
+                    for (var image of article.images) {
+                        fs.unlink(image, (err) => {
                             // in case of error, skip and continue
                         });
                     }
                 }
             }
-            
+
             return resolve({
                 data: articles,
                 message: 'Artikel wurden erfolgreich entfernt.',

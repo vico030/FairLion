@@ -2,6 +2,7 @@ const userModel = require("../models/UserModel");
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
 const sendEmail = require("./emailVerification");
+const fs = require('fs');
 
 const privateAuthKey = process.env.PRIVATE_AUTH_KEY;
 const privateRefreshKey = process.env.PRIVATE_REFRESH_KEY;
@@ -17,12 +18,13 @@ const registerUser = (body) => {
             generateTokens({ email: savedUser.email, userId: savedUser._id }, async (err, authToken, refreshToken) => {
                 if (err) return res.status(500).send("Internal Server error.");
                 //sendEmail(req.body.email, verificationHash);
-                var newUser = await userModel.findOneAndUpdate({ _id: user.userId }, { refreshToken }).select("-password") //we dont care about the response, set refreshToken
+                var newUser = await userModel.findOneAndUpdate({ email: user.email }, { refreshToken }).select("-password") //we dont care about the response, set refreshToken
                 /*return res.status(201).json({
                     data: { userId: user._id, username: user.username },
                     //message: "Verify your account please. We have sent you an email."
                     message: "Succesfully created account."
                 })*/
+                console.log(authToken);
                 sendEmail(savedUser.email, savedUser.verificationHash);
                 return resolve({
                     data: newUser,//{ userId: savedUser._id, username: savedUser.username },
@@ -34,6 +36,12 @@ const registerUser = (body) => {
             })
         } catch (err) {
             console.log(err)
+            if (body.image) {
+                // Delete image in storage
+                fs.unlink(body.image, (err) => {
+                    // in case of error, skip and continue
+                });
+            }
             return reject(handleNewUserError(err))
         }
     })
@@ -54,7 +62,7 @@ const loginUser = ({ email, password }) => {
                 generateTokens({ email: user.email, userId: user._id }, async (err, authToken, refreshToken) => {
                     if (err) return reject({ error: err, status: 500, message: "Internal Server Error. Try later again." }); //some unexpected error
                     try {
-                        const newUser = await userModel.findOneAndUpdate({ _id: user._id }, { refreshToken }).select('-password');
+                        const newUser = await userModel.findOneAndUpdate({ email: user.email }, { refreshToken }).select('-password');
                         return resolve({ data: newUser, status: 200, message: "Successfully logged in", authToken, refreshToken });
                     }
                     catch (err) {
