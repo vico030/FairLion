@@ -32,7 +32,7 @@ function getUsersByName(username) {
         try {
             const users = await userModel.find({
                     'username': {
-                        $regex: username,
+                        $regex:  `^${username}`,
                         $options: 'i'
                     }
                 })
