@@ -1,19 +1,21 @@
-import {BACKEND_URL} from "@env";
+import { BACKEND_URL } from "@env";
 import "react-native-gesture-handler";
 import React, { useEffect, useMemo, useReducer } from "react";
+import { loginReducer, initialLoginState } from "./reducers/loginReducer";
 
 import { NavigationContainer } from "@react-navigation/native";
 
 import RootStackScreen from "./components/RootStackScreen";
 import AppTabs from "./components/AppTabs";
 import AsyncStorage from "@react-native-community/async-storage";
-import { AuthContext } from "./components/context";
+import { AuthContext } from "./context";
 import SplashScreen from "./components/SplashScreen";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { Button, View } from "react-native";
 import DrawerContent from "./components/DrawerContent";
 
 import { ProfileStackScreen, SettingsStackScreen } from "./components/Headers";
+import { Alert } from "react-native";
 
 const Drawer = createDrawerNavigator();
 
@@ -31,85 +33,102 @@ const DrawerNavigator = () => {
 };
 
 export default function App() {
-  const initialLoginState = {
-    isLoading: true,
-    userName: null,
-    userToken: null,
-  };
-  const loginReducer = (prevState, action) => {
-    switch (action.type) {
-      case "RETRIEVE_TOKEN":
-        return {
-          ...prevState,
-          userToken: action.token,
-          isLoading: false,
-        };
-      case "LOGIN":
-        return {
-          ...prevState,
-          userName: action.id,
-          userToken: action.token,
-          isLoading: false,
-        };
-      case "LOGOUT":
-        return {
-          ...prevState,
-          userName: null,
-          userToken: null,
-          isLoading: false,
-        };
-      case "REGISTER":
-        return {
-          ...prevState,
-          userName: action.id,
-          userToken: action.token,
-          isLoading: false,
-        };
-    }
-  };
+
   const [loginState, dispatch] = useReducer(loginReducer, initialLoginState);
 
-  const authContext = useMemo(
-    () => ({
-      signIn: (username, password) => {
-        var user;
-        // fetch api call to check username and password
-        let requestOptions = {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-          },
-          body: JSON.stringify({ username: username, password: password }),
-        };
-        try {
-          fetch(BACKEND_URL+"auth/login", requestOptions).then(
-            async (response) => {
-              await AsyncStorage.setItem(
-                "user",
-                await response.json().then((payload)=>{
-                  return JSON.stringify(payload.data);
-                })
-              );
-              console.log(await AsyncStorage.getItem('user'));
-            }
-          );
-        } catch (e) {
-          console.log(e);
-        }
-        user = AsyncStorage.getItem("user");
-        dispatch({ type: "LOGIN", id: username, token: user });
-      },
-      signOut: async () => {
-        try {
-          await AsyncStorage.removeItem("user");
-        } catch (e) {
-          console.log(e);
-        }
-        dispatch({ type: "LOGOUT" });
-      },
-      signUp: () => {},
-    }),
+  const authContext = useMemo(() => ({
+    signIn: async (username, password) => {
+      var user;
+      var res;
+      // fetch api call to check username and password
+      let requestOptions = {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({ username: username, password: password }),
+      };
+      try {
+        res = await fetch(BACKEND_URL + "auth/login", requestOptions);
+      } catch (e) {
+        console.log(e);
+      }
+      if (res.status === 200) {
+        const resJson = await res.json();
+        const data = resJson.data;
+        AsyncStorage.multiSet([
+          ["userId", data._id],
+          ["username", data.username],
+          ["email", data.email],
+          ["phone", data.phone],
+          ["street", data.street],
+          ["zipCode", data.zipCode],
+          ["city", data.city],
+          ["country", data.country],
+          ["info", data.info]
+        ]);
+        console.log(await AsyncStorage.getItem("userId"));
+        user = JSON.stringify(data);
+        dispatch({type: "LOGIN", user: user});
+      }
+      else {
+        const errMess = await res.json();
+        Alert.alert("Error", errMess.message);
+      }
+    },
+
+    signOut: async () => {
+      try {
+        await AsyncStorage.multiRemove(["userId", "username", "email", "phone", "street", "zipCode", "city", "country", "info"]);
+      } catch (e) {
+        console.log(e);
+      }
+      dispatch({ type: "LOGOUT" });
+    },
+
+    signUp: async (data) => {
+      var user;
+      var res;
+      let requestOptions = {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json",
+        },
+        body: data
+      }
+      console.log(BACKEND_URL);
+      try {
+        res = await fetch(BACKEND_URL + "auth/register", requestOptions);
+      }
+      catch (err) {
+        console.log(err);
+      }
+      if (res.status === 201) {
+        const resJson = await res.json();
+        const data = resJson.data;
+        AsyncStorage.multiSet([
+          ["userId", data._id],
+          ["username", data.username],
+          ["email", data.email],
+          ["phone", data.phone],
+          ["street", data.street],
+          ["zipCode", data.zipCode],
+          ["city", data.city],
+          ["country", data.country],
+          ["info", data.info]
+        ]);
+        console.log(await AsyncStorage.getItem("userId"));
+        user = JSON.stringify(data);
+        dispatch({ type: "LOGIN", user: user });
+      }
+      else {
+        const errMess = await res.json();
+        Alert.alert("Error", errMess.message);
+      }
+    },
+  }),
     []
   );
 
@@ -118,11 +137,11 @@ export default function App() {
       let user;
       user = null;
       try {
-        user = await AsyncStorage.getItem("user");
+        user = await AsyncStorage.getItem("userId");
       } catch (e) {
         console.log(e);
       }
-      dispatch({ type: "RETRIEVE_TOKEN", token: user });
+      dispatch({ type: "RETRIEVE_TOKEN", user: user });
     }, 1000);
   }, []);
   if (loginState.isLoading) {
@@ -132,21 +151,8 @@ export default function App() {
   return (
     <AuthContext.Provider value={authContext}>
       <NavigationContainer>
-        {loginState.userToken ? <DrawerNavigator /> : <RootStackScreen />}
+        {loginState.user ? <DrawerNavigator /> : <RootStackScreen />}
       </NavigationContainer>
     </AuthContext.Provider>
   );
 }
-
-/*const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  text: {
-    color: "blue",
-    fontSize: 50
-  }
-});*/

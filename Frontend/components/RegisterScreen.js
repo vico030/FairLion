@@ -1,4 +1,8 @@
-import React from "react";
+import { BACKEND_URL } from "@env";
+import AsyncStorage from "@react-native-community/async-storage";
+import React, { useContext, useReducer } from "react";
+import { loginReducer, initialLoginState } from "../reducers/loginReducer";
+import { AuthContext } from "../context"
 import {
   StyleSheet,
   Text,
@@ -6,10 +10,11 @@ import {
   TextInput,
   TouchableOpacity,
 } from "react-native";
-import DropDownPicker from "react-native-dropdown-picker";
+import { Picker } from "@react-native-picker/picker";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scrollview";
 
 const RegisterScreen = ({ navigation }) => {
+  const { signUp } = useContext(AuthContext);
   const [data, setData] = React.useState({
     username: "",
     password: "",
@@ -105,6 +110,33 @@ const RegisterScreen = ({ navigation }) => {
     });
   };
 
+  const handleRegistration = async () => {
+    const formdata = new FormData();
+    if (data.picture) formdata.append('picture', picture);
+    formdata.append('username', data.username);
+    formdata.append('password', data.password);
+    formdata.append('email', data.email);
+    formdata.append('phone', data.phone);
+    formdata.append('street', data.street);
+    formdata.append('zipCode', data.PLZ);
+    formdata.append('city', data.city);
+    formdata.append('country', data.country);
+    formdata.append('info', data.aboutMe);
+
+    const jsondata = JSON.stringify({
+      'username': data.username,
+      'password': data.password,
+      'email': data.email,
+      'phone': data.phone,
+      'street': data.street,
+      'zipCode': data.PLZ,
+      'city': data.city,
+      'country': data.country,
+      'info': data.aboutMe
+    });
+    signUp(jsondata);
+  }
+
   return (
     <KeyboardAwareScrollView style={{ flex: 1 }}>
       <View style={styles.userInfo}>
@@ -191,24 +223,18 @@ const RegisterScreen = ({ navigation }) => {
         </View>
 
         <View style={styles.picker}>
-          <DropDownPicker
-            items={[
-              { label: "Deutschland", value: "de" },
-              { label: "Österreich", value: "au" },
-              { label: "Schweiz", value: "ch" },
-            ]}
-            placeholder="Deutschland"
-            defaultValue={"de"}
-            containerStyle={{ height: 40 }}
-            style={{ backgroundColor: "#fff", width: "95%" }}
-            itemStyle={{
-              justifyContent: "flex-start",
-            }}
-            dropDownStyle={{ backgroundColor: "#fff", width: "95%" }}
-            zIndex={100000}
-            labelStyle={{ color: "#7E7E7E", fontSize: 14 }}
-            onChangeItem={(value) => handleCountryChange(value)}
-          />
+          <Picker
+            selectedValue={data.country}
+            style={{ backgroundColor: "#fff", width: "95%", height: 40 }}
+            itemStyle={{ justifyContent: "flex-start" }}
+            mode={"dropdown"}
+            onValueChange={(itemValue, itemIndex) => handleCountryChange(itemValue)}
+          >
+            <Picker.Item label="Land auswählen..." value="xx" />
+            <Picker.Item label="Deutschland" value="de" />
+            <Picker.Item label="Österreich" value="au" />
+            <Picker.Item label="Schweiz" value="ch" />
+          </Picker>
         </View>
       </View>
 
@@ -224,11 +250,13 @@ const RegisterScreen = ({ navigation }) => {
       </View>
 
       <View style={styles.container}>
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity style={styles.button} onPress={handleRegistration}>
           <Text style={styles.buttonText}>Registrieren</Text>
         </TouchableOpacity>
       </View>
     </KeyboardAwareScrollView>
+
+
   );
 };
 

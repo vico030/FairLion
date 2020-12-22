@@ -7,13 +7,14 @@ import {
   TouchableOpacity,
   Image,
   Dimensions,
+  Alert
 } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scrollview";
-import { AuthContext } from "./context";
+import { AuthContext } from "../context";
 
 const LoginScreen = ({ navigation }) => {
   const [user, setUser] = useState({
-    userName: "",
+    username: "",
     password: "",
   });
   const { signIn } = useContext(AuthContext);
@@ -22,7 +23,7 @@ const LoginScreen = ({ navigation }) => {
     if (val.length != 0) {
       setUser({
         ...user,
-        userName: val,
+        username: val,
       });
       console.log(val);
     }
@@ -38,6 +39,16 @@ const LoginScreen = ({ navigation }) => {
   const handleLogin = (username, password) => {
     signIn(username, password);
   };
+
+  const isValid = (value, type) => {
+    if(value === "") {
+      console.log(type);
+      console.log(value)
+      Alert.alert(type + " nicht vorhanden!", "Bitte geben Sie ein "+type+" ein.", [{ text: 'OK', onPress: () => console.log('OK Pressed') }], {cancelable:true});
+      return false;
+    }
+    return true;
+  }
 
   return (
     <KeyboardAwareScrollView
@@ -86,7 +97,7 @@ const LoginScreen = ({ navigation }) => {
         <TouchableOpacity
           style={styles.loginBtn}
           onPress={() => {
-            handleLogin(user.userName, user.password);
+            if(isValid(user.username, "Username") && isValid(user.password, "Passwort")) handleLogin(user.username, user.password);
           }}
         >
           <Text style={styles.loginText}>Login</Text>
