@@ -91,13 +91,18 @@ const AddItemScreen = ({ navigation }) => {
     }
     if (res.status === 201) {
       console.log(res.data); // anzeigen der daten in local state des screens
-    }
-    else if (res.status === 500) {
-      Alert.alert("Fehler", res.json().message, [{ text: 'OK', onPress: () => console.log('OK Pressed') }], {cancelable:true});
+    } else if (res.status === 500) {
+      Alert.alert(
+        "Fehler",
+        res.json().message,
+        [{ text: "OK", onPress: () => console.log("OK Pressed") }],
+        { cancelable: true }
+      );
     }
     console.log(articleBody);
     console.log(res.status);
     console.log(await AsyncStorage.getItem("userId"));
+    navigation.goBack();
   };
 
   return (
