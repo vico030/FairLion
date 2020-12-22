@@ -1,6 +1,6 @@
 const initialLoginState = {
     isLoading: true,
-    userToken: null,
+    user: null,
 };
 const loginReducer = (prevState, action) => {
     switch (action.type) {

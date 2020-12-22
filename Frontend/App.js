@@ -37,17 +37,17 @@ export default function App() {
   const [loginState, dispatch] = useReducer(loginReducer, initialLoginState);
 
   const authContext = useMemo(() => ({
-    signIn: async (username, password) => {
+    signIn: async (email, password) => {
       var user;
       var res;
-      // fetch api call to check username and password
+      // fetch api call to check email and password
       let requestOptions = {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
         },
-        body: JSON.stringify({ username: username, password: password }),
+        body: JSON.stringify({ email: email, password: password }),
       };
       try {
         res = await fetch(BACKEND_URL + "auth/login", requestOptions);

@@ -14,16 +14,16 @@ import { AuthContext } from "../context";
 
 const LoginScreen = ({ navigation }) => {
   const [user, setUser] = useState({
-    username: "",
+    email: "",
     password: "",
   });
   const { signIn } = useContext(AuthContext);
 
-  const handleUserNameChange = (val) => {
+  const handleEmailChange = (val) => {
     if (val.length != 0) {
       setUser({
         ...user,
-        username: val,
+        email: val,
       });
       console.log(val);
     }
@@ -36,8 +36,8 @@ const LoginScreen = ({ navigation }) => {
     console.log(val);
   };
 
-  const handleLogin = (username, password) => {
-    signIn(username, password);
+  const handleLogin = (email, password) => {
+    signIn(email, password);
   };
 
   const isValid = (value, type) => {
@@ -73,10 +73,10 @@ const LoginScreen = ({ navigation }) => {
         <View style={styles.inputView}>
           <TextInput
             style={styles.inputText}
-            placeholder="Username"
+            placeholder="Email"
             placeholderTextColor="#003f5c"
             autoCapitalize="none"
-            onChangeText={(username) => handleUserNameChange(username)}
+            onChangeText={(email) => handleEmailChange(email)}
           />
         </View>
 
@@ -97,7 +97,7 @@ const LoginScreen = ({ navigation }) => {
         <TouchableOpacity
           style={styles.loginBtn}
           onPress={() => {
-            if(isValid(user.username, "Username") && isValid(user.password, "Passwort")) handleLogin(user.username, user.password);
+            if(isValid(user.email, "Email") && isValid(user.password, "Passwort")) handleLogin(user.email, user.password);
           }}
         >
           <Text style={styles.loginText}>Login</Text>

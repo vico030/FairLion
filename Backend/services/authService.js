@@ -2,6 +2,7 @@ const userModel = require("../models/UserModel");
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
 const sendEmail = require("./emailVerification");
+const fs = require('fs');
 
 const privateAuthKey = process.env.PRIVATE_AUTH_KEY;
 const privateRefreshKey = process.env.PRIVATE_REFRESH_KEY;
@@ -14,15 +15,16 @@ const registerUser = (body) => {
 
             const user = new userModel(body);
             const savedUser = await user.save();
-            generateTokens({ username: savedUser.username, userId: savedUser._id }, async (err, authToken, refreshToken) => {
+            generateTokens({ email: savedUser.email, userId: savedUser._id }, async (err, authToken, refreshToken) => {
                 if (err) return res.status(500).send("Internal Server error.");
                 //sendEmail(req.body.email, verificationHash);
-                var newUser = await userModel.findOneAndUpdate({ username: user.username }, { refreshToken }).select("-password") //we dont care about the response, set refreshToken
+                var newUser = await userModel.findOneAndUpdate({ email: user.email }, { refreshToken }).select("-password") //we dont care about the response, set refreshToken
                 /*return res.status(201).json({
                     data: { userId: user._id, username: user.username },
                     //message: "Verify your account please. We have sent you an email."
                     message: "Succesfully created account."
                 })*/
+                console.log(authToken);
                 sendEmail(savedUser.email, savedUser.verificationHash);
                 return resolve({
                     data: newUser,//{ userId: savedUser._id, username: savedUser.username },
@@ -34,15 +36,21 @@ const registerUser = (body) => {
             })
         } catch (err) {
             console.log(err)
+            if (body.image) {
+                // Delete image in storage
+                fs.unlink(body.image, (err) => {
+                    // in case of error, skip and continue
+                });
+            }
             return reject(handleNewUserError(err))
         }
     })
 }
 
-const loginUser = ({ username, password }) => {
+const loginUser = ({ email, password }) => {
     return new Promise(async (resolve, reject) => {
         try {
-            const user = await userModel.findOne({ username });
+            const user = await userModel.findOne({ email });
             if (!user) return reject({ data: [], message: "User does not exist.", status: 401 })
             user.comparePasswords(password, err => {
                 if (err) {
@@ -51,10 +59,10 @@ const loginUser = ({ username, password }) => {
                 }
                 //check if verified
                 if (!user.isVerified) return reject({ error: null, status: 401, message: "Please verify your email address first." })
-                generateTokens({ username: user.username, userId: user._id }, async (err, authToken, refreshToken) => {
+                generateTokens({ email: user.email, userId: user._id }, async (err, authToken, refreshToken) => {
                     if (err) return reject({ error: err, status: 500, message: "Internal Server Error. Try later again." }); //some unexpected error
                     try {
-                        const newUser = await userModel.findOneAndUpdate({ username: user.username }, { refreshToken }).select('-password');
+                        const newUser = await userModel.findOneAndUpdate({ email: user.email }, { refreshToken }).select('-password');
                         return resolve({ data: newUser, status: 200, message: "Successfully logged in", authToken, refreshToken });
                     }
                     catch (err) {
@@ -116,8 +124,8 @@ const isAuthenticated = async (req, res, next) => {
     if (!req.cookies.authToken || !req.cookies.refreshToken) return res.status(401).send("Please Login first"); //no cookie
     try {
         const { authToken } = req.cookies;
-        const { username, userId } = jwt.verify(authToken, privateAuthKey); //just checking for an exception
-        req.username = username;
+        const { email, userId } = jwt.verify(authToken, privateAuthKey); //just checking for an exception
+        req.email = email;
         req.userId = userId;
         return next(); //valid key
     }
@@ -127,12 +135,12 @@ const isAuthenticated = async (req, res, next) => {
                 const { refreshToken } = req.cookies;
                 const decoded = jwt.verify(refreshToken, privateRefreshKey);
                 //if verified refreshToken
-                const user = await userModel.findOne({ username: decoded.username });
+                const user = await userModel.findOne({ email: decoded.email });
                 if (user.refreshToken === refreshToken) { //database refreshToken === given refreshToken from cookies
-                    generateAuthToken({ username: decoded.username, userId: decoded.userId }, privateAuthKey, (err, newAuthToken) => {
+                    generateAuthToken({ email: decoded.eamil, userId: decoded.userId }, privateAuthKey, (err, newAuthToken) => {
                         if (err) return res.status(500).send("Internal Server Error. Please try later again.");
                         res.cookie("authToken", newAuthToken, { httpOnly: true, maxAge: 9999999999 });
-                        req.username = decoded.username;
+                        req.email = decoded.eamil;
                         req.userId = decoded.userId;
                         return next();
                     })
@@ -158,12 +166,12 @@ const isAuthenticated = async (req, res, next) => {
 function handleNewUserError(err) {
     if (err.code === 11000) { //err code for duplication
         //err.keyPattern object with attributes that are duplicates
-        if (err.keyPattern.username) return ({
+        /* if (err.keyPattern.username) return ({
             error: err,
             message: "Username is already in use.",
             status: 409
         }) //409 == conflict
-        else if (err.keyPattern.email) return ({
+        else */ if (err.keyPattern.email) return ({
             error: err,
             message: "Email is already in use",
             status: 409
