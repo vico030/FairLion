@@ -15,12 +15,11 @@ const windowHeight = Dimensions.get("window").height;
 
 const DetailReturnViewScreen = ({
   route,
-
   ausleihfrist,
   images,
   navigation,
 }) => {
-  const { besitzer, produktName } = route.params;
+  const { besitzer, produktName, beschreibung } = route.params;
   return (
     <ScrollView style={styles.container}>
       <View style={styles.main}>

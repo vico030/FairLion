@@ -14,6 +14,7 @@ export default function ItemStock({
   besitzer,
   produktName,
   ausleihfrist,
+  beschreibung,
   image,
   kategorie,
   navigation,
@@ -30,6 +31,7 @@ export default function ItemStock({
           produktName: produktName,
           ausleihfrist: ausleihfrist,
           kategorie: kategorie,
+          beschreibung: beschreibung
         })
       }
     >
