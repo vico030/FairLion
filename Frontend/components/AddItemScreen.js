@@ -12,6 +12,7 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scrollview"
 import { Picker } from "@react-native-picker/picker";
 import ImageChooser from "./ImageChooser";
 import AsyncStorage from "@react-native-community/async-storage";
+import { Alert } from "react-native";
 
 const AddItemScreen = ({ navigation }) => {
   const [article, setArticle] = useState({
@@ -90,6 +91,9 @@ const AddItemScreen = ({ navigation }) => {
     }
     if (res.status === 201) {
       console.log(res.data); // anzeigen der daten in local state des screens
+    }
+    else if (res.status === 500) {
+      Alert.alert("Fehler", res.json().message, [{ text: 'OK', onPress: () => console.log('OK Pressed') }], {cancelable:true});
     }
     console.log(articleBody);
     console.log(res.status);

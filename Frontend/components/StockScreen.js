@@ -1,9 +1,41 @@
+import { BACKEND_URL } from "@env";
+import AsyncStorage from "@react-native-community/async-storage";
 import { View, Text, FlatList } from "react-native";
-import React from "react";
+import React, { useEffect } from "react";
 import ItemStock from "./ItemStock";
 
 const StockScreen = ({ navigation }) => {
-  let array = [
+  var array;
+
+  const getArticles = async () => {
+    const requestOptions = {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      }
+    };
+    var res;
+    var resJson;
+    try {
+      res = await fetch(BACKEND_URL + `users/${await AsyncStorage.getItem("userId")}/ownedArticles`, requestOptions);
+      resJson = await res.json();
+    }
+    catch (err) {
+      console.log(err);
+    }
+    if (res.status === 200) {
+      array = await resJson.data;
+      console.log(array);
+    }
+  }
+
+  useEffect(() => {
+    getArticles();
+  }, []);
+
+
+  /* array = [
     {
       image: "../assets/testprofilpic.jpg",
       besitzer: "peter",
@@ -76,7 +108,7 @@ const StockScreen = ({ navigation }) => {
       kategorie: "Werkzeug",
       key: "9",
     },
-  ];
+  ]; */
 
   return (
     <View
@@ -92,11 +124,11 @@ const StockScreen = ({ navigation }) => {
         renderItem={({ item }) => (
           <ItemStock
             navigation={navigation}
-            besitzer={item.besitzer}
-            produktName={item.produktName}
-            ausleihfrist={item.ausleihfrist}
+            besitzer={item.owner}
+            produktName={item.title}
+            ausleihfrist={item.duration}
             image={item.image}
-            kategorie={item.kategorie}
+            kategorie={item.category}
           />
         )}
       />
