@@ -14,6 +14,7 @@ export default function ItemLend({
   navigation,
   besitzer,
   produktName,
+  beschreibung,
   ausleihfrist,
   favored,
 }) {
@@ -26,6 +27,7 @@ export default function ItemLend({
           besitzer: besitzer,
           produktName: produktName,
           images: "test",
+          beschreibung: beschreibung
         })
       }
     >

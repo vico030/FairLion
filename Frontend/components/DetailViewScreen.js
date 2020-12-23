@@ -14,7 +14,7 @@ import UserButton from "./UserButton";
 const windowHeight = Dimensions.get("window").height;
 
 const DetailViewScreen = ({ route, ausleihfrist, images, navigation }) => {
-  const { besitzer, produktName } = route.params;
+  const { besitzer, produktName, beschreibung } = route.params;
   return (
     <ScrollView style={styles.container}>
       <View style={styles.main}>
@@ -46,14 +46,7 @@ const DetailViewScreen = ({ route, ausleihfrist, images, navigation }) => {
           <View style={styles.verticalLine} />
           <View style={styles.items}>
             <Text style={{ width: "100%", fontSize: 12 }}>
-              Etwas ältere aber immer noch sehr brauchbare Schlagbohrmaschine
-              von Bosch. Inklusive Griff und diversen Bohrköpfen und Bits. Etwas
-              ältere aber immer noch sehr brauchbare Schlagbohrmaschine von
-              Bosch. Inklusive Griff und diversen Bohrköpfen und Bits. Etwas
-              ältere aber immer noch sehr brauchbare Schlagbohrmaschine von
-              Bosch. Inklusive Griff und diversen Bohrköpfen und Bits. Etwas
-              ältere aber immer noch sehr brauchbare Schlagbohrmaschine von
-              Bosch. Inklusive Griff und diversen Bohrköpfen und Bits.
+              {beschreibung}
             </Text>
           </View>
         </View>
