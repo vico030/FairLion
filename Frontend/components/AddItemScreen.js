@@ -13,6 +13,7 @@ import { Picker } from "@react-native-picker/picker";
 import ImageChooser from "./ImageChooser";
 import AsyncStorage from "@react-native-community/async-storage";
 import { Alert } from "react-native";
+import { isValid, isNotEmpty } from "../helpers/validation";
 
 const AddItemScreen = ({ navigation }) => {
   const [article, setArticle] = useState({
@@ -65,13 +66,13 @@ const AddItemScreen = ({ navigation }) => {
   };
 
   const handleImages = (imageUris) => {
-    var images=[];
+    var images = [];
     for (const uri of imageUris) {
       var mime = uri.split(".").pop().toLowerCase();
       const ext = mime;
       if (mime === "jpg") mime = "jpeg"
       const name = Math.floor(Math.random() * Math.floor(999999999999999999999));
-      images.push({"uri": uri,"name": name+"."+ext , "type": "image/"+mime})
+      images.push({ "uri": uri, "name": name + "." + ext, "type": "image/" + mime })
     }
     setArticle({
       ...article,
@@ -83,13 +84,13 @@ const AddItemScreen = ({ navigation }) => {
 
     const formdata = new FormData();
 
-    if (article.images){
+    if (article.images) {
       for (const image of article.images) {
         console.log(image);
 
         formdata.append("images", image);
       }
-    } 
+    }
 
     //if (article.images) formdata.append("images", picture);
     formdata.append("title", article.title);
@@ -111,7 +112,7 @@ const AddItemScreen = ({ navigation }) => {
     try {
       res = await fetch(
         BACKEND_URL +
-          `users/${await AsyncStorage.getItem("userId")}/ownedArticles`,
+        `users/${await AsyncStorage.getItem("userId")}/ownedArticles`,
         requestOptions
       );
     } catch (err) {
@@ -215,7 +216,13 @@ const AddItemScreen = ({ navigation }) => {
       <View style={styles.ButtonContainer}>
         <TouchableOpacity
           style={styles.saveBtn}
-          onPress={() => submitArticle()}
+          onPress={() => {
+            if (isNotEmpty(article.images, "Bild")
+              && isValid(article.title, "Titel") 
+              && isValid(article.description, "Beschreibung") 
+              && isValid(article.durationValue, "Zeitraum"))
+              submitArticle();
+          }}
         >
           <Text style={styles.saveText}>Speichern</Text>
         </TouchableOpacity>

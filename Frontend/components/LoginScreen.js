@@ -11,6 +11,7 @@ import {
 } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scrollview";
 import { AuthContext } from "../context";
+import {isValid} from "../helpers/validation";
 
 const LoginScreen = ({ navigation }) => {
   const [user, setUser] = useState({
@@ -39,16 +40,6 @@ const LoginScreen = ({ navigation }) => {
   const handleLogin = (email, password) => {
     signIn(email, password);
   };
-
-  const isValid = (value, type) => {
-    if(value === "") {
-      console.log(type);
-      console.log(value)
-      Alert.alert(type + " nicht vorhanden!", "Bitte geben Sie ein "+type+" ein.", [{ text: 'OK', onPress: () => console.log('OK Pressed') }], {cancelable:true});
-      return false;
-    }
-    return true;
-  }
 
   return (
     <KeyboardAwareScrollView
