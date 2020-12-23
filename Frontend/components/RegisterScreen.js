@@ -123,19 +123,8 @@ const RegisterScreen = ({ navigation }) => {
     formdata.append("city", data.city);
     formdata.append("country", data.country);
     formdata.append("info", data.aboutMe);
-
-    const jsondata = JSON.stringify({
-      username: data.username,
-      password: data.password,
-      email: data.email,
-      phone: data.phone,
-      street: data.street,
-      zipCode: data.PLZ,
-      city: data.city,
-      country: data.country,
-      info: data.aboutMe,
-    });
-    signUp(jsondata);
+    
+    signUp(formdata);
   };
 
   return (

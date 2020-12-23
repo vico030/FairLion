@@ -16,6 +16,7 @@ import { Alert } from "react-native";
 
 const AddItemScreen = ({ navigation }) => {
   const [article, setArticle] = useState({
+    images: [],
     durationValue: "",
     durationUnit: "day",
     title: "",
@@ -63,21 +64,48 @@ const AddItemScreen = ({ navigation }) => {
     console.log(article);
   };
 
+  const handleImages = (imageUris) => {
+    var images=[];
+    for (const uri of imageUris) {
+      var mime = uri.split(".").pop().toLowerCase();
+      const ext = mime;
+      if (mime === "jpg") mime = "jpeg"
+      const name = Math.floor(Math.random() * Math.floor(999999999999999999999));
+      images.push({"uri": uri,"name": name+"."+ext , "type": "image/"+mime})
+    }
+    setArticle({
+      ...article,
+      images: images,
+    });
+  }
+
   const submitArticle = async () => {
-    const articleBody = {
-      title: article.title,
-      description: article.description,
-      duration: article.durationValue + " " + article.durationUnit,
-      category: article.category,
-    };
+
+    const formdata = new FormData();
+
+    if (article.images){
+      for (const image of article.images) {
+        console.log(image);
+
+        formdata.append("images", image);
+      }
+    } 
+
+    //if (article.images) formdata.append("images", picture);
+    formdata.append("title", article.title);
+    formdata.append("description", article.description);
+    formdata.append("duration", article.durationValue + " " + article.durationUnit);
+    formdata.append("category", article.category);
+    console.log(formdata);
+
 
     const requestOptions = {
       method: "POST",
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type": "multipart/form-data",
         Accept: "application/json",
       },
-      body: JSON.stringify(articleBody),
+      body: formdata,
     };
     var res;
     try {
@@ -92,14 +120,14 @@ const AddItemScreen = ({ navigation }) => {
     if (res.status === 201) {
       console.log(res.data); // anzeigen der daten in local state des screens
     } else if (res.status === 500) {
+      const resJson = await res.json();
       Alert.alert(
         "Fehler",
-        res.json().message,
+        resJson,
         [{ text: "OK", onPress: () => console.log("OK Pressed") }],
         { cancelable: true }
       );
     }
-    console.log(articleBody);
     console.log(res.status);
     console.log(await AsyncStorage.getItem("userId"));
     navigation.goBack();
@@ -107,7 +135,7 @@ const AddItemScreen = ({ navigation }) => {
 
   return (
     <KeyboardAwareScrollView style={{ flex: 1 }}>
-      <ImageChooser />
+      <ImageChooser handleImages={handleImages} />
 
       <View style={styles.itemInfo}>
         <View style={styles.inputView}>

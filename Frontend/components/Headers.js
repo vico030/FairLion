@@ -348,14 +348,6 @@ const StockStackScreen = ({ navigation }) => (
         headerTitleStyle: {
           fontFamily: "Roboto",
         },
-        headerLeft: () => (
-          <MaterialIcons
-                name="arrow-back"
-                size={28}
-                style={styles.leftIcon}
-                onPress={() => navigation.goBack()}
-              />
-        ),
       }}
     />
 

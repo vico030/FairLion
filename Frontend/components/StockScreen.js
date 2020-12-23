@@ -5,7 +5,7 @@ import React, { useEffect, useState } from "react";
 import ItemStock from "./ItemStock";
 
 const StockScreen = ({ navigation }) => {
-  const [array, setArray] = useState([]);
+  const [articles, setArticles] = useState([]);
 
   async function getArticles() {
     const requestOptions = {
@@ -28,7 +28,7 @@ const StockScreen = ({ navigation }) => {
       console.log(err);
     }
     if (res.status === 200) {
-      setArray(await resJson.data);
+      setArticles(await resJson.data);
     }
   }
 
@@ -49,7 +49,7 @@ const StockScreen = ({ navigation }) => {
       }}
     >
       <FlatList
-        data={array}
+        data={articles}
         keyExtractor={(item) => item._id}
         renderItem={({ item }) => (
           <ItemStock
@@ -57,8 +57,9 @@ const StockScreen = ({ navigation }) => {
             besitzer={item.owner}
             produktName={item.title}
             ausleihfrist={item.duration}
-            image={item.image}
+            images={item.images}
             kategorie={item.category}
+            beschreibung={item.description}
           />
         )}
       />
