@@ -9,6 +9,7 @@ let array = [
     image: "../assets/testprofilpic.jpg",
     besitzer: "peter",
     produktName: "Stichsäge Holz Metall",
+    articleId:"",
     produktBeschreibung: "Etwas ältere aber immer noch sehr brauchbare Schlagbohrmaschine von Bosch. Inklusive Griff und diversen Bohrköpfen und Bits. Etwas ältere aber immer noch sehr brauchbare Schlagbohrmaschine von Bosch. Inklusive Griff und diversen Bohrköpfen und Bits. Etwas ältere aber immer noch sehr brauchbare Schlagbohrmaschine von Bosch. Inklusive Griff und diversen Bohrköpfen und Bits. Etwas ältere aber immer noch sehr brauchbare Schlagbohrmaschine von Bosch. Inklusive Griff und diversen Bohrköpfen und Bits.",
     ausleihfrist: "2 Stunden",
     key: "1",
@@ -75,6 +76,7 @@ const SearchScreen = ({ navigation }) => {
           <ItemLend
             navigation={navigation}
             besitzer={item.besitzer}
+            articleId={item.articleId}
             produktName={item.produktName}
             beschreibung={item.produktBeschreibung}
             ausleihfrist={item.ausleihfrist}

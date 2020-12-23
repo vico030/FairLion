@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useContext, useState } from "react";
+import { BACKEND_URL } from "@env";
 import {
   View,
   Text,
@@ -6,15 +7,48 @@ import {
   TouchableOpacity,
   ScrollView,
   Dimensions,
+  Alert
 } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Carousel from "./CarouselComponent";
 import UserButton from "./UserButton";
+import ArticleContext from "../context"
 
 const windowHeight = Dimensions.get("window").height;
 
 const DetailViewScreen = ({ route, ausleihfrist, images, navigation }) => {
-  const { besitzer, produktName, beschreibung } = route.params;
+  const { besitzer, produktName, beschreibung, articleId } = route.params;
+
+
+  const handleLend = async (articleId) => {
+    let res;
+    let requestOptions = {
+      method: 'POST',
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+      },
+      body: JSON.stringify({
+        articleId: "5fe343e3474fc53e1ca4dfd4",
+      })
+    }
+
+    try{
+      res = await fetch(BACKEND_URL + "articleRequest", requestOptions)
+    }
+    catch(err) {
+      console.log(err);
+    }
+
+    if(res.status === 201) {
+      Alert.alert("Dem Inhaber wurde eine Anfrage gesendet")
+    }
+    else if(res.status === 500) {
+      const errMess = await res.json();
+      Alert.alert("Fehler", errMess.message);
+    }
+  }
+
   return (
     <ScrollView style={styles.container}>
       <View style={styles.main}>
@@ -74,7 +108,7 @@ const DetailViewScreen = ({ route, ausleihfrist, images, navigation }) => {
           </View>
         </View>
         <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.signUpBtn}>
+          <TouchableOpacity style={styles.signUpBtn} onPress={() => handleLend(articleId)}>
             <Text style={styles.loginText}>Anfragen</Text>
           </TouchableOpacity>
         </View>
