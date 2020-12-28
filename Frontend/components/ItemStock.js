@@ -1,3 +1,4 @@
+import { IMAGE_URL } from "@env";
 import React from "react";
 import {
   View,
@@ -14,12 +15,11 @@ export default function ItemStock({
   besitzer,
   produktName,
   ausleihfrist,
-  beschreibung,
-  image,
+  images,
   kategorie,
   navigation,
+  beschreibung
 }) {
-
   return (
     // change image link to correct parameter url
     <TouchableOpacity
@@ -27,7 +27,7 @@ export default function ItemStock({
       onPress={() =>
         navigation.navigate("StockDetails", {
           besitzer: besitzer,
-          images: image,
+          images: images,
           produktName: produktName,
           ausleihfrist: ausleihfrist,
           kategorie: kategorie,
@@ -38,7 +38,7 @@ export default function ItemStock({
       <View>
         <Image
           style={styles.itemImage}
-          source={require(`../assets/testprofilpic.jpg`)}
+          source={{uri: IMAGE_URL+images[0]}}
         />
       </View>
       <View style={styles.itemBottomView}>
