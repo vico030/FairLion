@@ -12,15 +12,16 @@ import {
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Carousel from "./CarouselComponent";
 import UserButton from "./UserButton";
-import ArticleContext from "../context"
 
 const windowHeight = Dimensions.get("window").height;
 
-const DetailViewScreen = ({ route, ausleihfrist, images, navigation }) => {
-  const { besitzer, produktName, beschreibung, articleId } = route.params;
+const DetailViewScreen = ({ route, navigation }) => {
+  const { besitzer, produktName, beschreibung, articleId, images, ausleihfrist, kategorie } = route.params;
 
+  const [requested, setRequested] = useState(false);
 
-  const handleLend = async (articleId) => {
+  const handleLend = async () => {
+    console.log(articleId)
     let res;
     let requestOptions = {
       method: 'POST',
@@ -29,7 +30,7 @@ const DetailViewScreen = ({ route, ausleihfrist, images, navigation }) => {
         "Accept": "application/json",
       },
       body: JSON.stringify({
-        articleId: "5fe343e3474fc53e1ca4dfd4",
+        articleId: articleId,
       })
     }
 
@@ -41,7 +42,8 @@ const DetailViewScreen = ({ route, ausleihfrist, images, navigation }) => {
     }
 
     if(res.status === 201) {
-      Alert.alert("Dem Inhaber wurde eine Anfrage gesendet")
+      Alert.alert(besitzer +" wurde eine Anfrage gesendet")
+      setRequested(true);
     }
     else if(res.status === 500) {
       const errMess = await res.json();
@@ -94,12 +96,12 @@ const DetailViewScreen = ({ route, ausleihfrist, images, navigation }) => {
 
           <View style={styles.element}>
             <Text style={styles.elementTextLeft}>Ausleihbar für:</Text>
-            <Text style={styles.elementTextRight}>3 Woche(n)</Text>
+            <Text style={styles.elementTextRight}>{ausleihfrist}</Text>
           </View>
 
           <View style={styles.element}>
             <Text style={styles.elementTextLeft}>Kategorie:</Text>
-            <Text style={styles.elementTextRight}>Werkzeug</Text>
+            <Text style={styles.elementTextRight}>{kategorie}</Text>
           </View>
 
           <View style={styles.element}>
@@ -108,8 +110,8 @@ const DetailViewScreen = ({ route, ausleihfrist, images, navigation }) => {
           </View>
         </View>
         <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.signUpBtn} onPress={() => handleLend(articleId)}>
-            <Text style={styles.loginText}>Anfragen</Text>
+          <TouchableOpacity disabled={requested} style={requested? styles.disabledBtn:styles.signUpBtn} onPress={() => handleLend()}>
+            <Text style={styles.loginText}>{requested? "Angefragt":"Anfragen"}</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -226,6 +228,23 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 4,
   },
+  disabledBtn: {
+    width: "60%",
+    backgroundColor: "#CFCFCF",
+    borderRadius: 25,
+    height: 45,
+    alignItems: "center",
+    justifyContent: "center",
+    marginVertical: 20,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+  },
+
   loginText: {
     color: "#fff",
     fontSize: 18,

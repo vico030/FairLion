@@ -17,6 +17,9 @@ export default function ItemLend({
   beschreibung,
   ausleihfrist,
   favored,
+  image,
+  kategorie,
+  articleId
 }) {
   return (
     // change image link to correct parameter url
@@ -26,8 +29,11 @@ export default function ItemLend({
         navigation.navigate("Details", {
           besitzer: besitzer,
           produktName: produktName,
-          images: "test",
-          beschreibung: beschreibung
+          images: image,
+          beschreibung: beschreibung,
+          ausleihfrist: ausleihfrist,
+          kategorie: kategorie,
+          articleId: articleId
         })
       }
     >

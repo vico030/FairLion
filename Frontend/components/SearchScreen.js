@@ -1,59 +1,47 @@
+import { BACKEND_URL } from "@env";
 import { View, Text, StyleSheet, FlatList } from "react-native";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { SearchBar } from "react-native-elements";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import ItemLend from "./ItemLend";
-// Test data to display
-let array = [
-  {
-    image: "../assets/testprofilpic.jpg",
-    besitzer: "peter",
-    produktName: "Stichsäge Holz Metall",
-    articleId:"",
-    produktBeschreibung: "Etwas ältere aber immer noch sehr brauchbare Schlagbohrmaschine von Bosch. Inklusive Griff und diversen Bohrköpfen und Bits. Etwas ältere aber immer noch sehr brauchbare Schlagbohrmaschine von Bosch. Inklusive Griff und diversen Bohrköpfen und Bits. Etwas ältere aber immer noch sehr brauchbare Schlagbohrmaschine von Bosch. Inklusive Griff und diversen Bohrköpfen und Bits. Etwas ältere aber immer noch sehr brauchbare Schlagbohrmaschine von Bosch. Inklusive Griff und diversen Bohrköpfen und Bits.",
-    ausleihfrist: "2 Stunden",
-    key: "1",
-    favored: true,
-  },
-  {
-    image: "../asset/stestprofilpic.jpg",
-    besitzer: "frank fritz",
-    produktName: "Stichsäge",
-    produktBeschreibung: "Etwas ältere aber immer noch sehr brauchbare Schlagbohrmaschine von Bosch. Inklusive Griff und diversen Bohrköpfen und Bits. Etwas ältere aber immer noch sehr brauchbare Schlagbohrmaschine von Bosch. Inklusive Griff und diversen Bohrköpfen und Bits. Etwas ältere aber immer noch sehr brauchbare Schlagbohrmaschine von Bosch. Inklusive Griff und diversen Bohrköpfen und Bits. Etwas ältere aber immer noch sehr brauchbare Schlagbohrmaschine von Bosch. Inklusive Griff und diversen Bohrköpfen und Bits.",
-    ausleihfrist: "3 Stunden",
-    key: "2",
-    favored: true,
-  },
-  {
-    image: "../assets/testprofilpic.jpg",
-    besitzer: "peter",
-    produktName: "Stichsäge Holz Metall",
-    produktBeschreibung: "Etwas ältere aber immer noch sehr brauchbare Schlagbohrmaschine von Bosch. Inklusive Griff und diversen Bohrköpfen und Bits. Etwas ältere aber immer noch sehr brauchbare Schlagbohrmaschine von Bosch. Inklusive Griff und diversen Bohrköpfen und Bits. Etwas ältere aber immer noch sehr brauchbare Schlagbohrmaschine von Bosch. Inklusive Griff und diversen Bohrköpfen und Bits. Etwas ältere aber immer noch sehr brauchbare Schlagbohrmaschine von Bosch. Inklusive Griff und diversen Bohrköpfen und Bits.",
-    ausleihfrist: "2 Stunden",
-    key: "3",
-    favored: true,
-  },
-  {
-    image: "../assets/testprofilpic.jpg",
-    besitzer: "peter",
-    produktName: "Stichsäge Holz Metall",
-    produktBeschreibung: "Etwas ältere aber immer noch sehr brauchbare Schlagbohrmaschine von Bosch. Inklusive Griff und diversen Bohrköpfen und Bits. Etwas ältere aber immer noch sehr brauchbare Schlagbohrmaschine von Bosch. Inklusive Griff und diversen Bohrköpfen und Bits. Etwas ältere aber immer noch sehr brauchbare Schlagbohrmaschine von Bosch. Inklusive Griff und diversen Bohrköpfen und Bits. Etwas ältere aber immer noch sehr brauchbare Schlagbohrmaschine von Bosch. Inklusive Griff und diversen Bohrköpfen und Bits.",
-    ausleihfrist: "2 Stunden",
-    key: "4",
-    favored: true,
-  },
-  {
-    image: "../assets/testprofilpic.jpg",
-    besitzer: "peter",
-    produktName: "Stichsäge Holz Metall",
-    produktBeschreibung: "Etwas ältere aber immer noch sehr brauchbare Schlagbohrmaschine von Bosch. Inklusive Griff und diversen Bohrköpfen und Bits. Etwas ältere aber immer noch sehr brauchbare Schlagbohrmaschine von Bosch. Inklusive Griff und diversen Bohrköpfen und Bits. Etwas ältere aber immer noch sehr brauchbare Schlagbohrmaschine von Bosch. Inklusive Griff und diversen Bohrköpfen und Bits. Etwas ältere aber immer noch sehr brauchbare Schlagbohrmaschine von Bosch. Inklusive Griff und diversen Bohrköpfen und Bits.",
-    ausleihfrist: "2 Stunden",
-    key: "5",
-    favored: true,
-  },
-];
+
 
 const SearchScreen = ({ navigation }) => {
+  
+  const [articles, setArticles] = useState([]);
+
+  async function getFavourites() {
+    const requestOptions = {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+    };
+    var res;
+    var resJson;
+    try {
+      res = await fetch(
+        BACKEND_URL +
+          'favourites',
+        requestOptions
+      );
+      resJson = await res.json();
+    } catch (err) {
+      console.log(err);
+    }
+    if (res.status === 200) {
+      setArticles(await resJson.data);
+    }
+  }
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener("focus", () => {
+      getFavourites();
+    });
+    return unsubscribe;
+  }, [navigation]);
+  
   return (
     <View>
       <SearchBar
@@ -69,19 +57,21 @@ const SearchScreen = ({ navigation }) => {
         }
         placeholder="Suche nach einem Nutzernamen"
       />
-      <Text style={styles.text}>Meine Favoriten:</Text>
+      <Text style={styles.text} onPress={() => console.log(articles)}>Meine Favoriten:</Text>
       <FlatList
-        data={array}
+        data={articles}
+        keyExtractor={(item) => item._id}
         renderItem={({ item }) => (
           <ItemLend
             navigation={navigation}
-            besitzer={item.besitzer}
-            articleId={item.articleId}
-            produktName={item.produktName}
-            beschreibung={item.produktBeschreibung}
-            ausleihfrist={item.ausleihfrist}
-            image={item.image}
+            besitzer={item.owner}
+            articleId={item._id}
+            produktName={item.title}
+            beschreibung={item.description}
+            ausleihfrist={item.duration}
+            image={item.images}
             favored={item.favored}
+            kategorie={item.category}
           />
         )}
       />
