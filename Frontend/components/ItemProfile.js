@@ -14,6 +14,7 @@ export default function ItemProfile({
   navigation,
   besitzer,
   produktName,
+  beschreibung,
   verliehen,
   image,
 }) {
@@ -25,6 +26,7 @@ export default function ItemProfile({
         navigation.navigate("Details", {
           besitzer: besitzer,
           produktName: produktName,
+          beschreibung: beschreibung
         })
       }
     >

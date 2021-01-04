@@ -9,6 +9,7 @@ let array = [
     image: "../assets/testprofilpic.jpg",
     besitzer: "peter",
     produktName: "Stichsäge Holz Metall",
+    produktBeschreibung: "Etwas ältere aber immer noch sehr brauchbare Schlagbohrmaschine von Bosch. Inklusive Griff und diversen Bohrköpfen und Bits. Etwas ältere aber immer noch sehr brauchbare Schlagbohrmaschine von Bosch. Inklusive Griff und diversen Bohrköpfen und Bits. Etwas ältere aber immer noch sehr brauchbare Schlagbohrmaschine von Bosch. Inklusive Griff und diversen Bohrköpfen und Bits. Etwas ältere aber immer noch sehr brauchbare Schlagbohrmaschine von Bosch. Inklusive Griff und diversen Bohrköpfen und Bits.",
     ausleihfrist: "2 Stunden",
     key: "1",
     favored: true,
@@ -17,6 +18,7 @@ let array = [
     image: "../asset/stestprofilpic.jpg",
     besitzer: "frank fritz",
     produktName: "Stichsäge",
+    produktBeschreibung: "Etwas ältere aber immer noch sehr brauchbare Schlagbohrmaschine von Bosch. Inklusive Griff und diversen Bohrköpfen und Bits. Etwas ältere aber immer noch sehr brauchbare Schlagbohrmaschine von Bosch. Inklusive Griff und diversen Bohrköpfen und Bits. Etwas ältere aber immer noch sehr brauchbare Schlagbohrmaschine von Bosch. Inklusive Griff und diversen Bohrköpfen und Bits. Etwas ältere aber immer noch sehr brauchbare Schlagbohrmaschine von Bosch. Inklusive Griff und diversen Bohrköpfen und Bits.",
     ausleihfrist: "3 Stunden",
     key: "2",
     favored: true,
@@ -25,6 +27,7 @@ let array = [
     image: "../assets/testprofilpic.jpg",
     besitzer: "peter",
     produktName: "Stichsäge Holz Metall",
+    produktBeschreibung: "Etwas ältere aber immer noch sehr brauchbare Schlagbohrmaschine von Bosch. Inklusive Griff und diversen Bohrköpfen und Bits. Etwas ältere aber immer noch sehr brauchbare Schlagbohrmaschine von Bosch. Inklusive Griff und diversen Bohrköpfen und Bits. Etwas ältere aber immer noch sehr brauchbare Schlagbohrmaschine von Bosch. Inklusive Griff und diversen Bohrköpfen und Bits. Etwas ältere aber immer noch sehr brauchbare Schlagbohrmaschine von Bosch. Inklusive Griff und diversen Bohrköpfen und Bits.",
     ausleihfrist: "2 Stunden",
     key: "3",
     favored: true,
@@ -33,6 +36,7 @@ let array = [
     image: "../assets/testprofilpic.jpg",
     besitzer: "peter",
     produktName: "Stichsäge Holz Metall",
+    produktBeschreibung: "Etwas ältere aber immer noch sehr brauchbare Schlagbohrmaschine von Bosch. Inklusive Griff und diversen Bohrköpfen und Bits. Etwas ältere aber immer noch sehr brauchbare Schlagbohrmaschine von Bosch. Inklusive Griff und diversen Bohrköpfen und Bits. Etwas ältere aber immer noch sehr brauchbare Schlagbohrmaschine von Bosch. Inklusive Griff und diversen Bohrköpfen und Bits. Etwas ältere aber immer noch sehr brauchbare Schlagbohrmaschine von Bosch. Inklusive Griff und diversen Bohrköpfen und Bits.",
     ausleihfrist: "2 Stunden",
     key: "4",
     favored: true,
@@ -41,6 +45,7 @@ let array = [
     image: "../assets/testprofilpic.jpg",
     besitzer: "peter",
     produktName: "Stichsäge Holz Metall",
+    produktBeschreibung: "Etwas ältere aber immer noch sehr brauchbare Schlagbohrmaschine von Bosch. Inklusive Griff und diversen Bohrköpfen und Bits. Etwas ältere aber immer noch sehr brauchbare Schlagbohrmaschine von Bosch. Inklusive Griff und diversen Bohrköpfen und Bits. Etwas ältere aber immer noch sehr brauchbare Schlagbohrmaschine von Bosch. Inklusive Griff und diversen Bohrköpfen und Bits. Etwas ältere aber immer noch sehr brauchbare Schlagbohrmaschine von Bosch. Inklusive Griff und diversen Bohrköpfen und Bits.",
     ausleihfrist: "2 Stunden",
     key: "5",
     favored: true,
@@ -71,6 +76,7 @@ const SearchScreen = ({ navigation }) => {
             navigation={navigation}
             besitzer={item.besitzer}
             produktName={item.produktName}
+            beschreibung={item.produktBeschreibung}
             ausleihfrist={item.ausleihfrist}
             image={item.image}
             favored={item.favored}

@@ -2,7 +2,7 @@ import { BACKEND_URL } from "@env";
 import AsyncStorage from "@react-native-community/async-storage";
 import React, { useContext, useReducer } from "react";
 import { loginReducer, initialLoginState } from "../reducers/loginReducer";
-import { AuthContext } from "../context"
+import { AuthContext } from "../context";
 import {
   StyleSheet,
   Text,
@@ -24,7 +24,7 @@ const RegisterScreen = ({ navigation }) => {
     street: "",
     PLZ: "",
     city: "",
-    country: "",
+    country: "de",
     aboutMe: "",
     check_textInputChange: false,
     secureTextEntry: true,
@@ -101,6 +101,7 @@ const RegisterScreen = ({ navigation }) => {
       ...data,
       country: value,
     });
+    console.log(data);
   };
 
   const handleAboutMEChange = (value) => {
@@ -112,30 +113,19 @@ const RegisterScreen = ({ navigation }) => {
 
   const handleRegistration = async () => {
     const formdata = new FormData();
-    if (data.picture) formdata.append('picture', picture);
-    formdata.append('username', data.username);
-    formdata.append('password', data.password);
-    formdata.append('email', data.email);
-    formdata.append('phone', data.phone);
-    formdata.append('street', data.street);
-    formdata.append('zipCode', data.PLZ);
-    formdata.append('city', data.city);
-    formdata.append('country', data.country);
-    formdata.append('info', data.aboutMe);
-
-    const jsondata = JSON.stringify({
-      'username': data.username,
-      'password': data.password,
-      'email': data.email,
-      'phone': data.phone,
-      'street': data.street,
-      'zipCode': data.PLZ,
-      'city': data.city,
-      'country': data.country,
-      'info': data.aboutMe
-    });
-    signUp(jsondata);
-  }
+    if (data.picture) formdata.append("picture", picture);
+    formdata.append("username", data.username);
+    formdata.append("password", data.password);
+    formdata.append("email", data.email);
+    formdata.append("phone", data.phone);
+    formdata.append("street", data.street);
+    formdata.append("zipCode", data.PLZ);
+    formdata.append("city", data.city);
+    formdata.append("country", data.country);
+    formdata.append("info", data.aboutMe);
+    
+    signUp(formdata);
+  };
 
   return (
     <KeyboardAwareScrollView style={{ flex: 1 }}>
@@ -228,9 +218,10 @@ const RegisterScreen = ({ navigation }) => {
             style={{ backgroundColor: "#fff", width: "95%", height: 40 }}
             itemStyle={{ justifyContent: "flex-start" }}
             mode={"dropdown"}
-            onValueChange={(itemValue, itemIndex) => handleCountryChange(itemValue)}
+            onValueChange={(itemValue, itemIndex) =>
+              handleCountryChange(itemValue)
+            }
           >
-            <Picker.Item label="Land auswählen..." value="xx" />
             <Picker.Item label="Deutschland" value="de" />
             <Picker.Item label="Österreich" value="au" />
             <Picker.Item label="Schweiz" value="ch" />
@@ -255,8 +246,6 @@ const RegisterScreen = ({ navigation }) => {
         </TouchableOpacity>
       </View>
     </KeyboardAwareScrollView>
-
-
   );
 };
 

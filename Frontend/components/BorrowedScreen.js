@@ -10,6 +10,7 @@ const BorrowedScreen = ({ navigation }) => {
       image: "../assets/testprofilpic.jpg",
       besitzer: "peter Lustig",
       produktName: "Stichsäge Holz Metall",
+      produktBeschreibung: "Etwas ältere aber immer noch sehr brauchbare Schlagbohrmaschine von Bosch. Inklusive Griff und diversen Bohrköpfen und Bits. Etwas ältere aber immer noch sehr brauchbare Schlagbohrmaschine von Bosch. Inklusive Griff und diversen Bohrköpfen und Bits. Etwas ältere aber immer noch sehr brauchbare Schlagbohrmaschine von Bosch. Inklusive Griff und diversen Bohrköpfen und Bits. Etwas ältere aber immer noch sehr brauchbare Schlagbohrmaschine von Bosch. Inklusive Griff und diversen Bohrköpfen und Bits.",
       ausleihfrist: "2 Stunden",
       key: "1",
     },
@@ -17,6 +18,7 @@ const BorrowedScreen = ({ navigation }) => {
       image: "../asset/stestprofilpic.jpg",
       besitzer: "frank fritz",
       produktName: "Stichsäge",
+      produktBeschreibung: "Etwas ältere aber immer noch sehr brauchbare Schlagbohrmaschine von Bosch. Inklusive Griff und diversen Bohrköpfen und Bits. Etwas ältere aber immer noch sehr brauchbare Schlagbohrmaschine von Bosch. Inklusive Griff und diversen Bohrköpfen und Bits. Etwas ältere aber immer noch sehr brauchbare Schlagbohrmaschine von Bosch. Inklusive Griff und diversen Bohrköpfen und Bits. Etwas ältere aber immer noch sehr brauchbare Schlagbohrmaschine von Bosch. Inklusive Griff und diversen Bohrköpfen und Bits.",
       ausleihfrist: "3 Stunden",
       key: "2",
     },
@@ -24,6 +26,7 @@ const BorrowedScreen = ({ navigation }) => {
       image: "../assets/testprofilpic.jpg",
       besitzer: "peter",
       produktName: "Stichsäge Holz Metall",
+      produktBeschreibung: "Etwas ältere aber immer noch sehr brauchbare Schlagbohrmaschine von Bosch. Inklusive Griff und diversen Bohrköpfen und Bits. Etwas ältere aber immer noch sehr brauchbare Schlagbohrmaschine von Bosch. Inklusive Griff und diversen Bohrköpfen und Bits. Etwas ältere aber immer noch sehr brauchbare Schlagbohrmaschine von Bosch. Inklusive Griff und diversen Bohrköpfen und Bits. Etwas ältere aber immer noch sehr brauchbare Schlagbohrmaschine von Bosch. Inklusive Griff und diversen Bohrköpfen und Bits.",
       ausleihfrist: "2 Stunden",
       key: "3",
     },
@@ -31,6 +34,7 @@ const BorrowedScreen = ({ navigation }) => {
       image: "../assets/testprofilpic.jpg",
       besitzer: "peter",
       produktName: "Stichsäge Holz Metall",
+      produktBeschreibung: "Etwas ältere aber immer noch sehr brauchbare Schlagbohrmaschine von Bosch. Inklusive Griff und diversen Bohrköpfen und Bits. Etwas ältere aber immer noch sehr brauchbare Schlagbohrmaschine von Bosch. Inklusive Griff und diversen Bohrköpfen und Bits. Etwas ältere aber immer noch sehr brauchbare Schlagbohrmaschine von Bosch. Inklusive Griff und diversen Bohrköpfen und Bits. Etwas ältere aber immer noch sehr brauchbare Schlagbohrmaschine von Bosch. Inklusive Griff und diversen Bohrköpfen und Bits.",
       ausleihfrist: "2 Stunden",
       key: "4",
     },
@@ -38,6 +42,7 @@ const BorrowedScreen = ({ navigation }) => {
       image: "../assets/testprofilpic.jpg",
       besitzer: "peter",
       produktName: "Stichsäge Holz Metall",
+      produktBeschreibung: "Etwas ältere aber immer noch sehr brauchbare Schlagbohrmaschine von Bosch. Inklusive Griff und diversen Bohrköpfen und Bits. Etwas ältere aber immer noch sehr brauchbare Schlagbohrmaschine von Bosch. Inklusive Griff und diversen Bohrköpfen und Bits. Etwas ältere aber immer noch sehr brauchbare Schlagbohrmaschine von Bosch. Inklusive Griff und diversen Bohrköpfen und Bits. Etwas ältere aber immer noch sehr brauchbare Schlagbohrmaschine von Bosch. Inklusive Griff und diversen Bohrköpfen und Bits.",
       ausleihfrist: "2 Stunden",
       key: "5",
     },
@@ -60,6 +65,7 @@ const BorrowedScreen = ({ navigation }) => {
             navigation={navigation}
             besitzer={item.besitzer}
             produktName={item.produktName}
+            beschreibung={item.produktBeschreibung}
             ausleihfrist={item.ausleihfrist}
             image={item.image}
           />

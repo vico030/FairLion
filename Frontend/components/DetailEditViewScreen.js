@@ -17,7 +17,7 @@ const DetailEditViewScreen = ({
   route,
   navigation,
 }) => {
-  const { besitzer, images, produktName, produktBeschreibung, ausleihfrist, kategorie} = route.params;
+  const { besitzer, images, produktName, ausleihfrist, kategorie, beschreibung} = route.params;
 
   return (
     <ScrollView style={styles.container}>
@@ -50,14 +50,7 @@ const DetailEditViewScreen = ({
           <View style={styles.verticalLine} />
           <View style={styles.items}>
             <Text style={{ width: "100%", fontSize: 12 }}>
-              Etwas ältere aber immer noch sehr brauchbare Schlagbohrmaschine
-              von Bosch. Inklusive Griff und diversen Bohrköpfen und Bits. Etwas
-              ältere aber immer noch sehr brauchbare Schlagbohrmaschine von
-              Bosch. Inklusive Griff und diversen Bohrköpfen und Bits. Etwas
-              ältere aber immer noch sehr brauchbare Schlagbohrmaschine von
-              Bosch. Inklusive Griff und diversen Bohrköpfen und Bits. Etwas
-              ältere aber immer noch sehr brauchbare Schlagbohrmaschine von
-              Bosch. Inklusive Griff und diversen Bohrköpfen und Bits.
+              {beschreibung}
             </Text>
           </View>
         </View>
@@ -78,11 +71,6 @@ const DetailEditViewScreen = ({
             <Text style={styles.elementTextLeft}>Kategorie:</Text>
             <Text style={styles.elementTextRight}>Werkzeug</Text>
           </View>
-
-          {/* <View style={styles.element}>
-              <Text style={styles.elementTextLeft}>Status:</Text>
-              <Text style={styles.elementTextRight}>Noch: 13 Stunde(n)</Text>
-        </View> */}
         </View>
 
         <View style={styles.buttonContainer}>
@@ -90,7 +78,7 @@ const DetailEditViewScreen = ({
             style={styles.button}
             onPress={() => navigation.navigate("EditItem", {
                 titel: produktName,
-                beschreibung: produktBeschreibung,
+                beschreibung: beschreibung,
                 frist: ausleihfrist,
                 kategorie: kategorie,
               })

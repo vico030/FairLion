@@ -1,3 +1,4 @@
+import { IMAGE_URL } from "@env";
 import React from "react";
 import {
   View,
@@ -9,23 +10,23 @@ import {
 } from "react-native";
 const { width: windowWidth, height: windowHeight } = Dimensions.get("window");
 
-const slideList = Array.from({ length: 5 }).map((_, i) => {
-  return {
-    id: i.toString(),
-    image: `https://picsum.photos/1440/2842?random=${i}`,
-    title: "Bohrmaschine Bosch",
-  };
-});
-
-function Slide({ data }) {
-  return (
-    <View style={styles.slide}>
-      <Image source={{ uri: data.image }} style={styles.image} />
-    </View>
-  );
-}
-
 export default function Carousel({ images }) {
+
+  const slideList = Array.from(images).map((_, i) => {
+    return {
+      id: i.toString(),
+      image: IMAGE_URL+images[i]
+    };
+  });
+  
+  function Slide({data}) {
+    return (
+      <View style={styles.slide}>
+        <Image source={{ uri: data.image }} style={styles.image} />
+      </View>
+    );
+  }
+  
   return (
     <View style={styles.container}>
       <FlatList

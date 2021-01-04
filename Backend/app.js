@@ -15,6 +15,8 @@ app.use(cookieParser());
 app.use(bodyparser.json());
 
 // Routes
+app.use('/files', express.static('files'));
+
 app.use('/', allRoutes.indexRoute);
 app.use("/favourites", allRoutes.favoritesRoute);
 app.use('/users', allRoutes.usersRoute);

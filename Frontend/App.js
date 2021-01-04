@@ -93,7 +93,7 @@ export default function App() {
       let requestOptions = {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "multipart/form-data",
           "Accept": "application/json",
         },
         body: data

@@ -9,7 +9,7 @@ import * as Permissions from "expo-permissions";
 import * as ImagePicker from "expo-image-picker";
 import { MaterialIcons } from "@expo/vector-icons";
 
-export default function ImageChooser() {
+export default function ImageChooser(props) {
   const [imageSource, setImageSource] = useState(null);
 
   getPermissionAsync = async () => {
@@ -32,7 +32,7 @@ export default function ImageChooser() {
       quality: 1,
     });
 
-    console.log(result);
+    props.handleImages([result.uri]);
 
     if (!result.cancelled) {
       setImageSource(result.uri);
