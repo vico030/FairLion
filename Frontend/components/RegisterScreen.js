@@ -212,11 +212,14 @@ const RegisterScreen = ({ navigation }) => {
           />
         </View>
 
-        <View style={styles.picker}>
+        <View style={styles.pickerView}>
+          <Text style={styles.text}>Wähle ein Land:</Text>
+
+          <View style={styles.pickerContainer}>
           <Picker
             selectedValue={data.country}
-            style={{ backgroundColor: "#fff", width: "95%", height: 40 }}
-            itemStyle={{ justifyContent: "flex-start" }}
+            style={styles.picker}
+            itemStyle={styles.pickerItems}
             mode={"dropdown"}
             onValueChange={(itemValue, itemIndex) =>
               handleCountryChange(itemValue)
@@ -226,7 +229,9 @@ const RegisterScreen = ({ navigation }) => {
             <Picker.Item label="Österreich" value="au" />
             <Picker.Item label="Schweiz" value="ch" />
           </Picker>
+          </View>
         </View>
+
       </View>
 
       <View style={styles.userPersonalInfo}>
@@ -322,5 +327,50 @@ const styles = StyleSheet.create({
   buttonText: {
     color: "#fff",
     fontSize: 20,
+  },
+
+  pickerView: {
+    flexDirection: "row",
+    paddingHorizontal: 20,
+    alignItems: "center",
+    borderBottomColor: "#C6C6C8",
+    borderBottomWidth: 0.5,
+    ...Platform.select({
+      ios: {
+        height: 88,
+        paddingHorizontal: 20,
+      },
+      android: {
+        height: 50,
+        paddingHorizontal: 15,
+      },
+      default: {
+        height: 50,
+        paddingHorizontal: 15,
+      },
+    }),
+  },
+  pickerContainer: {
+    //flex: 1,
+    width: "65%",
+    height: "100%",
+    justifyContent: "center",
+  },
+  picker: {
+    width: "100%",
+    height: 88,
+    fontSize: 14,
+    color: "#000",
+  },
+  pickerItems: {
+    fontSize: 14,
+    height: 88,
+    color: "#000",
+  },
+  text: {
+    width: "35%",
+    fontSize: 14,
+    color: "#7E7E7E",
+    alignContent: "center",
   },
 });
