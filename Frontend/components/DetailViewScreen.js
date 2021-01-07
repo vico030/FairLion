@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { BACKEND_URL } from "@env";
 import {
   View,
@@ -50,6 +50,47 @@ const DetailViewScreen = ({ route, navigation }) => {
       Alert.alert("Fehler", errMess.message);
     }
   }
+
+  const isRequested = async () => {
+    let res;
+    let requestOptions = {
+      method: 'GET',
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+      }
+    }
+
+    try{
+      res = await fetch(BACKEND_URL + "articleRequest/pending", requestOptions)
+    }
+    catch(err) {
+      console.log(err);
+    }
+
+    if(res.status === 200) {
+      let response = await res.json();
+      let requestedArticles = response["data"]
+      for(let art of requestedArticles) {
+        if(art["articleId"] === articleId) {
+          setRequested(true);
+          return
+        }
+      }
+      setRequested(false);
+    }
+    else if(res.status === 500) {
+      const errMess = await res.json();
+      Alert.alert("Fehler", errMess.message);
+    }
+    else {
+      setRequested(false);
+    }
+  }
+
+  useEffect(() => {
+    isRequested()
+  }, []);
 
   return (
     <ScrollView style={styles.container}>
