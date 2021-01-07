@@ -1,4 +1,5 @@
 import React from "react";
+import { IMAGE_URL } from "@env";
 import {
   View,
   Text,
@@ -16,25 +17,31 @@ export default function ItemLend({
   produktName,
   beschreibung,
   ausleihfrist,
+  images,
   favored,
+  kategorie,
+  status,
 }) {
+  console.log(images);
   return (
-    // change image link to correct parameter url
     <TouchableOpacity
       style={styles.itemStyle}
       onPress={() =>
         navigation.navigate("Details", {
           besitzer: besitzer,
           produktName: produktName,
-          images: "test",
+          images: images,
           beschreibung: beschreibung,
+          ausleihfrist: ausleihfrist,
+          kategorie: kategorie,
+          status: status,
         })
       }
     >
       <View>
         <Image
           style={styles.itemImage}
-          source={require(`../assets/testprofilpic.jpg`)}
+          source={{ uri: IMAGE_URL + images[0] }}
         />
       </View>
       <View style={styles.itemBottomView}>

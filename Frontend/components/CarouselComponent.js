@@ -11,22 +11,22 @@ import {
 const { width: windowWidth, height: windowHeight } = Dimensions.get("window");
 
 export default function Carousel({ images }) {
-
+  console.log(images);
   const slideList = Array.from(images).map((_, i) => {
     return {
       id: i.toString(),
-      image: IMAGE_URL+images[i]
+      image: IMAGE_URL + images[i],
     };
   });
-  
-  function Slide({data}) {
+
+  function Slide({ data }) {
     return (
       <View style={styles.slide}>
         <Image source={{ uri: data.image }} style={styles.image} />
       </View>
     );
   }
-  
+
   return (
     <View style={styles.container}>
       <FlatList

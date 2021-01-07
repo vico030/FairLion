@@ -13,8 +13,17 @@ import UserButton from "./UserButton";
 
 const windowHeight = Dimensions.get("window").height;
 
-const DetailViewScreen = ({ route, ausleihfrist, images, navigation }) => {
-  const { besitzer, produktName, beschreibung } = route.params;
+const DetailViewScreen = ({ route, navigation }) => {
+  const {
+    besitzer,
+    produktName,
+    beschreibung,
+    images,
+    ausleihfrist,
+    kategorie,
+    status,
+  } = route.params;
+  console.log(images);
   return (
     <ScrollView style={styles.container}>
       <View style={styles.main}>
@@ -45,9 +54,7 @@ const DetailViewScreen = ({ route, ausleihfrist, images, navigation }) => {
           </View>
           <View style={styles.verticalLine} />
           <View style={styles.items}>
-            <Text style={{ width: "100%", fontSize: 12 }}>
-              {beschreibung}
-            </Text>
+            <Text style={{ width: "100%", fontSize: 12 }}>{beschreibung}</Text>
           </View>
         </View>
 
@@ -60,21 +67,24 @@ const DetailViewScreen = ({ route, ausleihfrist, images, navigation }) => {
 
           <View style={styles.element}>
             <Text style={styles.elementTextLeft}>Ausleihbar für:</Text>
-            <Text style={styles.elementTextRight}>3 Woche(n)</Text>
+            <Text style={styles.elementTextRight}>{ausleihfrist}</Text>
           </View>
 
           <View style={styles.element}>
             <Text style={styles.elementTextLeft}>Kategorie:</Text>
-            <Text style={styles.elementTextRight}>Werkzeug</Text>
+            <Text style={styles.elementTextRight}>{kategorie}</Text>
           </View>
 
           <View style={styles.element}>
             <Text style={styles.elementTextLeft}>Status:</Text>
-            <Text style={styles.elementTextRight}>Noch: 13 Stunde(n)</Text>
+            <Text style={styles.elementTextRight}>{status}</Text>
           </View>
         </View>
         <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.signUpBtn}>
+          <TouchableOpacity
+            style={styles.signUpBtn}
+            disabled={status === "Vorhanden" ? false : true}
+          >
             <Text style={styles.loginText}>Anfragen</Text>
           </TouchableOpacity>
         </View>

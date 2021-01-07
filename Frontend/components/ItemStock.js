@@ -18,7 +18,7 @@ export default function ItemStock({
   images,
   kategorie,
   navigation,
-  beschreibung
+  beschreibung,
 }) {
   return (
     // change image link to correct parameter url
@@ -31,14 +31,14 @@ export default function ItemStock({
           produktName: produktName,
           ausleihfrist: ausleihfrist,
           kategorie: kategorie,
-          beschreibung: beschreibung
+          beschreibung: beschreibung,
         })
       }
     >
       <View>
         <Image
           style={styles.itemImage}
-          source={{uri: IMAGE_URL+images[0]}}
+          source={{ uri: IMAGE_URL + images[0] }}
         />
       </View>
       <View style={styles.itemBottomView}>
