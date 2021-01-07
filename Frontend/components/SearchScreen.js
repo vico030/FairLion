@@ -1,5 +1,5 @@
-import { View, Text, StyleSheet, FlatList, Alert } from "react-native";
-import React, { useState } from "react";
+import { View, Text, StyleSheet, FlatList } from "react-native";
+import React, { useState, useEffect } from "react";
 import { SearchBar } from "react-native-elements";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import ItemSearch from "./ItemSearch";
@@ -48,10 +48,41 @@ const SearchScreen = ({ navigation }) => {
     setSearchInput(input);
     console.log(input);
     if (input.length != 0) setSearching(true);
-    else setSearching(false);
+    else {
+      setSearching(false);
+      getFavourites();
+    }
     setArticles([]);
     if (input.length != 0) fetchArticles();
   };
+
+  async function getFavourites() {
+    const requestOptions = {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+    };
+    var res;
+    var resJson;
+    try {
+      res = await fetch(BACKEND_URL + "favourites", requestOptions);
+      resJson = await res.json();
+    } catch (err) {
+      console.log(err);
+    }
+    if (res.status === 200) {
+      setArticles(await resJson.data);
+    }
+  }
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener("focus", () => {
+      if (searchInput.length === 0) getFavourites();
+    });
+    return unsubscribe;
+  }, [navigation]);
 
   return (
     <View>
