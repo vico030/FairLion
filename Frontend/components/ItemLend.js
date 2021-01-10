@@ -1,3 +1,4 @@
+import {IMAGE_URL} from '@env';
 import React from "react";
 import {
   View,
@@ -16,7 +17,9 @@ export default function ItemLend({
   produktName,
   beschreibung,
   ausleihfrist,
-  favored,
+  kategorie,
+  images,
+  favored
 }) {
   return (
     // change image link to correct parameter url
@@ -26,7 +29,9 @@ export default function ItemLend({
         navigation.navigate("Details", {
           besitzer: besitzer,
           produktName: produktName,
-          images: "test",
+          images: images,
+          ausleihfrist: ausleihfrist,
+          kategorie: kategorie,
           beschreibung: beschreibung
         })
       }
@@ -34,7 +39,7 @@ export default function ItemLend({
       <View>
         <Image
           style={styles.itemImage}
-          source={require(`../assets/testprofilpic.jpg`)}
+          source={{uri: IMAGE_URL+images[0]}}
         />
       </View>
       <View style={styles.itemBottomView}>
