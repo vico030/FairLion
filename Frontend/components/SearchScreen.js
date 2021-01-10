@@ -69,7 +69,7 @@ const SearchScreen = ({ navigation }) => {
             produktName={item.title}
             beschreibung={item.description}
             ausleihfrist={item.duration}
-            image={item.images}
+            images={item.images}
             favored={item.favored}
             kategorie={item.category}
           />

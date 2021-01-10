@@ -26,7 +26,7 @@ export default function Carousel({ images }) {
       </View>
     );
   }
-  
+  // Hi
   return (
     <View style={styles.container}>
       <FlatList
