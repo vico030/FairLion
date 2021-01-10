@@ -2,13 +2,30 @@ const ArticleRequest = require("../models/ArticleRequestModel");
 const Article = require("../models/ArticleModel");
 const ArticleModel = require("../models/ArticleModel");
 const ArticleRequestModel = require("../models/ArticleRequestModel");
+const UserModel = require("../models/UserModel");
 
 const getArticleRequests = function (userId, type) {
   return new Promise((resolve, reject) => {
     ArticleRequest.find({ [type]: userId })
-      .then((articleRequests) => {
+      .then(async (articleRequests) => {
+        const requestsWithAddtionialData = await Promise.all(articleRequests.map(async request => {
+          try {
+            const { title } = await ArticleModel.findById(request.articleId);
+            const { username: ownerName } = await UserModel.findById(request.owner);
+            const newRequest = {
+              ...request.toObject(),
+              title,
+              ownerName
+            }
+            return newRequest;
+          }
+          catch (err) {
+            console.log(err);
+            return request;
+          }
+        }));
         return resolve({
-          data: articleRequests,
+          data: requestsWithAddtionialData,
           message: "Einträge wurden gefunden.",
           status: 200,
         });
@@ -146,8 +163,8 @@ async function addReturnDateToArticle(id) {
     const durationArray = duration.split(" "); //split value from unit
     const dateInDurationSpan = new Date(
       Date.now() +
-        durations[durationArray[1].replace(/s$/, "")] *
-          parseInt(durationArray[0])
+      durations[durationArray[1].replace(/s$/, "")] *
+      parseInt(durationArray[0])
     );
     await ArticleModel.findByIdAndUpdate(id, {
       returnDate: dateInDurationSpan,
