@@ -18,7 +18,6 @@ const RequestsScreen = ({ navigation }) => {
   useEffect(() => {
     fetch(BACKEND_URL + "articleRequest")
       .then(response => {
-        console.log("response", response);
         return response.json();
       })
       .then(data => {
@@ -37,7 +36,7 @@ const RequestsScreen = ({ navigation }) => {
       <FriendRequest name={array[0].name} wohnort={array[0].wohnort} />
 
       <Text style={styles.listHeader}>Artikel-Anfrage:</Text>
-      {error && alert(error.label)}
+      {error.occured && alert(error.label)}
       <FlatList
         data={requests}
         renderItem={({ item }) => (
@@ -47,6 +46,7 @@ const RequestsScreen = ({ navigation }) => {
             produktName={item.title}
           />
         )}
+        keyExtractor={(item, index) => index.toString()}
       />
     </View>
   );
