@@ -17,7 +17,7 @@ const DetailEditViewScreen = ({
   route,
   navigation,
 }) => {
-  const { besitzer, images, produktName, beschreibung, ausleihfrist, kategorie} = route.params;
+  const { besitzer, images, produktName, ausleihfrist, kategorie, beschreibung} = route.params;
 
   return (
     <ScrollView style={styles.container}>
@@ -71,11 +71,6 @@ const DetailEditViewScreen = ({
             <Text style={styles.elementTextLeft}>Kategorie:</Text>
             <Text style={styles.elementTextRight}>Werkzeug</Text>
           </View>
-
-          {/* <View style={styles.element}>
-              <Text style={styles.elementTextLeft}>Status:</Text>
-              <Text style={styles.elementTextRight}>Noch: 13 Stunde(n)</Text>
-        </View> */}
         </View>
 
         <View style={styles.buttonContainer}>

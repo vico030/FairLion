@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { BACKEND_URL } from "@env";
 import {
   StyleSheet,
   Text,
@@ -10,30 +11,132 @@ import {
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scrollview";
 import { Picker } from "@react-native-picker/picker";
 import ImageChooser from "./ImageChooser";
+import AsyncStorage from "@react-native-community/async-storage";
+import { Alert } from "react-native";
+import { isValid, isNotEmpty } from "../helpers/validation";
 
 const AddItemScreen = ({ navigation }) => {
-  const [timeFrame, setTimeFrame] = useState();
-  const [category, setCategory] = useState();
+  const [article, setArticle] = useState({
+    images: [],
+    durationValue: "",
+    durationUnit: "day",
+    title: "",
+    description: "",
+    category: "filme",
+  });
 
-  const timeFrameChange = (value) => {
-    console.log(value);
+  const durationValueChange = (value) => {
+    setArticle({
+      ...article,
+      durationValue: value,
+    });
+    console.log(article);
+  };
+
+  const durationUnitChange = (value) => {
+    setArticle({
+      ...article,
+      durationUnit: value,
+    });
+    console.log(article);
   };
 
   const titleChange = (value) => {
-    console.log(value);
+    setArticle({
+      ...article,
+      title: value,
+    });
+    console.log(article);
   };
 
   const descriptionChange = (value) => {
-    console.log(value);
+    setArticle({
+      ...article,
+      description: value,
+    });
+    console.log(article);
   };
 
   const categoryChange = (value) => {
-    console.log(value);
+    setArticle({
+      ...article,
+      category: value,
+    });
+    console.log(article);
+  };
+
+  const handleImages = (imageUris) => {
+    var images = [];
+    for (const uri of imageUris) {
+      var mime = uri.split(".").pop().toLowerCase();
+      const ext = mime;
+      if (mime === "jpg") mime = "jpeg"
+      const name = Math.floor(Math.random() * Math.floor(999999999999999999999));
+      images.push({ "uri": uri, "name": name + "." + ext, "type": "image/" + mime })
+    }
+    setArticle({
+      ...article,
+      images: images,
+    });
+  }
+
+  const submitArticle = async () => {
+
+    const formdata = new FormData();
+
+    if (article.images) {
+      for (const image of article.images) {
+        console.log(image);
+
+        formdata.append("images", image);
+      }
+    }
+
+    //if (article.images) formdata.append("images", picture);
+    formdata.append("title", article.title);
+    formdata.append("description", article.description);
+    formdata.append("duration", article.durationValue + " " + article.durationUnit);
+    formdata.append("category", article.category);
+    console.log(formdata);
+
+
+    const requestOptions = {
+      method: "POST",
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Accept: "application/json",
+      },
+      body: formdata,
+    };
+    var res;
+    try {
+      res = await fetch(
+        BACKEND_URL +
+        `users/${await AsyncStorage.getItem("userId")}/ownedArticles`,
+        requestOptions
+      );
+    } catch (err) {
+      console.log(err);
+    }
+    if (res.status === 201) {
+      console.log(res.data); // anzeigen der daten in local state des screens
+    } else if (res.status === 500) {
+      const resJson = await res.json();
+      Alert.alert(
+        "Fehler",
+        resJson,
+        [{ text: "OK", onPress: () => console.log("OK Pressed") }],
+        { cancelable: true }
+      );
+    }
+    console.log(res.status);
+    console.log(await AsyncStorage.getItem("userId"));
+    navigation.goBack();
   };
 
   return (
     <KeyboardAwareScrollView style={{ flex: 1 }}>
-      <ImageChooser />
+      <ImageChooser handleImages={handleImages} />
 
       <View style={styles.itemInfo}>
         <View style={styles.inputView}>
@@ -63,20 +166,22 @@ const AddItemScreen = ({ navigation }) => {
             keyboardType="number-pad"
             placeholder="..."
             placeholderTextColor="#7E7E7E"
-            onChangeText={(value) => timeFrameChange(value)}
+            onChangeText={(value) => durationValueChange(value)}
           />
 
           <View style={styles.datePickerContainer}>
             <Picker
-              selectedValue={timeFrame}
+              selectedValue={article.durationUnit}
               style={styles.datePicker}
               itemStyle={styles.datePickerItems}
               placeholder="Wähle eine Kategorie aus."
-              onValueChange={(itemValue, itemIndex) => setTimeFrame(itemValue)}
+              onValueChange={(itemValue, itemIndex) =>
+                durationUnitChange(itemValue)
+              }
             >
-              <Picker.Item label="Tag(e)" value="tage" />
-              <Picker.Item label="Woche(n)" value="wochen" />
-              <Picker.Item label="Monat(e)" value="monate" />
+              <Picker.Item label="Tag(e)" value="day" />
+              <Picker.Item label="Woche(n)" value="week" />
+              <Picker.Item label="Monat(e)" value="month" />
             </Picker>
           </View>
         </View>
@@ -86,11 +191,13 @@ const AddItemScreen = ({ navigation }) => {
 
           <View style={styles.pickerContainer}>
             <Picker
-              selectedValue={category}
+              selectedValue={article.category}
               style={styles.picker}
               itemStyle={styles.pickerItems}
               placeholder="Wähle eine Kategorie aus."
-              onValueChange={(itemValue, itemIndex) => setCategory(itemValue)}
+              onValueChange={(itemValue, itemIndex) =>
+                categoryChange(itemValue)
+              }
             >
               <Picker.Item label="Filme" value="filme" />
               <Picker.Item label="Bücher" value="buecher" />
@@ -107,7 +214,16 @@ const AddItemScreen = ({ navigation }) => {
       </View>
 
       <View style={styles.ButtonContainer}>
-        <TouchableOpacity style={styles.saveBtn}>
+        <TouchableOpacity
+          style={styles.saveBtn}
+          onPress={() => {
+            if (isNotEmpty(article.images, "Bild")
+              && isValid(article.title, "Titel") 
+              && isValid(article.description, "Beschreibung") 
+              && isValid(article.durationValue, "Zeitraum"))
+              submitArticle();
+          }}
+        >
           <Text style={styles.saveText}>Speichern</Text>
         </TouchableOpacity>
       </View>

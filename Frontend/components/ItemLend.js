@@ -21,6 +21,7 @@ export default function ItemLend({
   images,
   favored
 }) {
+  console.log(images)
   return (
     // change image link to correct parameter url
     <TouchableOpacity
