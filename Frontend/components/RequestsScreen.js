@@ -16,7 +16,7 @@ const RequestsScreen = ({ navigation }) => {
   })
 
   useEffect(() => {
-    fetch(BACKEND_URL + "articleRequesasast")
+    fetch(BACKEND_URL + "articleRequest")
       .then(response => {
         console.log("response", response);
         return response.json();
