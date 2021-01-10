@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useContext, useState, useEffect } from "react";
+import { BACKEND_URL } from "@env";
 import {
   View,
   Text,
@@ -6,6 +7,7 @@ import {
   TouchableOpacity,
   ScrollView,
   Dimensions,
+  Alert
 } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Carousel from "./CarouselComponent";
@@ -14,16 +16,82 @@ import UserButton from "./UserButton";
 const windowHeight = Dimensions.get("window").height;
 
 const DetailViewScreen = ({ route, navigation }) => {
-  const {
-    besitzer,
-    produktName,
-    beschreibung,
-    images,
-    ausleihfrist,
-    kategorie,
-    status,
-  } = route.params;
-  console.log(images);
+  const { besitzer, produktName, beschreibung, articleId, images, ausleihfrist, kategorie, status } = route.params;
+
+  const [requested, setRequested] = useState(false);
+
+  const handleLend = async () => {
+    console.log(articleId)
+    let res;
+    let requestOptions = {
+      method: 'POST',
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+      },
+      body: JSON.stringify({
+        articleId: articleId,
+      })
+    }
+
+    try{
+      res = await fetch(BACKEND_URL + "articleRequest", requestOptions)
+    }
+    catch(err) {
+      console.log(err);
+    }
+
+    if(res.status === 201) {
+      Alert.alert(besitzer +" wurde eine Anfrage gesendet")
+      setRequested(true);
+    }
+    else if(res.status === 500) {
+      const errMess = await res.json();
+      Alert.alert("Fehler", errMess.message);
+    }
+  }
+
+  const isRequested = async () => {
+    let res;
+    let requestOptions = {
+      method: 'GET',
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+      }
+    }
+
+    try{
+      res = await fetch(BACKEND_URL + "articleRequest/pending", requestOptions)
+    }
+    catch(err) {
+      console.log(err);
+    }
+
+    if(res.status === 200) {
+      let response = await res.json();
+      let requestedArticles = response["data"]
+      for(let art of requestedArticles) {
+        if(art["articleId"] === articleId) {
+          setRequested(true);
+          return
+        }
+      }
+      setRequested(false);
+    }
+    else if(res.status === 500) {
+      const errMess = await res.json();
+      Alert.alert("Fehler", errMess.message);
+    }
+    else {
+      setRequested(false);
+    }
+  }
+
+  useEffect(() => {
+    isRequested()
+  }, []);
+
   return (
     <ScrollView style={styles.container}>
       <View style={styles.main}>
@@ -81,11 +149,8 @@ const DetailViewScreen = ({ route, navigation }) => {
           </View>
         </View>
         <View style={styles.buttonContainer}>
-          <TouchableOpacity
-            style={styles.signUpBtn}
-            disabled={status === "Vorhanden" ? false : true}
-          >
-            <Text style={styles.loginText}>Anfragen</Text>
+          <TouchableOpacity disabled={requested} style={requested? styles.disabledBtn:styles.signUpBtn} onPress={() => handleLend()}>
+            <Text style={styles.loginText}>{requested? "Angefragt":"Anfragen"}</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -202,6 +267,23 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 4,
   },
+  disabledBtn: {
+    width: "60%",
+    backgroundColor: "#CFCFCF",
+    borderRadius: 25,
+    height: 45,
+    alignItems: "center",
+    justifyContent: "center",
+    marginVertical: 20,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+  },
+
   loginText: {
     color: "#fff",
     fontSize: 18,

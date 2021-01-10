@@ -20,6 +20,7 @@ export default function ItemStock({
   navigation,
   beschreibung,
 }) {
+  // Hier steht nur Text, damit da Bilder sind
   return (
     // change image link to correct parameter url
     <TouchableOpacity

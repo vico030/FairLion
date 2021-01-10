@@ -1,9 +1,9 @@
+import { BACKEND_URL } from "@env";
 import { View, Text, StyleSheet, FlatList } from "react-native";
 import React, { useState, useEffect } from "react";
 import { SearchBar } from "react-native-elements";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import ItemSearch from "./ItemSearch";
-import { BACKEND_URL } from "@env";
 import AsyncStorage from "@react-native-community/async-storage";
 
 const SearchScreen = ({ navigation }) => {
@@ -128,6 +128,7 @@ const SearchScreen = ({ navigation }) => {
             beschreibung={item.description}
             favored={item.favourite}
             status={item.status}
+            articleId={item._id}
           />
         )}
       />

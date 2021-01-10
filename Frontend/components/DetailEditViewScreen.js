@@ -64,12 +64,12 @@ const DetailEditViewScreen = ({
 
           <View style={styles.element}>
             <Text style={styles.elementTextLeft}>Ausleihbar für:</Text>
-            <Text style={styles.elementTextRight}>3 Woche(n)</Text>
+            <Text style={styles.elementTextRight}>{ausleihfrist}</Text>
           </View>
 
           <View style={styles.element}>
             <Text style={styles.elementTextLeft}>Kategorie:</Text>
-            <Text style={styles.elementTextRight}>Werkzeug</Text>
+            <Text style={styles.elementTextRight}>{kategorie}</Text>
           </View>
         </View>
 

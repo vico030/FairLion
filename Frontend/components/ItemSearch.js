@@ -11,7 +11,7 @@ import {
 import UserButton from "./UserButton";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
-export default function ItemLend({
+export default function ItemSearch({
   navigation,
   besitzer,
   produktName,
@@ -21,6 +21,7 @@ export default function ItemLend({
   favored,
   kategorie,
   status,
+  articleId
 }) {
   console.log(images);
   return (
@@ -35,6 +36,7 @@ export default function ItemLend({
           ausleihfrist: ausleihfrist,
           kategorie: kategorie,
           status: status,
+          articleId: articleId
         })
       }
     >

@@ -86,7 +86,7 @@ const AddItemScreen = ({ navigation }) => {
 
     if (article.images) {
       for (const image of article.images) {
-        console.log(image);
+        //console.log(image);
 
         formdata.append("images", image);
       }
@@ -119,7 +119,6 @@ const AddItemScreen = ({ navigation }) => {
       console.log(err);
     }
     if (res.status === 201) {
-      console.log(res.data); // anzeigen der daten in local state des screens
     } else if (res.status === 500) {
       const resJson = await res.json();
       Alert.alert(
