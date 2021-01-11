@@ -4,3 +4,4 @@ testing
 .vscode/
 /files/*
 !/files/donotdelete
+!/files/default_profile.png

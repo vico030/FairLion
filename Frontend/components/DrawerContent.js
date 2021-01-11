@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   View,
   Button,
@@ -10,10 +10,29 @@ import {
 } from "react-native";
 import { AuthContext } from "../context";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import AsyncStorage from "@react-native-community/async-storage";
 
 
 export default function DrawerContent({ navigation }) {
   const { signOut } = useContext(AuthContext);
+
+  const [username, setUsername] = useState("");
+  const [city, setCity] = useState("");
+  const [image, setImage] = useState("");
+
+  const getUserdata = async () => {
+    try {
+      setUsername(await AsyncStorage.getItem("username"));
+      setCity(await AsyncStorage.getItem("city"));
+      setImage(await AsyncStorage.getItem("image"));
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  useEffect(() => {
+    getUserdata();
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -31,7 +50,7 @@ export default function DrawerContent({ navigation }) {
         </View>
 
       </View>
-      
+
       <View style={styles.divider} />
 
       <TouchableOpacity
@@ -40,11 +59,11 @@ export default function DrawerContent({ navigation }) {
       >
         <Image
           style={styles.profilImage}
-          source={require("../assets/testprofilpic.jpg")}
+          source={image ? { uri: image} : null}
         />
         <View style={styles.rightContainer}>
-          <Text style={styles.profilTextName}>John</Text>
-          <Text style={styles.profilTextWohnort}>Berlin Steglitz</Text>
+          <Text style={styles.profilTextName}>{username}</Text>
+          <Text style={styles.profilTextWohnort}>{city}</Text>
         </View>
       </TouchableOpacity>
 
