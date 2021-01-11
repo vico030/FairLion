@@ -13,12 +13,34 @@ export default function Friend({
   wohnort,
   artikelzahl,
   image,
+  friendId,
+  strasse,
+  plz,
+  land,
+  info,
+  email,
+  telefon,
   navigation,
 }) {
   return (
     <TouchableOpacity
       style={styles.wrapper}
-      onPress={() => navigation.navigate("Profile")}
+      onPress={() => {
+        console.log(name)
+        navigation.navigate("Profile", {
+          name: name,
+          wohnort: wohnort,
+          artikelzahl: artikelzahl,
+          image: image,
+          friendId: friendId,
+          strasse: strasse,
+          plz: plz,
+          land: land,
+          info: info,
+          email: email,
+          telefon: telefon,
+        })
+      }}
     >
       <Image
         style={styles.profilePicture}

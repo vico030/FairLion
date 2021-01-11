@@ -2,22 +2,34 @@ import React from "react";
 import { View, Text, StyleSheet, Image, Dimensions } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
-export default function ProfileInfoBox() {
+export default function ProfileInfoBox({
+  name,
+  wohnort,
+  artikelzahl,
+  image,
+  friendId,
+  strasse,
+  plz,
+  land,
+  info,
+  email,
+  telefon,
+}) {
   return (
-    <View style={{backgroundColor: "#fff"}}>
+    <View style={{ backgroundColor: "#fff" }}>
 
       <View style={styles.wrapper}>
-        
+
         <Image
           style={styles.profilePicture}
           source={require(`../assets/testprofilpic.jpg`)}
         />
 
         <View style={styles.middleInfo}>
-          <Text style={styles.textName}>Talha</Text>
-          <Text stlye={styles.userAddress}>Karl-Marx-Straße 34</Text>
-          <Text stlye={styles.userAddress}>12043 Berlin Neuköln</Text>
-          <Text stlye={styles.userAddress}>Deutschland</Text>
+          <Text style={styles.textName}>{name}</Text>
+          <Text stlye={styles.userAddress}>{strasse}</Text>
+          <Text stlye={styles.userAddress}>{plz} {wohnort}</Text>
+          <Text stlye={styles.userAddress}>{land}</Text>
         </View>
 
         <View style={styles.iconsWrapper}>
@@ -31,12 +43,7 @@ export default function ProfileInfoBox() {
 
       <View style={styles.about}>
         <Text style={styles.aboutHeader}>Über mich:</Text>
-        <Text>
-          Ich bin Hans und ich verleihe hauptsächlich Games und Briefmarken. Mit
-          Schachzubehör kann ich auch aushelfen.
-          Ich bin Hans und ich verleihe hauptsächlich Games und Briefmarken. Mit
-          Schachzubehör kann ich auch aushelfen.
-        </Text>
+        <Text>{info}</Text>
       </View>
 
     </View>

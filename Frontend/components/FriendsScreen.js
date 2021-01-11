@@ -1,34 +1,50 @@
+import { BACKEND_URL } from "@env";
 import { View, Text, FlatList } from "react-native";
-import React from "react";
+import React, {useState, useEffect} from "react";
 import Friend from "./Friend";
+import AsyncStorage from "@react-native-community/async-storage";
+import ItemLend from "./ItemLend";
 
 const FriendsScreen = ({ navigation }) => {
-  let array = [
-    {
-      name: "Lukas",
-      wohnort: "Berlin-Charlottenburg",
-      artikelzahl: "1211",
-      image: "../assets/tesprofilpic.jpg",
-    },
-    {
-      name: "Moritz",
-      wohnort: "Berlin-Pankow",
-      artikelzahl: "13",
-      image: "../assets/tesprofilpic.jpg",
-    },
-    {
-      name: "Talha",
-      wohnort: "Berlin-Neukölln",
-      artikelzahl: "3",
-      image: "../assets/tesprofilpic.jpg",
-    },
-    {
-      name: "Vico",
-      wohnort: "Berlin-Lichtenrade",
-      artikelzahl: "5",
-      image: "../assets/tesprofilpic.jpg",
-    },
-  ];
+  const [friends, setFriends] = useState([]);
+
+  const fetchFriends = async () => {
+    const requestOptions = {
+      method: "get",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      credentials: "include",
+    };
+
+    var res;
+    var resJson;
+    var userId = await AsyncStorage.getItem("userId");
+    console.log(BACKEND_URL + `users/${userId}/friends`);
+    try {
+      res = await fetch(
+        BACKEND_URL + `users/${userId}/friends`,
+        requestOptions
+      );
+
+      resJson = await res.json();
+    } catch (err) {
+      console.log(err);
+    }
+    if (res.status === 200) {
+      setFriends(resJson.data);
+      console.log(resJson.data)
+    }
+  };
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener("focus", () => {
+      fetchFriends();
+    });
+    return unsubscribe;
+  }, [navigation]);
+
   return (
     <View
       style={{
@@ -39,13 +55,20 @@ const FriendsScreen = ({ navigation }) => {
       }}
     >
       <FlatList
-        data={array}
+        data={friends}
         renderItem={({ item }) => (
           <Friend
-            name={item.name}
-            wohnort={item.wohnort}
+            friendId={item._id}
+            name={item.username}
+            strasse={item.street}
+            plz={item.zipCode}
+            wohnort={item.city}
+            land={item.country}
+            info={item.info}
+            email={item.email}
+            telefon={item.phone}
             image={item.image}
-            artikelzahl={item.artikelzahl}
+            artikelzahl={"99999"}
             navigation={navigation}
           />
         )}

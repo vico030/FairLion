@@ -449,7 +449,7 @@ function getFriends(userId) {
       return resolve({
         data: friends,
         message: "Freunde wurden gefunden.",
-        status: 201,
+        status: 200,
       });
     } catch (err) {
       return reject({
