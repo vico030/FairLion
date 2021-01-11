@@ -1,4 +1,4 @@
-import { BACKEND_URL } from "@env";
+import { BACKEND_URL, IMAGE_URL } from "@env";
 import "react-native-gesture-handler";
 import React, { useEffect, useMemo, useReducer } from "react";
 import { loginReducer, initialLoginState } from "./reducers/loginReducer";
@@ -57,6 +57,7 @@ export default function App() {
       if (res.status === 200) {
         const resJson = await res.json();
         const data = resJson.data;
+        console.log(data);
         AsyncStorage.multiSet([
           ["userId", data._id],
           ["username", data.username],
@@ -66,7 +67,8 @@ export default function App() {
           ["zipCode", data.zipCode],
           ["city", data.city],
           ["country", data.country],
-          ["info", data.info]
+          ["info", data.info],
+          ["image", IMAGE_URL+data.image]
         ]);
         console.log(await AsyncStorage.getItem("userId"));
         user = JSON.stringify(data);

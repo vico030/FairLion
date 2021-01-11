@@ -13,7 +13,7 @@ const userSchema = mongoose.Schema(
         city: {type: String, required: true},
         country: {type: String, required: true},
         info: {type: String, required: true},
-        image: String,
+        image: {type: String, default: "files\\default_profile.png"},
         friends: {
             type: [ObjectId],
             default: []
