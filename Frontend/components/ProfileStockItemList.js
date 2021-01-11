@@ -1,97 +1,66 @@
-import React from "react";
+import { BACKEND_URL } from "@env";
+import React, {useState, useEffect} from "react";
 import { View, Text, FlatList, StyleSheet, ScrollView } from "react-native";
 import ItemProfile from "./ItemProfile";
-var array = [
-  {
-    image: "../assets/testprofilpic.jpg",
-    besitzer: "peter",
-    produktName: "Stichsäge Holz Metall",
-    produktBeschreibung: "Etwas ältere aber immer noch sehr brauchbare Schlagbohrmaschine von Bosch. Inklusive Griff und diversen Bohrköpfen und Bits. Etwas ältere aber immer noch sehr brauchbare Schlagbohrmaschine von Bosch. Inklusive Griff und diversen Bohrköpfen und Bits. Etwas ältere aber immer noch sehr brauchbare Schlagbohrmaschine von Bosch. Inklusive Griff und diversen Bohrköpfen und Bits. Etwas ältere aber immer noch sehr brauchbare Schlagbohrmaschine von Bosch. Inklusive Griff und diversen Bohrköpfen und Bits.",
-    verliehen: "Verliehen",
-    key: "1",
-  },
-  {
-    image: "../assets/testprofilpic.jpg",
-    besitzer: "frank",
-    produktName: "supercooles mega Produkt mit langem Namen",
-    produktBeschreibung: "Etwas ältere aber immer noch sehr brauchbare Schlagbohrmaschine von Bosch. Inklusive Griff und diversen Bohrköpfen und Bits. Etwas ältere aber immer noch sehr brauchbare Schlagbohrmaschine von Bosch. Inklusive Griff und diversen Bohrköpfen und Bits. Etwas ältere aber immer noch sehr brauchbare Schlagbohrmaschine von Bosch. Inklusive Griff und diversen Bohrköpfen und Bits. Etwas ältere aber immer noch sehr brauchbare Schlagbohrmaschine von Bosch. Inklusive Griff und diversen Bohrköpfen und Bits.",
-    verliehen: "Verliehen",
-    key: "2",
-  },
-  {
-    image: "../assets/testprofilpic.jpg",
-    besitzer: "langerName",
-    produktName: "Stichsäge Holz Metall",
-    produktBeschreibung: "Etwas ältere aber immer noch sehr brauchbare Schlagbohrmaschine von Bosch. Inklusive Griff und diversen Bohrköpfen und Bits. Etwas ältere aber immer noch sehr brauchbare Schlagbohrmaschine von Bosch. Inklusive Griff und diversen Bohrköpfen und Bits. Etwas ältere aber immer noch sehr brauchbare Schlagbohrmaschine von Bosch. Inklusive Griff und diversen Bohrköpfen und Bits. Etwas ältere aber immer noch sehr brauchbare Schlagbohrmaschine von Bosch. Inklusive Griff und diversen Bohrköpfen und Bits.",
-    verliehen: "Verliehen",
-    key: "3",
-  },
-  {
-    image: "../assets/testprofilpic.jpg",
-    besitzer: "franz",
-    produktName: "Stichsäge Holz Metall",
-    produktBeschreibung: "Etwas ältere aber immer noch sehr brauchbare Schlagbohrmaschine von Bosch. Inklusive Griff und diversen Bohrköpfen und Bits. Etwas ältere aber immer noch sehr brauchbare Schlagbohrmaschine von Bosch. Inklusive Griff und diversen Bohrköpfen und Bits. Etwas ältere aber immer noch sehr brauchbare Schlagbohrmaschine von Bosch. Inklusive Griff und diversen Bohrköpfen und Bits. Etwas ältere aber immer noch sehr brauchbare Schlagbohrmaschine von Bosch. Inklusive Griff und diversen Bohrköpfen und Bits.",
-    verliehen: "Verliehen",
-    key: "4",
-  },
-  {
-    image: "../assets/testprofilpic.jpg",
-    besitzer: "peter",
-    produktName: "Stichsäge Holz Metall",
-    produktBeschreibung: "Etwas ältere aber immer noch sehr brauchbare Schlagbohrmaschine von Bosch. Inklusive Griff und diversen Bohrköpfen und Bits. Etwas ältere aber immer noch sehr brauchbare Schlagbohrmaschine von Bosch. Inklusive Griff und diversen Bohrköpfen und Bits. Etwas ältere aber immer noch sehr brauchbare Schlagbohrmaschine von Bosch. Inklusive Griff und diversen Bohrköpfen und Bits. Etwas ältere aber immer noch sehr brauchbare Schlagbohrmaschine von Bosch. Inklusive Griff und diversen Bohrköpfen und Bits.",
-    verliehen: "Verliehen",
-    key: "5",
-  },
-  {
-    image: "../assets/testprofilpic.jpg",
-    besitzer: "peter",
-    produktName: "Stichsäge Holz Metall",
-    produktBeschreibung: "Etwas ältere aber immer noch sehr brauchbare Schlagbohrmaschine von Bosch. Inklusive Griff und diversen Bohrköpfen und Bits. Etwas ältere aber immer noch sehr brauchbare Schlagbohrmaschine von Bosch. Inklusive Griff und diversen Bohrköpfen und Bits. Etwas ältere aber immer noch sehr brauchbare Schlagbohrmaschine von Bosch. Inklusive Griff und diversen Bohrköpfen und Bits. Etwas ältere aber immer noch sehr brauchbare Schlagbohrmaschine von Bosch. Inklusive Griff und diversen Bohrköpfen und Bits.",
-    verliehen: "Verliehen",
-    key: "6",
-  },
-  {
-    image: "../assets/testprofilpic.jpg",
-    besitzer: "1234567890",
-    produktName: "Stichsäge Holz Metall",
-    produktBeschreibung: "Etwas ältere aber immer noch sehr brauchbare Schlagbohrmaschine von Bosch. Inklusive Griff und diversen Bohrköpfen und Bits. Etwas ältere aber immer noch sehr brauchbare Schlagbohrmaschine von Bosch. Inklusive Griff und diversen Bohrköpfen und Bits. Etwas ältere aber immer noch sehr brauchbare Schlagbohrmaschine von Bosch. Inklusive Griff und diversen Bohrköpfen und Bits. Etwas ältere aber immer noch sehr brauchbare Schlagbohrmaschine von Bosch. Inklusive Griff und diversen Bohrköpfen und Bits.",
-    verliehen: "Verliehen",
-    key: "7",
-  },
-  {
-    image: "../assets/testprofilpic.jpg",
-    besitzer: "peter",
-    produktName: "Stichsäge Holz Metall",
-    produktBeschreibung: "Etwas ältere aber immer noch sehr brauchbare Schlagbohrmaschine von Bosch. Inklusive Griff und diversen Bohrköpfen und Bits. Etwas ältere aber immer noch sehr brauchbare Schlagbohrmaschine von Bosch. Inklusive Griff und diversen Bohrköpfen und Bits. Etwas ältere aber immer noch sehr brauchbare Schlagbohrmaschine von Bosch. Inklusive Griff und diversen Bohrköpfen und Bits. Etwas ältere aber immer noch sehr brauchbare Schlagbohrmaschine von Bosch. Inklusive Griff und diversen Bohrköpfen und Bits.",
-    verliehen: "Verliehen",
-    key: "8",
-  },
-  {
-    image: "../assets/testprofilpic.jpg",
-    besitzer: "abcdefghij",
-    produktName: "Stichsäge Holz Metall",
-    produktBeschreibung: "Etwas ältere aber immer noch sehr brauchbare Schlagbohrmaschine von Bosch. Inklusive Griff und diversen Bohrköpfen und Bits. Etwas ältere aber immer noch sehr brauchbare Schlagbohrmaschine von Bosch. Inklusive Griff und diversen Bohrköpfen und Bits. Etwas ältere aber immer noch sehr brauchbare Schlagbohrmaschine von Bosch. Inklusive Griff und diversen Bohrköpfen und Bits. Etwas ältere aber immer noch sehr brauchbare Schlagbohrmaschine von Bosch. Inklusive Griff und diversen Bohrköpfen und Bits.",
-    verliehen: "Verliehen",
-    key: "9",
-  },
-];
 
-export default function ProfileStockItemList({ navigation }) {
+export default function ProfileStockItemList({ friendId, navigation }) {
+
+  const [articles, setArticles] = useState([]);
+  
+  const fetchArticles = async () => {
+    const requestOptions = {
+      method: "get",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      credentials: "include",
+    };
+  
+    var res;
+    var resJson;
+    try {
+      res = await fetch(
+        BACKEND_URL + `users/${friendId}/ownedArticles`,
+        requestOptions
+      );
+  
+      resJson = await res.json();
+    } catch (err) {
+      console.log(err);
+    }
+    if (res.status === 200) {
+      setArticles(resJson.data);
+    }
+  };
+  
+  useEffect(() => {
+    const unsubscribe = navigation.addListener("focus", () => {
+      fetchArticles();
+    });
+    return unsubscribe;
+  }, [navigation]);
+
   return (
     <View style={{ flex: 1 }}>
       <Text style={styles.ItemCountText}>{array.length} Artikel:</Text>
 
       <FlatList
         style={styles.list}
-        data={array}
+        data={articles}
+        keyExtractor={(item)=>item._id}
         renderItem={({ item }) => (
           <ItemProfile
             navigation={navigation}
-            besitzer={item.besitzer}
-            beschreibung={item.produktBeschreibung}
-            produktName={item.produktName}
-            verliehen={item.verliehen}
-            image={item.image}
+            besitzer={item.owner}
+            produktName={item.title}
+            ausleihfrist={item.duration}
+            images={item.images}
+            kategorie={item.category}
+            beschreibung={item.description}
+            favored={item.favourite}
+            status={item.status}
+            articleId={item._id}
           />
         )}
       />

@@ -37,7 +37,10 @@ const ProfileScreen = ({
         email={email}
         telefon={telefon}
       />
-      <ProfileStockItemList navigation={navigation} />
+      <ProfileStockItemList
+        navigation={navigation}
+        friendId={friendId}
+        />
     </View>
   );
 };
