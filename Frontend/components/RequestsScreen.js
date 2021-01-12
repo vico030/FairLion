@@ -15,6 +15,55 @@ const RequestsScreen = ({ navigation }) => {
     label: ""
   })
 
+  const declineRequest = (id) => {
+    fetch(BACKEND_URL + "articleRequest" + "/" + id, {
+      method: "PUT",
+      headers: {
+        "content-type": "application/json"
+      },
+      credentials: "include",
+      body: JSON.stringify({
+        status: "declined"
+      })
+    })
+      .then(response => {
+        if (response.ok) {
+          const newRequests = requests.filter(request => request._id !== id);
+          setRequests(newRequests);
+        }
+      })
+      .catch(err => setError({
+        occured: true,
+        label: "Something went wrong trying to accept your request. Please try later again."
+      }))
+  }
+
+  const acceptRequest = (id) => {
+    fetch(BACKEND_URL + "articleRequest" + "/" + id, {
+      method: "PUT",
+      headers: {
+        "content-type": "application/json"
+      },
+      credentials: "include",
+      body: JSON.stringify({
+        status: "confirmed"
+      })
+    })
+      .then(response => {
+        if (response.ok) {
+          const newRequests = requests.filter(request => request._id !== id);
+          setRequests(newRequests);
+        }
+      })
+      .catch(err => {
+        console.log(err);
+        setError({
+          occured: true,
+          label: "Something went wrong trying to accept your request. Please try later again."
+        })
+      })
+  }
+
   useEffect(() => {
     fetch(BACKEND_URL + "articleRequest")
       .then(response => {
@@ -42,8 +91,12 @@ const RequestsScreen = ({ navigation }) => {
         renderItem={({ item }) => (
           <ItemRequest
             navigation={navigation}
-            besitzer={item.ownerName}
+            owner={item.ownerName}
             produktName={item.title}
+            requestId={item._id}
+            acceptRequest={acceptRequest}
+            declineRequest={declineRequest}
+            image={item.images[0]}
           />
         )}
         keyExtractor={(item, index) => index.toString()}
