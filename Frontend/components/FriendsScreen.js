@@ -1,4 +1,4 @@
-import { BACKEND_URL } from "@env";
+import { BACKEND_URL, IMAGE_URL } from "@env";
 import { View, Text, FlatList } from "react-native";
 import React, {useState, useEffect} from "react";
 import Friend from "./Friend";
@@ -67,7 +67,7 @@ const FriendsScreen = ({ navigation }) => {
             info={item.info}
             email={item.email}
             telefon={item.phone}
-            image={item.image}
+            image={IMAGE_URL+item.image}
             artikelzahl={"99999"}
             navigation={navigation}
           />

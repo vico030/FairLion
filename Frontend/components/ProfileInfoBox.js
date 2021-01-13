@@ -22,7 +22,7 @@ export default function ProfileInfoBox({
 
         <Image
           style={styles.profilePicture}
-          source={require(`../assets/testprofilpic.jpg`)}
+          source={{uri: image}}
         />
 
         <View style={styles.middleInfo}>

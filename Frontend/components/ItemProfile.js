@@ -1,3 +1,4 @@
+import { IMAGE_URL } from "@env";
 import React from "react";
 import {
   View,
@@ -16,7 +17,12 @@ export default function ItemProfile({
   produktName,
   beschreibung,
   verliehen,
-  image,
+  images,
+  ausleihfrist,
+  kategorie,
+  favored,
+  status,
+  articleId,
 }) {
   return (
     // change image link to correct parameter url
@@ -26,14 +32,21 @@ export default function ItemProfile({
         navigation.navigate("Details", {
           besitzer: besitzer,
           produktName: produktName,
-          beschreibung: beschreibung
+          beschreibung: beschreibung,
+          verliehen: verliehen,
+          images: images,
+          ausleihfrist,
+          kategorie, ausleihfrist,
+          favored: favored,
+          status: status,
+          articleId: articleId,
         })
       }
     >
       <View>
         <Image
           style={styles.itemImage}
-          source={require(`../assets/testprofilpic.jpg`)}
+          source={{ uri: IMAGE_URL + images[0] }}
         />
       </View>
       <View style={styles.itemBottomView}>
