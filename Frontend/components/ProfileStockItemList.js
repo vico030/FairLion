@@ -1,12 +1,12 @@
 import { BACKEND_URL } from "@env";
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text, FlatList, StyleSheet, ScrollView } from "react-native";
 import ItemProfile from "./ItemProfile";
 
-export default function ProfileStockItemList({ friendId, navigation }) {
+export default function ProfileStockItemList({ friendId, artikelzahl, navigation }) {
 
   const [articles, setArticles] = useState([]);
-  
+
   const fetchArticles = async () => {
     const requestOptions = {
       method: "get",
@@ -16,7 +16,7 @@ export default function ProfileStockItemList({ friendId, navigation }) {
       },
       credentials: "include",
     };
-  
+
     var res;
     var resJson;
     try {
@@ -24,7 +24,7 @@ export default function ProfileStockItemList({ friendId, navigation }) {
         BACKEND_URL + `users/${friendId}/ownedArticles`,
         requestOptions
       );
-  
+
       resJson = await res.json();
     } catch (err) {
       console.log(err);
@@ -33,7 +33,7 @@ export default function ProfileStockItemList({ friendId, navigation }) {
       setArticles(resJson.data);
     }
   };
-  
+
   useEffect(() => {
     const unsubscribe = navigation.addListener("focus", () => {
       fetchArticles();
@@ -43,12 +43,12 @@ export default function ProfileStockItemList({ friendId, navigation }) {
 
   return (
     <View style={{ flex: 1 }}>
-      <Text style={styles.ItemCountText}>{array.length} Artikel:</Text>
+      <Text style={styles.ItemCountText}>{artikelzahl} Artikel:</Text>
 
       <FlatList
         style={styles.list}
         data={articles}
-        keyExtractor={(item)=>item._id}
+        keyExtractor={(item) => item._id}
         renderItem={({ item }) => (
           <ItemProfile
             navigation={navigation}

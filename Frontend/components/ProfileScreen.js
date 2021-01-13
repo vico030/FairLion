@@ -40,6 +40,7 @@ const ProfileScreen = ({
       <ProfileStockItemList
         navigation={navigation}
         friendId={friendId}
+        artikelzahl={artikelzahl}
         />
     </View>
   );
