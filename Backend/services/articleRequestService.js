@@ -10,12 +10,13 @@ const getArticleRequests = function (userId, type) {
       .then(async (articleRequests) => {
         const requestsWithAddtionialData = await Promise.all(articleRequests.map(async request => {
           try {
-            const { title } = await ArticleModel.findById(request.articleId);
+            const { title, images } = await ArticleModel.findById(request.articleId);
             const { username: ownerName } = await UserModel.findById(request.owner);
             const newRequest = {
               ...request.toObject(),
               title,
-              ownerName
+              ownerName,
+              images
             }
             return newRequest;
           }
