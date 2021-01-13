@@ -1,4 +1,4 @@
-import { BACKEND_URL } from "@env";
+import { BACKEND_URL, IMAGE_URL } from "@env";
 import { View, FlatList, Text, StyleSheet } from "react-native";
 import React, { useEffect, useState } from "react";
 import FriendRequest from "./FriendRequest";
@@ -91,12 +91,13 @@ const RequestsScreen = ({ navigation }) => {
         renderItem={({ item }) => (
           <ItemRequest
             navigation={navigation}
-            owner={item.ownerName}
+            borrower={item.borrowerName}
+            borrowerImage={IMAGE_URL+item.borrowerImage}
             produktName={item.title}
             requestId={item._id}
             acceptRequest={acceptRequest}
             declineRequest={declineRequest}
-            image={item.images[0]}
+            image={IMAGE_URL+item.images[0]}
           />
         )}
         keyExtractor={(item, index) => index.toString()}
