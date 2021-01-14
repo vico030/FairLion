@@ -1,5 +1,5 @@
 import { BACKEND_URL, IMAGE_URL } from "@env";
-import React,  { useState, useEffect }  from "react";
+import React, { useState, useEffect } from "react";
 import { View, FlatList } from "react-native";
 import { SearchBar } from "react-native-elements";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -34,8 +34,8 @@ export default function HinzufügenScreen({ navigation }) {
       console.log(err);
     }
     if (res.status === 200) {
-      
-      const array=cleanOutput(await resJson.data)
+
+      const array = cleanOutput(await resJson.data)
       setUsers(await array);
     }
   };
@@ -71,16 +71,16 @@ export default function HinzufügenScreen({ navigation }) {
       console.log(err);
     }
     if (res.status === 200) {
-      const array=cleanOutput(await resJson.data)
+      const array = cleanOutput(await resJson.data)
       setUsers(await array);
     }
   }
 
-  const cleanOutput = async (array) =>{
-    var newArray=[];
+  const cleanOutput = async (array) => {
+    var newArray = [];
     const friends = JSON.parse(await AsyncStorage.getItem("friends"));
-    for(var item of array){
-      if(!(item._id === await AsyncStorage.getItem("userId") || friends.includes(item._id))) {
+    for (var item of array) {
+      if (!(item._id === await AsyncStorage.getItem("userId") || friends.includes(item._id))) {
         newArray.push(item);
       }
     }
