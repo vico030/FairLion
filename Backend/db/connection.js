@@ -4,7 +4,9 @@ mongoose.set("useNewUrlParser", true);
 mongoose.set("useCreateIndex", true);
 mongoose.set("useUnifiedTopology", true);
 
-const serveradress = "mongodb://" + process.env.HOST + ":" + process.env.PORT + "/" + process.env.DB_NAME;
+var serveradress = ""
+if (process.env.DB_TYPE === "local") serveradress = "mongodb://" + process.env.HOST + ":" + process.env.PORT + "/" + process.env.DB_NAME;
+else if (process.env.DB_TYPE === "remote") serveradress = "mongodb+srv://" + process.env.DB_LOGIN + "@cluster0.w6vde.mongodb.net/" + process.env.DB_NAME + "?retryWrites=true&w=majority";
 
 const database = mongoose.connect(
     serveradress,

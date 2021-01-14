@@ -7,7 +7,7 @@ export default function UserButton({ navigation, userName, image }) {
       <View style={styles.button}>
         <Image
           style={styles.profileImage}
-          source={require(`../assets/testprofilpic.jpg`)}
+          source={{uri: image}}
         />
         <Text style={styles.buttonText} numberOfLines={1}>
           {userName}
