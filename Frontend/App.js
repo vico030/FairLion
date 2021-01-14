@@ -68,7 +68,8 @@ export default function App() {
           ["city", data.city],
           ["country", data.country],
           ["info", data.info],
-          ["image", IMAGE_URL+data.image]
+          ["image", IMAGE_URL+data.image],
+          ["friends", JSON.stringify(data.friends)]
         ]);
         console.log(await AsyncStorage.getItem("userId"));
         user = JSON.stringify(data);
@@ -82,7 +83,7 @@ export default function App() {
 
     signOut: async () => {
       try {
-        await AsyncStorage.multiRemove(["userId", "username", "email", "phone", "street", "zipCode", "city", "country", "info"]);
+        await AsyncStorage.multiRemove(["userId", "username", "email", "phone", "street", "zipCode", "city", "country", "info", "friends"]);
       } catch (e) {
         console.log(e);
       }

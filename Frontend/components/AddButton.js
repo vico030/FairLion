@@ -1,9 +1,42 @@
+import { BACKEND_URL } from "@env";
+import AsyncStorage from "@react-native-community/async-storage";
 import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 
-export default function AddButton() {
+export default function AddButton({ friendId }) {
+
+  const sendFriendrequest = async () => {
+    const requestOptions = {
+      method: "post",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: JSON.stringify({ "receiverId": friendId })
+    };
+
+    var res;
+    var resJson;
+    try {
+      res = await fetch(
+        BACKEND_URL + `users/${await AsyncStorage.getItem("userId")}/friendrequests`,
+        requestOptions
+      );
+
+      resJson = await res.json();
+    } catch (err) {
+      console.log(err);
+    }
+    if (res.status === 201) {
+      console.log(resJson.message)
+    }
+  }
+
+
   return (
-    <TouchableOpacity>
+    <TouchableOpacity
+      onPress={()=>sendFriendrequest()}
+    >
       <View style={styles.button}>
         <Text style={styles.buttonText} numberOfLines={1}>
           Hinzufügen
