@@ -3,6 +3,7 @@ const userModel = require("../models/UserModel");
 const articleModel = require("../models/ArticleModel");
 const friendRequestModel = require("../models/FriendRequestModel");
 const articleRequestModel = require("../models/ArticleRequestModel");
+const { request } = require("express");
 
 function getAllUsers() {
   return new Promise(async (resolve, reject) => {
@@ -217,6 +218,7 @@ function getFriendRequests(userId) {
             ...friendrequest._doc,
             requesterName: requester.username,
             requesterImage: requester.image,
+            requesterCity: requester.city
           });
         } catch (err) {
           throw err;
