@@ -83,7 +83,7 @@ function updateArticleRequest(body, requestId, userId) {
           throw err;
         });
         if (
-          oldArticleRequest.status !== "confimed" &&
+          oldArticleRequest.status !== "confirmed" &&
           body.status === "confirmed"
         ) {
           //if updating status to confirmed
@@ -110,7 +110,35 @@ function updateArticleRequest(body, requestId, userId) {
           message: "Article-Request-Update wurde durchgeführt.",
           status: 201,
         });
-      } else {
+      }
+      if(oldArticleRequest.borrower == userId) {
+        const articleRequest = await ArticleRequest.findByIdAndUpdate(
+          requestId,
+          body,
+          { new: true }
+        ).catch((err) => {
+          throw err;
+        });
+
+        if (
+          oldArticleRequest.status === "confirmed" &&
+          body.status === "returned"
+        ) {
+          //oder das lieber zu delete?
+          await ArticleModel.findByIdAndUpdate(articleRequest.articleId, {
+            borrower: null,
+            returnDate: null,
+            status: "Vorhanden",
+          });
+          await ArticleRequestModel.findByIdAndDelete(articleRequest._id);
+        }
+        return resolve({
+          data: articleRequest,
+          message: "Article-Request-Update wurde durchgeführt.",
+          status: 201,
+        });
+      }
+      else {
         return reject({
           error: "Not Authorized",
           status: 401,

@@ -63,6 +63,7 @@ const BorrowedScreen = ({ navigation }) => {
             ausleihfrist={item.duration}
             images={item.images}
             kategorie={item.category}
+            articleId={item._id}
           />
         )}
       />

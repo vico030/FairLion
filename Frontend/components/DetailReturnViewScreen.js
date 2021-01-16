@@ -1,4 +1,5 @@
-import React from "react";
+import React, {useState} from "react";
+import { BACKEND_URL } from '@env';
 import {
   View,
   Text,
@@ -6,6 +7,7 @@ import {
   TouchableOpacity,
   ScrollView,
   Dimensions,
+  Alert
 } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Carousel from "./CarouselComponent";
@@ -18,6 +20,75 @@ const DetailReturnViewScreen = ({
   navigation,
 }) => {
   const { besitzer, produktName, beschreibung, articleId, images, ausleihfrist, kategorie } = route.params;
+  
+  const [returned, setReturned] = useState(false);
+
+
+  const returnArticle = async () => {
+    let articleRequest = await getArticleRequest()
+    let requestId = articleRequest["_id"]
+    let res;
+    let requestOptions = {
+      method: 'PUT',
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+      },
+      body: JSON.stringify({
+        status: "returned"
+      })
+    }
+
+    try{
+      res = await fetch(BACKEND_URL + "articleRequest/"+requestId, requestOptions)
+    }
+    catch(err) {
+      console.log(err);
+    }
+
+    if(res.status === 201) {
+      Alert.alert(besitzer +"Der Artikel wurde an "+besitzer+" zurückgegeben")
+      setReturned(true)
+    }
+    else if(res.status === 500) {
+      const errMess = await res.json();
+      Alert.alert("Fehler", errMess.message);
+    }
+  }
+  
+  const getArticleRequest = async () => {
+    let res;
+    let requestOptions = {
+      method: 'GET',
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+      },
+    }
+
+    try{
+      res = await fetch(BACKEND_URL + "articleRequest/pending", requestOptions)
+    }
+    catch(err) {
+      console.log(err);
+    }
+
+    if(res.status === 200) {
+      let response = await res.json()
+      let articleRequests = response["data"]
+      for(let req of articleRequests) {
+        if(req["articleId"] === articleId)
+          return req;
+      }
+    }
+    else if(res.status === 500) {
+      const errMess = await res.json();
+      Alert.alert("Fehler", errMess.message);
+    }
+  }
+  
+  
+  
   return (
     <ScrollView style={styles.container}>
       <View style={styles.main}>
@@ -78,7 +149,7 @@ const DetailReturnViewScreen = ({
         </View>
 
         <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.signUpBtn}>
+          <TouchableOpacity disabled={returned} style={returned? styles.disabledBtn:styles.signUpBtn} onPress={() => returnArticle()}>
             <Text style={styles.loginText}>Zurückgeben</Text>
           </TouchableOpacity>
         </View>
@@ -200,4 +271,20 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "bold",
   },
+  disabledBtn: {
+    width: "60%",
+    backgroundColor: "#CFCFCF",
+    borderRadius: 25,
+    height: 45,
+    alignItems: "center",
+    justifyContent: "center",
+    marginVertical: 20,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+  }
 });

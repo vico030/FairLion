@@ -19,7 +19,8 @@ export default function ItemLend({
   ausleihfrist,
   kategorie,
   images,
-  favored
+  favored,
+  articleId
 }) {
   console.log(images)
   return (
@@ -32,7 +33,8 @@ export default function ItemLend({
           images: images,
           ausleihfrist: ausleihfrist,
           kategorie: kategorie,
-          beschreibung: beschreibung
+          beschreibung: beschreibung,
+          articleId: articleId
         })
       }
     >
