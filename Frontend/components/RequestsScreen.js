@@ -1,10 +1,11 @@
 import { BACKEND_URL, IMAGE_URL } from "@env";
 import { View, FlatList, Text, StyleSheet } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import FriendRequest from "./FriendRequest";
 import ItemRequest from "./ItemRequest";
-import { Alert } from "react-native";
 import AsyncStorage from "@react-native-community/async-storage";
+import { AuthContext } from "../context";
+import { Alert } from "react-native";
 
 const RequestsScreen = ({ navigation }) => {
   const [articleRequests, setArticleRequests] = useState([]);
@@ -14,9 +15,10 @@ const RequestsScreen = ({ navigation }) => {
     label: ""
   });
   const [userId, setUserId] = useState(null);
+  const { signOut } = useContext(AuthContext);
 
   const acceptFriendRequest = id => {
-    fetch(`${BACKEND_URL}/${userId}/friendrequests/${id}`, {
+    fetch(`${BACKEND_URL}users/${userId}/friendrequests/${id}`, {
       method: "PUT",
       credentials: "include",
       headers: {
@@ -28,8 +30,16 @@ const RequestsScreen = ({ navigation }) => {
     })
       .then(response => {
         if (response.ok) {
-          const newRequests = friendRequests.filter(request => request._id !== id);
-          setFiendRequests(newRequests);
+          fetch(`${BACKEND_URL}users/${userId}/friendrequests/${id}`, {
+            method: "DELETE",
+            credentials: "include"
+          })
+            .then(response => {
+              if (response.ok) {
+                const newRequests = friendRequests.filter(request => request._id !== id);
+                setFiendRequests(newRequests);
+              }
+            })
         }
         else if (response.status === 401) {
           setError({
@@ -48,11 +58,12 @@ const RequestsScreen = ({ navigation }) => {
   }
 
   const declineFriendRequest = id => {
-    fetch(`${BACKEND_URL}/${userId}/friendrequests/${id}`, {
+    fetch(`${BACKEND_URL}users/${userId}/friendrequests/${id}`, {
       method: "DELETE",
       credentials: "include"
     })
       .then(response => {
+        console.log(`${BACKEND_URL}${userId}/friendrequests/${id}`, response.status);
         if (response.ok) {
           const newRequests = friendRequests.filter(request => request._id !== id);
           setFiendRequests(newRequests);
@@ -66,6 +77,7 @@ const RequestsScreen = ({ navigation }) => {
         else throw null;
       })
       .catch(err => {
+        console.log(err);
         setError({
           occured: true,
           label: "Something went wrong trying to decline your request. Please try later again."
@@ -86,8 +98,16 @@ const RequestsScreen = ({ navigation }) => {
     })
       .then(response => {
         if (response.ok) {
-          const newRequests = articleRequests.filter(request => request._id !== id);
-          setArticleRequests(newRequests);
+          fetch(BACKEND_URL + "articleRequest" + "/" + id, {
+            method: "DELETE",
+            credentials: "include"
+          })
+            .then(response => {
+              if (response.ok) {
+                const newRequests = articleRequests.filter(request => request._id !== id);
+                setArticleRequests(newRequests);
+              }
+            })
         }
       })
       .catch(err => setError({
@@ -122,68 +142,94 @@ const RequestsScreen = ({ navigation }) => {
       })
   }
 
-  useEffect(() => {
-    const fillState = async () => {
-      const userId = await AsyncStorage.getItem("userId");
-      setUserId(userId);
+  AsyncStorage.getItem("userId")
+    .then(userId => setUserId(userId))
 
-      fetch(BACKEND_URL + "articleRequest")
-        .then(response => {
+  useEffect(() => {
+    let status = null;
+    fetch(BACKEND_URL + "articleRequest")
+      .then(response => {
+        if (response.status === 200) return response.json();
+        else if (response.status === 401) {
+          status = 401;
+          return response.text();
+        }
+        else if (response.status === 500) {
+          status = 500;
           return response.json();
-        })
-        .then(data => {
+        }
+      })
+      .then(data => {
+        if (status === 401) {
+          signOut();
+          setError({
+            occured: true,
+            label: data
+          })
+        }
+        else if (status === 500) {
+          setError({
+            occured: true,
+            label: data.message
+          })
+        }
+        else {
           const { data: incomingRequests } = data;
           setArticleRequests(incomingRequests);
+        }
+      })
+      .catch(err => {
+        console.log(err);
+        setError({
+          occured: true,
+          label: "Something went wrong trying to display incoming requests."
         })
-        .catch(err => {
-          console.log(err);
-          setError({
-            occured: true,
-            label: "Something went wrong trying to display incoming requests."
-          })
-        })
-
-      console.log(userId);
-      let status = null;
-      fetch(BACKEND_URL + "users" + "/" + userId + "/" + "friendrequests")
-        .then(response => {
-          console.log(response.status);
-          if (response.ok) return response.json();
-          else if (response.status === 401) {
-            setError({
-              occured: true,
-              label: "Login first"
-            });
-          }
-          else if (response.status === 500) {
-            status = 500;
-            return response.json();
-          }
-        })
-        .then(data => {
-          if (status === 500) {
-            setError({
-              occured: true,
-              label: data.message
-            })
-          }
-          else {
-            const { data: incomingFriendRequests } = data;
-            setFiendRequests(incomingFriendRequests);
-          }
-        })
-        .catch(err => {
-          console.log(err);
-          setError({
-            occured: true,
-            label: "Internal Server Error. Please try later again."
-          })
-        })
-    }
-    fillState();
+      })
   }, [])
 
-  console.log(friendRequests);
+  useEffect(() => {
+    if (!userId) return;
+    let status = null;
+    fetch(BACKEND_URL + "users" + "/" + userId + "/" + "friendrequests")
+      .then(response => {
+        console.log(response.status);
+        if (response.ok) return response.json();
+        else if (response.status === 401) {
+          status = 401;
+          return response.text();
+        }
+        else if (response.status === 500) {
+          status = 500;
+          return response.json();
+        }
+      })
+      .then(data => {
+        if (status === 401) {
+          signOut();
+          setError({
+            occured: true,
+            label: data
+          })
+        }
+        else if (status === 500) {
+          setError({
+            occured: true,
+            label: data.message
+          })
+        }
+        else { //200
+          const { data: incomingFriendRequests } = data;
+          setFiendRequests(incomingFriendRequests);
+        }
+      })
+      .catch(err => {
+        console.log(err);
+        setError({
+          occured: true,
+          label: "Internal Server Error. Please try later again."
+        })
+      })
+  }, [userId])
 
   return (
     <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
@@ -204,7 +250,7 @@ const RequestsScreen = ({ navigation }) => {
       />
 
       <Text style={styles.listHeader}>Artikel-Anfrage:</Text>
-      {error.occured && alert(error.label)}
+      {error.occured && Alert(error.label)}
       <FlatList
         data={articleRequests}
         renderItem={({ item }) => (
