@@ -97,7 +97,7 @@ export default function App() {
         method: "POST",
         headers: {
           "Content-Type": "multipart/form-data",
-          "Accept": "application/json",
+          Accept: "application/json",
         },
         body: data
       }
@@ -120,7 +120,8 @@ export default function App() {
           ["zipCode", data.zipCode],
           ["city", data.city],
           ["country", data.country],
-          ["info", data.info]
+          ["info", data.info],
+          ["image", IMAGE_URL+data.image]
         ]);
         console.log(await AsyncStorage.getItem("userId"));
         user = JSON.stringify(data);
