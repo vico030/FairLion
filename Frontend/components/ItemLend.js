@@ -23,16 +23,13 @@ export default function ItemLend({
   returnDate,
 }) {
   console.log(images);
-  // console.log(returnDate);
+
   let remainingTime = returnDate.getTime() - new Date().getTime();
   let remainingTimeSeconds = remainingTime / 1000;
   let remainingTimeMinutes = remainingTimeSeconds / 60;
   let remainingTimeHours = remainingTimeMinutes / 60;
   let remainingTimeDays = remainingTimeHours / 24;
-  console.log(remainingTimeHours);
-  console.log(remainingTimeDays);
-  // console.log(new Date().getTime());
-  // console.log(new Date(returnDate.getTime));
+
   let displayRemainingTime = remainingTimeHours;
   let displayRemainingTimeUnit = "Stunde(n)";
   if (remainingTimeHours > 24) {
