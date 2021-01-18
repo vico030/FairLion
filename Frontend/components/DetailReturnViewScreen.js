@@ -13,11 +13,18 @@ import UserButton from "./UserButton";
 
 const windowHeight = Dimensions.get("window").height;
 
-const DetailReturnViewScreen = ({
-  route,
-  navigation,
-}) => {
-  const { besitzer, produktName, beschreibung, articleId, images, ausleihfrist, kategorie } = route.params;
+const DetailReturnViewScreen = ({ route, navigation }) => {
+  const {
+    besitzer,
+    produktName,
+    beschreibung,
+    articleId,
+    images,
+    ausleihfrist,
+    kategorie,
+    displayRemainingTimeUnit,
+    displayRemainingTime,
+  } = route.params;
   return (
     <ScrollView style={styles.container}>
       <View style={styles.main}>
@@ -48,9 +55,7 @@ const DetailReturnViewScreen = ({
           </View>
           <View style={styles.verticalLine} />
           <View style={styles.items}>
-            <Text style={{ width: "100%", fontSize: 12 }}>
-              {beschreibung}
-            </Text>
+            <Text style={{ width: "100%", fontSize: 12 }}>{beschreibung}</Text>
           </View>
         </View>
 
@@ -73,7 +78,13 @@ const DetailReturnViewScreen = ({
 
           <View style={styles.element}>
             <Text style={styles.elementTextLeft}>Status:</Text>
-            <Text style={styles.elementTextRight}>Noch: 13 Stunde(n)</Text>
+            {displayRemainingTime < 0 ? (
+              <Text style={styles.timeExpired}>Frist abgelaufen!</Text>
+            ) : (
+              <Text style={styles.elementTextRight}>
+                Noch: {displayRemainingTime} {displayRemainingTimeUnit}
+              </Text>
+            )}
           </View>
         </View>
 
@@ -163,6 +174,11 @@ const styles = StyleSheet.create({
   elementTextRight: {
     fontSize: 12,
     textAlign: "right",
+  },
+  timeExpired: {
+    fontSize: 12,
+    textAlign: "right",
+    color: "red",
   },
   verticalLine: {
     borderBottomColor: "#CFCFCF",

@@ -1,4 +1,4 @@
-import {BACKEND_URL} from '@env';
+import { BACKEND_URL } from "@env";
 import { View, FlatList } from "react-native";
 import React, { useEffect, useState } from "react";
 import ItemLend from "./ItemLend";
@@ -6,7 +6,7 @@ import AsyncStorage from "@react-native-community/async-storage";
 
 const BorrowedScreen = ({ navigation }) => {
   // Test data to display
-  const [articles, setArticles] = useState([])
+  const [articles, setArticles] = useState([]);
 
   const getArticles = async () => {
     const requestOptions = {
@@ -31,13 +31,12 @@ const BorrowedScreen = ({ navigation }) => {
     if (res.status === 200) {
       setArticles(await resJson.data);
     }
-  }
-
+  };
 
   useEffect(() => {
     const unsubscribe = navigation.addListener("focus", () => {
       getArticles();
-      console.log(articles)
+      console.log(articles);
     });
     return unsubscribe;
   }, [navigation]);
@@ -63,6 +62,7 @@ const BorrowedScreen = ({ navigation }) => {
             ausleihfrist={item.duration}
             images={item.images}
             kategorie={item.category}
+            returnDate={new Date(item.returnDate)}
           />
         )}
       />
