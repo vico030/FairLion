@@ -140,7 +140,7 @@ const RegisterScreen = ({ navigation }) => {
     formdata.append("city", data.city);
     formdata.append("country", data.country);
     formdata.append("info", data.aboutMe);
-    formdata.append("image", IMAGE_URL+data.image);
+    formdata.append("image", data.image);
 
     signUp(formdata);
   };
