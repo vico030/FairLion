@@ -21,6 +21,7 @@ export default function ItemLend({
   images,
   favored,
   returnDate,
+  articleId
 }) {
   console.log(images);
   // console.log(returnDate);
@@ -61,6 +62,7 @@ export default function ItemLend({
           beschreibung: beschreibung,
           displayRemainingTime: Math.floor(displayRemainingTime),
           displayRemainingTimeUnit: displayRemainingTimeUnit,
+          articleId: articleId
         })
       }
     >
