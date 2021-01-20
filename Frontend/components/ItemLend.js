@@ -29,6 +29,7 @@ export default function ItemLend({
   let remainingTimeMinutes = remainingTimeSeconds / 60;
   let remainingTimeHours = remainingTimeMinutes / 60;
   let remainingTimeDays = remainingTimeHours / 24;
+  let remainingTimeMonths = remainingTimeDays / 31;
   console.log(remainingTimeHours);
   console.log(remainingTimeDays);
   // console.log(new Date().getTime());
@@ -43,6 +44,10 @@ export default function ItemLend({
     displayRemainingTime = remainingTimeMinutes;
     displayRemainingTimeUnit = "Minute(n)";
   }
+  if (remainingTimeDays > 31) {
+    displayRemainingTime = remainingTimeMonths;
+    displayRemainingTimeUnit = "Monat(e)";
+  }
   return (
     <TouchableOpacity
       style={styles.itemStyle}
@@ -54,7 +59,7 @@ export default function ItemLend({
           ausleihfrist: ausleihfrist,
           kategorie: kategorie,
           beschreibung: beschreibung,
-          displayRemainingTime: displayRemainingTime,
+          displayRemainingTime: Math.floor(displayRemainingTime),
           displayRemainingTimeUnit: displayRemainingTimeUnit,
         })
       }
