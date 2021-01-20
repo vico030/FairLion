@@ -1,7 +1,7 @@
 require('dotenv').config()
 const express = require('express')
 const app = express()
-const port = 3000
+const port = process.env.API_PORT
 const bodyparser = require("body-parser");
 const { handleError } = require('./helpers/error')
 const cookieParser = require('cookie-parser');
@@ -28,6 +28,19 @@ app.use("/articleRequest", allRoutes.articleRequestRoute);
 app.use((err, req, res, next) => {
   handleError(err, res);
 });
+
+var fs = require('fs');
+var https = require('https');
+
+var privateKey  = fs.readFileSync('./certs/fairLion.key', 'utf8');
+var certificate = fs.readFileSync('./certs/fairLion.crt', 'utf8');
+var credentials = {key: privateKey, cert: certificate, passphrase:process.env.EMAIL_PASSWORD};
+
+var httpsServer = https.createServer(credentials, app);
+
+httpsServer.listen(443, () => {
+  console.log(`Example app listening at https://localhost:443`)
+})
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`)
