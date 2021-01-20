@@ -31,14 +31,16 @@ export const ForgotPasswordScreen = ({ navigation }) => {
         })
             .then(response => {
                 if (response.status === 200) {
-                    Alert.aert("Successfully sent new password to your email.");
+                    Alert.alert("Successfully sent new password to your email.");
                     navigation.goBack();
                 }
                 else {
                     setError({ occured: true, label: "Something went wrong trying to reset your password. Please try later again." })
                 }
             })
-            .catch(err => setError({ occured: true, label: "Something went wrong trying to reset your password. Please try later again." }))
+            .catch(err => {
+                setError({ occured: true, label: "Something went wrong trying to reset your password. Please try later again." })
+            })
     }
 
     return (
