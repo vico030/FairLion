@@ -145,7 +145,7 @@ const RequestsScreen = ({ navigation }) => {
   AsyncStorage.getItem("userId")
     .then(userId => setUserId(userId))
 
-  useEffect(() => {
+  const getArticleRequests = () => {
     let status = null;
     fetch(BACKEND_URL + "articleRequest")
       .then(response => {
@@ -185,9 +185,13 @@ const RequestsScreen = ({ navigation }) => {
           label: "Something went wrong trying to display incoming requests."
         })
       })
-  }, [])
+  }
 
   useEffect(() => {
+    getArticleRequests();
+  }, [])
+
+  const getFriendRequests = () => {
     if (!userId) return;
     let status = null;
     fetch(BACKEND_URL + "users" + "/" + userId + "/" + "friendrequests")
@@ -229,7 +233,20 @@ const RequestsScreen = ({ navigation }) => {
           label: "Internal Server Error. Please try later again."
         })
       })
+  }
+
+  useEffect(() => {
+    getFriendRequests();
   }, [userId])
+
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener("focus", () => {
+      getFriendRequests();
+
+    });
+    return unsubscribe;
+  }, [navigation]);
 
   return (
     <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
