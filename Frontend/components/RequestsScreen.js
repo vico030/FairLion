@@ -34,10 +34,14 @@ const RequestsScreen = ({ navigation }) => {
             method: "DELETE",
             credentials: "include"
           })
-            .then(response => {
+            .then(async response => {
               if (response.ok) {
+                const acceptedReq = friendRequests.find(request => request._id === id);
                 const newRequests = friendRequests.filter(request => request._id !== id);
                 setFiendRequests(newRequests);
+                let newFriends = JSON.parse(await AsyncStorage.getItem("friends"));
+                newFriends.push(acceptedReq.requesterId);
+                AsyncStorage.setItem("friends", JSON.stringify(newFriends));
               }
             })
         }
@@ -249,8 +253,8 @@ const RequestsScreen = ({ navigation }) => {
   }, [navigation]);
 
   return (
-    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-      <Text style={styles.listHeader}>Freunde:</Text>
+    <View style={{ alignItems: "center", justifyContent: "center" }}>
+      {friendRequests.length !== 0 && <Text style={styles.listHeader}>Freundesanfragen:</Text>}
       <FlatList
         data={friendRequests}
         renderItem={({ item }) => (
@@ -266,7 +270,7 @@ const RequestsScreen = ({ navigation }) => {
         keyExtractor={(item, index) => index.toString()}
       />
 
-      <Text style={styles.listHeader}>Artikel-Anfrage:</Text>
+      {articleRequests.length !== 0 && <Text style={styles.listHeader}>Artikelanfragen:</Text>}
       {error.occured && Alert(error.label)}
       <FlatList
         data={articleRequests}
