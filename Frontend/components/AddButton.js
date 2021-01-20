@@ -1,6 +1,7 @@
 import { BACKEND_URL } from "@env";
 import AsyncStorage from "@react-native-community/async-storage";
 import React from "react";
+import { Alert } from "react-native";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 
 export default function AddButton({ friendId }) {
@@ -29,6 +30,12 @@ export default function AddButton({ friendId }) {
     }
     if (res.status === 201) {
       console.log(resJson.message)
+      Alert.alert("", "Freundesanfrage wurde versendet!", [{
+        text: 'OK',
+        onPress: () => console.log('OK Pressed')
+      }], {
+        cancelable: true
+      });
     }
   }
 

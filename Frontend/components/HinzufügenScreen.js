@@ -71,8 +71,9 @@ export default function HinzufügenScreen({ navigation }) {
       console.log(err);
     }
     if (res.status === 200) {
-      const array = cleanOutput(await resJson.data)
-      setUsers(await array);
+      const array = await cleanOutput(await resJson.data)
+      console.log(array);
+      setUsers(array);
     }
   }
 
@@ -80,10 +81,11 @@ export default function HinzufügenScreen({ navigation }) {
     var newArray = [];
     const friends = JSON.parse(await AsyncStorage.getItem("friends"));
     for (var item of array) {
-      if (!(item._id === await AsyncStorage.getItem("userId") || friends.includes(item._id))) {
+      if (!(item._id === await AsyncStorage.getItem("userId") || friends?.includes(item._id))) {
         newArray.push(item);
       }
     }
+
     return newArray;
   }
 
