@@ -1,1 +1,1 @@
-export default 'remote';
+export default 'local';
