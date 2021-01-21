@@ -1,4 +1,5 @@
-import { BACKEND_URL } from "@env";
+import env from "../env.js";
+const {BACKEND_URL} = env;
 import React, { useState, useEffect } from "react";
 import { View, Text, FlatList, StyleSheet, ScrollView } from "react-native";
 import ItemProfile from "./ItemProfile";

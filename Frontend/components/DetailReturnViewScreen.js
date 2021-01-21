@@ -1,5 +1,6 @@
 import React, {useState} from "react";
-import { BACKEND_URL } from '@env';
+import env from "../env.js";
+const {BACKEND_URL} = env;
 import {
   View,
   Text,

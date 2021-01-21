@@ -1,5 +1,6 @@
 import React from "react";
-import { IMAGE_URL } from "@env";
+import env from "../env.js";
+const {IMAGE_URL} = env;
 import {
   View,
   Text,

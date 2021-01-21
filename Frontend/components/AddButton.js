@@ -1,4 +1,5 @@
-import { BACKEND_URL } from "@env";
+import env from "../env.js";
+const {BACKEND_URL} = env;
 import AsyncStorage from "@react-native-community/async-storage";
 import React from "react";
 import { Alert } from "react-native";

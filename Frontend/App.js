@@ -1,4 +1,5 @@
-import { BACKEND_URL, IMAGE_URL } from "@env";
+import env from "./env.js";
+const {BACKEND_URL, IMAGE_URL} = env;
 import "react-native-gesture-handler";
 import React, { useEffect, useMemo, useReducer } from "react";
 import { loginReducer, initialLoginState } from "./reducers/loginReducer";

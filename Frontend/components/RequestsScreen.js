@@ -1,4 +1,5 @@
-import { BACKEND_URL, IMAGE_URL } from "@env";
+import env from "../env.js";
+const {BACKEND_URL, IMAGE_URL} = env;
 import { View, FlatList, Text, StyleSheet } from "react-native";
 import React, { useContext, useEffect, useState } from "react";
 import FriendRequest from "./FriendRequest";

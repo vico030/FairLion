@@ -1,4 +1,5 @@
-import { BACKEND_URL, IMAGE_URL } from "@env";
+import env from "../env.js";
+const {BACKEND_URL, IMAGE_URL} = env;
 import AsyncStorage from "@react-native-community/async-storage";
 import React, { useContext, useReducer } from "react";
 import { loginReducer, initialLoginState } from "../reducers/loginReducer";
