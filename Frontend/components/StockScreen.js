@@ -3,11 +3,14 @@ import AsyncStorage from "@react-native-community/async-storage";
 import { View, Text, FlatList } from "react-native";
 import React, { useEffect, useState } from "react";
 import ItemStock from "./ItemStock";
+import { ActivityIndicator } from "react-native";
 
 const StockScreen = ({ navigation }) => {
   const [articles, setArticles] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   async function getArticles() {
+    setLoading(true);
     const requestOptions = {
       method: "GET",
       headers: {
@@ -20,11 +23,13 @@ const StockScreen = ({ navigation }) => {
     try {
       res = await fetch(
         BACKEND_URL +
-          `users/${await AsyncStorage.getItem("userId")}/ownedArticles`,
+        `users/${await AsyncStorage.getItem("userId")}/ownedArticles`,
         requestOptions
       );
+      setLoading(false);
       resJson = await res.json();
     } catch (err) {
+      setLoading(false);
       console.log(err);
     }
     if (res.status === 200) {
@@ -48,6 +53,7 @@ const StockScreen = ({ navigation }) => {
         marginTop: 3,
       }}
     >
+      {loading && <ActivityIndicator color="#E77F23" size="large" />}
       <FlatList
         data={articles}
         keyExtractor={(item) => item._id}

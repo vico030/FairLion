@@ -11,7 +11,7 @@ import {
 } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scrollview";
 import { AuthContext } from "../context";
-import {isValid} from "../helpers/validation";
+import { isValid } from "../helpers/validation";
 
 const LoginScreen = ({ navigation }) => {
   const [user, setUser] = useState({
@@ -19,6 +19,7 @@ const LoginScreen = ({ navigation }) => {
     password: "",
   });
   const { signIn } = useContext(AuthContext);
+  const [loading, setLoading] = useState(false);
 
   const handleEmailChange = (val) => {
     if (val.length != 0) {
@@ -89,7 +90,7 @@ const LoginScreen = ({ navigation }) => {
         <TouchableOpacity
           style={styles.loginBtn}
           onPress={() => {
-            if(isValid(user.email, "Email") && isValid(user.password, "Passwort")) handleLogin(user.email, user.password);
+            if (isValid(user.email, "Email") && isValid(user.password, "Passwort")) handleLogin(user.email, user.password);
           }}
         >
           <Text style={styles.loginText}>Login</Text>

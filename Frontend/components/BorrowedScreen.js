@@ -3,12 +3,15 @@ import { View, FlatList } from "react-native";
 import React, { useEffect, useState } from "react";
 import ItemLend from "./ItemLend";
 import AsyncStorage from "@react-native-community/async-storage";
+import { ActivityIndicator } from "react-native";
 
 const BorrowedScreen = ({ navigation }) => {
   // Test data to display
   const [articles, setArticles] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const getArticles = async () => {
+    setLoading(true);
     const requestOptions = {
       method: "GET",
       headers: {
@@ -21,11 +24,13 @@ const BorrowedScreen = ({ navigation }) => {
     try {
       res = await fetch(
         BACKEND_URL +
-          `users/${await AsyncStorage.getItem("userId")}/borrowedArticles`,
+        `users/${await AsyncStorage.getItem("userId")}/borrowedArticles`,
         requestOptions
       );
+      setLoading(false);
       resJson = await res.json();
     } catch (err) {
+      setLoading(false);
       console.log(err);
     }
     if (res.status === 200) {
@@ -50,6 +55,7 @@ const BorrowedScreen = ({ navigation }) => {
         marginTop: 3,
       }}
     >
+      {loading && <ActivityIndicator color="#E77F23" size="large" />}
       <FlatList
         data={articles}
         keyExtractor={(item) => item._id}

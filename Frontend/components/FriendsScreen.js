@@ -1,14 +1,17 @@
 import { BACKEND_URL, IMAGE_URL } from "@env";
 import { View, Text, FlatList } from "react-native";
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import Friend from "./Friend";
 import AsyncStorage from "@react-native-community/async-storage";
 import ItemLend from "./ItemLend";
+import { ActivityIndicator } from "react-native";
 
 const FriendsScreen = ({ navigation }) => {
   const [friends, setFriends] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const fetchFriends = async () => {
+    setLoading(true);
     const requestOptions = {
       method: "get",
       headers: {
@@ -21,20 +24,19 @@ const FriendsScreen = ({ navigation }) => {
     var res;
     var resJson;
     var userId = await AsyncStorage.getItem("userId");
-    console.log(BACKEND_URL + `users/${userId}/friends`);
     try {
       res = await fetch(
         BACKEND_URL + `users/${userId}/friends`,
         requestOptions
       );
-
+      setLoading(false);
       resJson = await res.json();
     } catch (err) {
+      setLoading(false);
       console.log(err);
     }
     if (res.status === 200) {
       setFriends(resJson.data);
-      console.log(resJson.data)
     }
   };
 
@@ -54,6 +56,7 @@ const FriendsScreen = ({ navigation }) => {
         marginTop: 3,
       }}
     >
+      {loading && <ActivityIndicator color="#E77F23" size="large" />}
       <FlatList
         data={friends}
         renderItem={({ item }) => (
@@ -67,7 +70,7 @@ const FriendsScreen = ({ navigation }) => {
             info={item.info}
             email={item.email}
             telefon={item.phone}
-            image={IMAGE_URL+item.image}
+            image={IMAGE_URL + item.image}
             artikelzahl={"99999"}
             navigation={navigation}
           />

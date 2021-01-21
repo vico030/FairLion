@@ -5,13 +5,16 @@ import { SearchBar } from "react-native-elements";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import ItemSearch from "./ItemSearch";
 import AsyncStorage from "@react-native-community/async-storage";
+import { ActivityIndicator } from "react-native";
 
 const SearchScreen = ({ navigation }) => {
   const [searchInput, setSearchInput] = useState("");
   const [articles, setArticles] = useState([]);
   const [searching, setSearching] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const fetchArticles = async () => {
+    setLoading(true);
     const requestOptions = {
       method: "get",
       headers: {
@@ -28,9 +31,10 @@ const SearchScreen = ({ navigation }) => {
         BACKEND_URL + `articles/query/${searchInput}`,
         requestOptions
       );
-
+      setLoading(false);
       resJson = await res.json();
     } catch (err) {
+      setLoading(false);
       console.log(err);
     }
     if (res.status === 200) {
@@ -57,6 +61,7 @@ const SearchScreen = ({ navigation }) => {
   };
 
   async function getFavourites() {
+    setLoading(true);
     const requestOptions = {
       method: "GET",
       headers: {
@@ -68,8 +73,10 @@ const SearchScreen = ({ navigation }) => {
     var resJson;
     try {
       res = await fetch(BACKEND_URL + "favourites", requestOptions);
+      setLoading(false);
       resJson = await res.json();
     } catch (err) {
+      setLoading(false);
       console.log(err);
     }
     if (res.status === 200) {
@@ -111,8 +118,9 @@ const SearchScreen = ({ navigation }) => {
       {searching ? (
         <Text style={styles.text}> Suchergebnisse: </Text>
       ) : (
-        <Text style={styles.text}> Meine Favoriten: </Text>
-      )}
+          <Text style={styles.text}> Meine Favoriten: </Text>
+        )}
+      {loading && <ActivityIndicator color="#E77F23" size="large" />}
 
       <FlatList
         data={articles}
