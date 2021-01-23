@@ -22,7 +22,8 @@ export default function ItemSearch({
   favored,
   kategorie,
   status,
-  articleId
+  articleId,
+  user
 }) {
   console.log(images);
   return (
@@ -37,7 +38,8 @@ export default function ItemSearch({
           ausleihfrist: ausleihfrist,
           kategorie: kategorie,
           status: status,
-          articleId: articleId
+          articleId: articleId,
+          user: user
         })
       }
     >
@@ -59,10 +61,10 @@ export default function ItemSearch({
           )}
         </View>
         <View style={styles.items}>
-          <UserButton userName={String(besitzer)} navigation={navigation} />
+          <UserButton user={user} navigation={navigation} />
 
           <Text style={styles.itemTime} numberOfLines={1}>
-            Noch: {ausleihfrist}
+            Frist: {ausleihfrist}
           </Text>
         </View>
       </View>

@@ -93,8 +93,18 @@ function getArticles(userId, possesionType) {
         .catch((err) => {
           throw err;
         });
+      const user = await userModel
+        .findById(userId)
+        .select("-password")
+        .select("-refreshToken")
+        .select("-verificationHash")
+        .select("-friends");
+      let newArticles = [];
+      for(let article of articles){
+        newArticles.push({...article._doc, user});
+      }
       return resolve({
-        data: articles,
+        data: newArticles,
         message: "Artikel wurden gefunden.",
         status: 200,
       });
@@ -179,8 +189,14 @@ function createArticle(body, userId) {
         owner: userId,
       });
       const newArticle = await article.save();
+      const user = await userModel
+        .findById(userId)
+        .select("-password")
+        .select("-refreshToken")
+        .select("-verificationHash")
+        .select("-friends");
       return resolve({
-        data: newArticle,
+        data: {...newArticle._doc, user},
         message: "Artikel wurde erstellt.",
         status: 201,
       });

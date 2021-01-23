@@ -22,7 +22,8 @@ export default function ItemLend({
   images,
   favored,
   returnDate,
-  articleId
+  articleId,
+  user
 }) {
   console.log(images);
   // console.log(returnDate);
@@ -63,7 +64,8 @@ export default function ItemLend({
           beschreibung: beschreibung,
           displayRemainingTime: Math.floor(displayRemainingTime),
           displayRemainingTimeUnit: displayRemainingTimeUnit,
-          articleId: articleId
+          articleId: articleId,
+          user: user
         })
       }
     >
@@ -85,7 +87,7 @@ export default function ItemLend({
           )}
         </View>
         <View style={styles.items}>
-          <UserButton userName={String(besitzer)} navigation={navigation} />
+          <UserButton user={user} navigation={navigation} />
           {displayRemainingTime < 0 ? (
             <Text style={styles.itemExpired} numberOfLines={1}>
               Frist abgelaufen!

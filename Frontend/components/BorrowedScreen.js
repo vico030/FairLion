@@ -65,6 +65,7 @@ const BorrowedScreen = ({ navigation }) => {
             kategorie={item.category}
             returnDate={new Date(item.returnDate)}
             articleId={item._id}
+            user={item.user}
           />
         )}
       />

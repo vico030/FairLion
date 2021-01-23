@@ -17,7 +17,15 @@ const DetailEditViewScreen = ({
   route,
   navigation,
 }) => {
-  const { besitzer, images, produktName, ausleihfrist, kategorie, beschreibung} = route.params;
+  const { 
+    besitzer, 
+    images, 
+    produktName, 
+    ausleihfrist, 
+    kategorie, 
+    beschreibung ,
+    user
+  } = route.params;
 
   return (
     <ScrollView style={styles.container}>
@@ -32,7 +40,7 @@ const DetailEditViewScreen = ({
           </View>
 
           <View style={styles.items}>
-            <UserButton userName={besitzer} navigation={navigation} />
+            <UserButton user={user} navigation={navigation} />
             <TouchableOpacity>
               <MaterialCommunityIcons
                 name="eye-off-outline"
@@ -77,11 +85,11 @@ const DetailEditViewScreen = ({
           <TouchableOpacity
             style={styles.signUpBtn}
             onPress={() => navigation.navigate("EditItem", {
-                titel: produktName,
-                beschreibung: beschreibung,
-                frist: ausleihfrist,
-                kategorie: kategorie,
-              })
+              titel: produktName,
+              beschreibung: beschreibung,
+              frist: ausleihfrist,
+              kategorie: kategorie,
+            })
             }
           >
             <Text style={styles.loginText}>Bearbeiten</Text>

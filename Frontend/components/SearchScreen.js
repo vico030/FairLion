@@ -130,6 +130,7 @@ const SearchScreen = ({ navigation }) => {
             favored={item.favourite}
             status={item.status}
             articleId={item._id}
+            user={item.user}
           />
         )}
       />

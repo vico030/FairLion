@@ -1,17 +1,19 @@
+import env from "../env.js";
+const {IMAGE_URL} = env;
 import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 
 // change profile pic with correct link and not local
-export default function UserButton({ navigation, userName, image, route }) {
+export default function UserButton({ navigation, user, image, route }) {
   return (
     <View>
       <View style={styles.button}>
         <Image
           style={styles.profileImage}
-          source={require(`../assets/testprofilpic.jpg`)}
+          source={{uri: IMAGE_URL + user.image}}
         />
         <Text style={styles.buttonText} numberOfLines={1}>
-          {userName}
+          {user.username}
         </Text>
       </View>
     </View>

@@ -11,12 +11,15 @@ const getArticleRequests = function (userId, type) {
         const requestsWithAddtionialData = await Promise.all(articleRequests.map(async request => {
           try {
             const { title, images } = await ArticleModel.findById(request.articleId);
-            const { username: borrowerName, image: borrowerImage  } = await UserModel.findById(request.borrower);
+            const user = await UserModel.findById(request.borrower)
+              .select("-password")
+              .select("-refreshToken")
+              .select("-verificationHash")
+              .select("-friends");
             const newRequest = {
               ...request.toObject(),
               title,
-              borrowerName,
-              borrowerImage,
+              user,
               images
             }
             return newRequest;

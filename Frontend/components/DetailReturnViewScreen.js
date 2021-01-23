@@ -27,6 +27,7 @@ const DetailReturnViewScreen = ({ route, navigation }) => {
     kategorie,
     displayRemainingTimeUnit,
     displayRemainingTime,
+    user
   } = route.params;
   
   const [returned, setReturned] = useState(false);
@@ -108,7 +109,7 @@ const DetailReturnViewScreen = ({ route, navigation }) => {
           </View>
 
           <View style={styles.items}>
-            <UserButton userName={besitzer} navigation={navigation} />
+            <UserButton user={user} navigation={navigation} />
             <TouchableOpacity>
               <MaterialCommunityIcons
                 name="heart-outline"

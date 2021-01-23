@@ -106,7 +106,7 @@ const DetailViewScreen = ({ route, navigation }) => {
           </View>
 
           <View style={styles.items}>
-            <UserButton userName={besitzer} navigation={navigation} />
+            <UserButton user={user} navigation={navigation} />
             <TouchableOpacity>
               <MaterialCommunityIcons
                 name="heart-outline"

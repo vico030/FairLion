@@ -4,14 +4,13 @@ import UserButton from "./UserButton";
 import { AntDesign, Feather, MaterialCommunityIcons } from "@expo/vector-icons";
 
 export default function ItemRequest({
-  borrower,
-  borrowerImage,
   produktName,
   image,
   navigation,
   declineRequest,
   acceptRequest,
-  requestId
+  requestId,
+  user
 }) {
   return (
     // change image link to correct parameter url
@@ -34,7 +33,7 @@ export default function ItemRequest({
           />
         </View>
         <View style={styles.items}>
-          <UserButton userName={borrower} navigation={navigation} image={borrowerImage} />
+          <UserButton user={user} navigation={navigation} />
           <View style={styles.icons}>
             <AntDesign name="check" size={24} color="green" onPress={() => acceptRequest(requestId)} />
             <Feather name="x" size={24} color="red" onPress={() => declineRequest(requestId)} />

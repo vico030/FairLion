@@ -278,13 +278,12 @@ const RequestsScreen = ({ navigation }) => {
         renderItem={({ item }) => (
           <ItemRequest
             navigation={navigation}
-            borrower={item.borrowerName}
-            borrowerImage={IMAGE_URL + item.borrowerImage}
             produktName={item.title}
             requestId={item._id}
             acceptRequest={acceptArticleRequest}
             declineRequest={declineArticleRequest}
             image={IMAGE_URL + item.images[0]}
+            user={item.user}
           />
         )}
         keyExtractor={(item, index) => index.toString()}
