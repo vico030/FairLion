@@ -59,7 +59,7 @@ const FriendsScreen = ({ navigation }) => {
         data={friends}
         renderItem={({ item }) => (
           <Friend
-            friendId={item._id}
+            id={item._id}
             name={item.username}
             strasse={item.street}
             plz={item.zipCode}

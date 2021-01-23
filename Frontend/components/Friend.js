@@ -9,11 +9,11 @@ import {
 } from "react-native";
 
 export default function Friend({
+  id,
   name,
   wohnort,
   artikelzahl,
   image,
-  friendId,
   strasse,
   plz,
   land,
@@ -28,11 +28,11 @@ export default function Friend({
       onPress={() => {
         console.log(name)
         navigation.navigate("Profile", {
+          id: id,
           name: name,
           wohnort: wohnort,
           artikelzahl: artikelzahl,
           image: image,
-          friendId: friendId,
           strasse: strasse,
           plz: plz,
           land: land,
