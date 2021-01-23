@@ -1,15 +1,27 @@
 import env from "../env.js";
-const {IMAGE_URL} = env;
+const { IMAGE_URL } = env;
 import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 // change profile pic with correct link and not local
 export default function UserButton({ navigation, user }) {
   return (
-    <TouchableOpacity onPress={() => navigation.navigate("Profile")}>
+    <TouchableOpacity onPress={() => navigation.navigate("Profile", {
+      id: user._id,
+      name: user.username,
+      wohnort: user.city,
+      image: IMAGE_URL + user.image,
+      strasse: user.street,
+      plz: user.zipCode,
+      land: user.country,
+      info: user.info,
+      email: user.info,
+      telefon: user.phone,
+      artikelzahl: 99999
+    })}>
       <View style={styles.button}>
         <Image
           style={styles.profileImage}
-          source={{uri: IMAGE_URL + user.image}}
+          source={{ uri: IMAGE_URL + user.image }}
         />
         <Text style={styles.buttonText} numberOfLines={1}>
           {user.username}

@@ -8,11 +8,11 @@ const ProfileScreen = ({
 }) => {
 
   const {
+    id,
     name,
     wohnort,
     artikelzahl,
     image,
-    friendId,
     strasse,
     plz,
     land,
@@ -20,16 +20,16 @@ const ProfileScreen = ({
     email,
     telefon,
   } = route.params;
-  console.log(name)
+  console.log(id);
   return (
     <View style={styles.container}>
       <ProfileInfoBox
+        id={id}
         name={name}
         wohnort={wohnort}
         artikelzahl={artikelzahl}
         image={image}
         navigation={navigation}
-        friendId={friendId}
         strasse={strasse}
         plz={plz}
         land={land}
@@ -39,8 +39,8 @@ const ProfileScreen = ({
       />
       <ProfileStockItemList
         navigation={navigation}
-        friendId={friendId}
         artikelzahl={artikelzahl}
+        id={id}
         />
     </View>
   );

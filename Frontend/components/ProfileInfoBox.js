@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, StyleSheet, Image, Dimensions } from "react-native";
+import { View, Text, StyleSheet, Image, Dimensions, TouchableOpacity, Linking } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
 export default function ProfileInfoBox({
@@ -7,7 +7,6 @@ export default function ProfileInfoBox({
   wohnort,
   artikelzahl,
   image,
-  friendId,
   strasse,
   plz,
   land,
@@ -22,7 +21,7 @@ export default function ProfileInfoBox({
 
         <Image
           style={styles.profilePicture}
-          source={{uri: image}}
+          source={{ uri: image }}
         />
 
         <View style={styles.middleInfo}>
@@ -33,8 +32,17 @@ export default function ProfileInfoBox({
         </View>
 
         <View style={styles.iconsWrapper}>
-          <Feather style={styles.icon} name="phone" size={26} color="grey" />
-          <FontAwesome name="envelope-o" size={26} color="grey" />
+          <TouchableOpacity onPress={async () => {
+            await Linking.openURL("tel://" + telefon);
+          }}>
+            <Feather style={styles.icon} name="phone" size={26} color="grey" />
+          </TouchableOpacity>
+
+          <TouchableOpacity onPress={async () => {
+            await Linking.openURL("mailto://" + email);
+          }}>
+            <FontAwesome name="envelope-o" size={26} color="grey" />
+          </TouchableOpacity>
         </View>
 
       </View>
