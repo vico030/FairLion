@@ -2,10 +2,7 @@ import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 import ProfileInfoBox from "./ProfileInfoBox";
 import ProfileStockItemList from "./ProfileStockItemList";
-const ProfileScreen = ({
-  route,
-  navigation,
-}) => {
+const ProfileScreen = ({ route, navigation }) => {
   const {
     id,
     name,

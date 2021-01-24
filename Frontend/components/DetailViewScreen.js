@@ -17,7 +17,7 @@ import UserButton from "./UserButton";
 const windowHeight = Dimensions.get("window").height;
 
 const DetailViewScreen = ({ route, navigation }) => {
-  const { besitzer, produktName, beschreibung, articleId, images, ausleihfrist, kategorie, status } = route.params;
+  const { besitzer, produktName, beschreibung, articleId, images, ausleihfrist, kategorie, status, user } = route.params;
 
   const [requested, setRequested] = useState(false);
 
@@ -43,7 +43,7 @@ const DetailViewScreen = ({ route, navigation }) => {
     }
 
     if(res.status === 201) {
-      Alert.alert(besitzer +" wurde eine Anfrage gesendet")
+      Alert.alert(user.username +" wurde eine Anfrage gesendet")
       setRequested(true);
     }
     else if(res.status === 500) {

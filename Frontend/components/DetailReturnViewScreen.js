@@ -56,7 +56,7 @@ const DetailReturnViewScreen = ({ route, navigation }) => {
     }
 
     if(res.status === 201) {
-      Alert.alert(besitzer +"Der Artikel wurde an "+besitzer+" zurückgegeben")
+      Alert.alert("Der Artikel wurde an "+user.username+" zurückgegeben")
       setReturned(true)
     }
     else if(res.status === 500) {

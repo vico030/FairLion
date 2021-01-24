@@ -25,7 +25,7 @@ export default function ItemLend({
   articleId,
   user
 }) {
-  console.log(images);
+  //console.log(images);
   // console.log(returnDate);
   let remainingTime = returnDate.getTime() - new Date().getTime();
   let remainingTimeSeconds = remainingTime / 1000;
@@ -33,8 +33,8 @@ export default function ItemLend({
   let remainingTimeHours = remainingTimeMinutes / 60;
   let remainingTimeDays = remainingTimeHours / 24;
   let remainingTimeMonths = remainingTimeDays / 31;
-  console.log(remainingTimeHours);
-  console.log(remainingTimeDays);
+  //console.log(remainingTimeHours);
+  //console.log(remainingTimeDays);
   // console.log(new Date().getTime());
   // console.log(new Date(returnDate.getTime));
   let displayRemainingTime = remainingTimeHours;

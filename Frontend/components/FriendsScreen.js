@@ -22,7 +22,6 @@ const FriendsScreen = ({ navigation }) => {
     var res;
     var resJson;
     var userId = await AsyncStorage.getItem("userId");
-    console.log(BACKEND_URL + `users/${userId}/friends`);
     try {
       res = await fetch(
         BACKEND_URL + `users/${userId}/friends`,
@@ -35,7 +34,7 @@ const FriendsScreen = ({ navigation }) => {
     }
     if (res.status === 200) {
       setFriends(resJson.data);
-      console.log(resJson.data)
+      //console.log(resJson.data)
     }
   };
 
