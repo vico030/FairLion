@@ -1,5 +1,5 @@
 import env from "../env.js";
-const {BACKEND_URL} = env;
+const { BACKEND_URL } = env;
 import { View, Text, StyleSheet, FlatList } from "react-native";
 import React, { useState, useEffect } from "react";
 import { SearchBar } from "react-native-elements";
@@ -109,11 +109,19 @@ const SearchScreen = ({ navigation }) => {
           console.log(articles);
         }}
       />
+
       {searching ? (
-        <Text style={styles.text}> Suchergebnisse: </Text>
+        articles.length === 0 ?
+          (<Text style={styles.infoText}>Leider nichts gefunden!{"\n"}:(
+          </Text>)
+          :
+          (<Text style={styles.text}> Suchergebnisse: </Text>)
       ) : (
-        <Text style={styles.text}> Meine Favoriten: </Text>
-      )}
+          articles.length === 0 ?
+            (<Text style={styles.infoText}>Hier erscheinen Artikel, die du als Favoriten gekennzeichnet hast!</Text>)
+            :
+            (<Text style={styles.text}> Meine Favoriten: </Text>)
+        )}
 
       <FlatList
         data={articles}
@@ -143,6 +151,14 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     color: "#333740",
     marginVertical: 5,
+  },
+  infoText: {
+    fontWeight: "bold",
+    marginLeft: 10,
+    color: "#333740",
+    top: "50%",
+    fontSize: 20,
+    textAlign: "center",
   },
 });
 export default SearchScreen;
