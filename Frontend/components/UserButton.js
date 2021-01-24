@@ -4,6 +4,7 @@ import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 // change profile pic with correct link and not local
 export default function UserButton({ navigation, user }) {
+  
   return (
     <TouchableOpacity onPress={() => navigation.navigate("Profile", {
       id: user._id,

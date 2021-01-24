@@ -6,7 +6,6 @@ const ProfileScreen = ({
   route,
   navigation,
 }) => {
-
   const {
     id,
     name,
@@ -20,11 +19,10 @@ const ProfileScreen = ({
     email,
     telefon,
   } = route.params;
-  console.log(id);
+  
   return (
     <View style={styles.container}>
       <ProfileInfoBox
-        id={id}
         name={name}
         wohnort={wohnort}
         artikelzahl={artikelzahl}

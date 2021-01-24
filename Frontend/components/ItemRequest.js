@@ -12,6 +12,7 @@ export default function ItemRequest({
   requestId,
   user
 }) {
+  
   return (
     // change image link to correct parameter url
     <View style={styles.wrapper}>

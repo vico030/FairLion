@@ -9,7 +9,12 @@ const getFavouriteFromUser = function (userId) {
                 const articles = [];
                 for (let i = 0; i < user.favourites.length; i++) {
                     const article = await Article.findById(user.favourites[i]);
-                    articles[i] = article;
+                    const owner = await User.findById(article.owner)
+                        .select("-password")
+                        .select("-refreshToken")
+                        .select("-verificationHash")
+                        .select("-friends");
+                    articles[i] = {...article._doc, user: owner._doc};
                 }
                 return resolve({
                     data: articles,

@@ -22,7 +22,7 @@ const DetailViewScreen = ({ route, navigation }) => {
   const [requested, setRequested] = useState(false);
 
   const handleLend = async () => {
-    console.log(articleId)
+    //console.log(articleId)
     let res;
     let requestOptions = {
       method: 'POST',
@@ -92,7 +92,7 @@ const DetailViewScreen = ({ route, navigation }) => {
   useEffect(() => {
     isRequested()
   }, []);
-
+ 
   return (
     <ScrollView style={styles.container}>
       <View style={styles.main}>
