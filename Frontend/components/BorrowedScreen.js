@@ -1,6 +1,6 @@
 import env from "../env.js";
-const {BACKEND_URL} = env;
-import { View, FlatList } from "react-native";
+const { BACKEND_URL } = env;
+import { View, FlatList, Text, StyleSheet } from "react-native";
 import React, { useEffect, useState } from "react";
 import ItemLend from "./ItemLend";
 import AsyncStorage from "@react-native-community/async-storage";
@@ -22,7 +22,7 @@ const BorrowedScreen = ({ navigation }) => {
     try {
       res = await fetch(
         BACKEND_URL +
-          `users/${await AsyncStorage.getItem("userId")}/borrowedArticles`,
+        `users/${await AsyncStorage.getItem("userId")}/borrowedArticles`,
         requestOptions
       );
       resJson = await res.json();
@@ -51,6 +51,9 @@ const BorrowedScreen = ({ navigation }) => {
         marginTop: 3,
       }}
     >
+      {articles.length === 0 &&
+        <Text style={styles.infoText}>Hier erscheinen Artikel, die du dir ausgeliehen hast!</Text>
+      }
       <FlatList
         data={articles}
         keyExtractor={(item) => item._id}
@@ -73,3 +76,14 @@ const BorrowedScreen = ({ navigation }) => {
 };
 
 export default BorrowedScreen;
+
+const styles = StyleSheet.create({
+  infoText: {
+    fontWeight: "bold",
+    marginLeft: 10,
+    color: "#333740",
+    top: "50%",
+    fontSize: 20,
+    textAlign: "center",
+  },
+});

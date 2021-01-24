@@ -1,5 +1,5 @@
 import env from "../env.js";
-const {BACKEND_URL, IMAGE_URL} = env;
+const { BACKEND_URL, IMAGE_URL } = env;
 import { View, FlatList, Text, StyleSheet } from "react-native";
 import React, { useContext, useEffect, useState } from "react";
 import FriendRequest from "./FriendRequest";
@@ -255,6 +255,7 @@ const RequestsScreen = ({ navigation }) => {
 
   return (
     <View style={{ alignItems: "center", justifyContent: "center" }}>
+
       {friendRequests.length !== 0 && <Text style={styles.listHeader}>Freundesanfragen:</Text>}
       <FlatList
         data={friendRequests}
@@ -273,6 +274,10 @@ const RequestsScreen = ({ navigation }) => {
 
       {articleRequests.length !== 0 && <Text style={styles.listHeader}>Artikelanfragen:</Text>}
       {error.occured && Alert(error.label)}
+
+      {(friendRequests.length === 0 && articleRequests.length === 0) &&
+        <Text style={styles.infoText}>Hier erscheinen Anfragen von Nutzern, die deine Freunde sein oder deine Artikel ausleihen möchten!</Text>
+      }
       <FlatList
         data={articleRequests}
         renderItem={({ item }) => (
@@ -301,6 +306,14 @@ const styles = StyleSheet.create({
   },
   friendList: {
     height: 58,
+  },
+  infoText: {
+    fontWeight: "bold",
+    marginLeft: 10,
+    color: "#333740",
+    top: "50%",
+    fontSize: 20,
+    textAlign: "center",
   },
 });
 export default RequestsScreen;

@@ -1,7 +1,7 @@
 import env from "../env.js";
 const {BACKEND_URL} = env;
 import AsyncStorage from "@react-native-community/async-storage";
-import { View, Text, FlatList } from "react-native";
+import { View, Text, FlatList, StyleSheet } from "react-native";
 import React, { useEffect, useState } from "react";
 import ItemStock from "./ItemStock";
 
@@ -49,6 +49,9 @@ const StockScreen = ({ navigation }) => {
         marginTop: 3,
       }}
     >
+      {articles.length === 0 &&
+        <Text style={styles.infoText}>Hier erscheinen Artikel, die du deinen Freunden ausleihen können möchtest!</Text>
+      }
       <FlatList
         data={articles}
         keyExtractor={(item) => item._id}
@@ -69,3 +72,14 @@ const StockScreen = ({ navigation }) => {
 };
 
 export default StockScreen;
+
+const styles = StyleSheet.create({
+  infoText: {
+    fontWeight: "bold",
+    marginLeft: 10,
+    color: "#333740",
+    top: "50%",
+    fontSize: 20,
+    textAlign: "center",
+  },
+});
