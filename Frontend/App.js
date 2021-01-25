@@ -25,7 +25,6 @@ const DrawerNavigator = ({ props }) => {
     <Drawer.Navigator
       drawerContent={(props) => <DrawerContent {...props} />}
       backBehavior="history"
-      drawerType="slide"
     >
       <Drawer.Screen name="Home" component={AppTabs} options={{unmountOnBlur:true}}/>
       <Drawer.Screen name="Profile" component={ProfileStackScreen} options={{unmountOnBlur:true}}/>
