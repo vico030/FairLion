@@ -1,5 +1,5 @@
 import env from "../env.js";
-const {BACKEND_URL, IMAGE_URL} = env;
+const { BACKEND_URL, IMAGE_URL } = env;
 import AsyncStorage from "@react-native-community/async-storage";
 import React, { useContext, useReducer } from "react";
 import { loginReducer, initialLoginState } from "../reducers/loginReducer";
@@ -28,7 +28,7 @@ const RegisterScreen = ({ navigation }) => {
     city: "",
     country: "de",
     aboutMe: "",
-    image: null,
+    image: "",
     check_textInputChange: false,
     secureTextEntry: true,
     confirm_secureTextEntry: true,
@@ -119,19 +119,21 @@ const RegisterScreen = ({ navigation }) => {
     for (const uri of imageUris) {
       var mime = uri.split(".").pop().toLowerCase();
       const ext = mime;
-      if (mime === "jpg") mime = "jpeg"
-      const name = Math.floor(Math.random() * Math.floor(999999999999999999999));
-      images.push({ "uri": uri, "name": name + "." + ext, "type": "image/" + mime })
+      if (mime === "jpg") mime = "jpeg";
+      const name = Math.floor(
+        Math.random() * Math.floor(999999999999999999999)
+      );
+      images.push({ uri: uri, name: name + "." + ext, type: "image/" + mime });
     }
     setData({
       ...data,
       image: images[0],
     });
-  }
+  };
 
   const handleRegistration = async () => {
     const formdata = new FormData();
-    //if (data.picture) formdata.append("picture", data.picture);
+    if (data.image !== "") formdata.append("image", data.image);
     formdata.append("username", data.username);
     formdata.append("password", data.password);
     formdata.append("email", data.email);
@@ -141,14 +143,13 @@ const RegisterScreen = ({ navigation }) => {
     formdata.append("city", data.city);
     formdata.append("country", data.country);
     formdata.append("info", data.aboutMe);
-    formdata.append("image", data.image);
+    // formdata.append("image", data.image);
 
     signUp(formdata);
   };
 
   return (
     <KeyboardAwareScrollView style={{ flex: 1 }}>
-
       <ImageChooser handleImages={handleImages} />
 
       <View style={styles.userInfo}>
