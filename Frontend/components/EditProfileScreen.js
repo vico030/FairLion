@@ -1,9 +1,7 @@
 import env from "../env.js";
 const {BACKEND_URL, IMAGE_URL} = env;
 import AsyncStorage from "@react-native-community/async-storage";
-import React, { useContext, useReducer } from "react";
-import { loginReducer, initialLoginState } from "../reducers/loginReducer";
-import { AuthContext } from "../context";
+import React, { useContext, useEffect, useReducer, useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -14,136 +12,155 @@ import {
 import { Picker } from "@react-native-picker/picker";
 import ImageChooser from "./ImageChooser";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scrollview";
+import { Alert } from "react-native";
 
-const RegisterScreen = ({ navigation }) => {
-  const { signUp } = useContext(AuthContext);
-  const [data, setData] = React.useState({
-    username: "",
-    password: "",
-    confirm_password: "",
-    email: "",
-    phone: "",
-    street: "",
-    PLZ: "",
-    city: "",
-    country: "de",
-    aboutMe: "",
-    image: null,
-    check_textInputChange: false,
-    secureTextEntry: true,
-    confirm_secureTextEntry: true,
-  });
+const EditProfileScreen = ({ route, navigation }) => {
+
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [street, setStreet] = useState("");
+  const [PLZ, setPLZ] = useState("");
+  const [city, setCity] = useState("");
+  const [country, setCountry] = useState("");
+  const [aboutMe, setAboutMe] = useState("");
+  const [image, setImage] = useState("");
+
+  const getUser = async () => {
+    try {
+      setUsername(await AsyncStorage.getItem("username"));
+      setEmail(await AsyncStorage.getItem("email"));
+      setPhone(await AsyncStorage.getItem("phone"));
+      setStreet(await AsyncStorage.getItem("street"));
+      setPLZ(await AsyncStorage.getItem("zipCode"));
+      setCity(await AsyncStorage.getItem("city"));
+      setCountry(await AsyncStorage.getItem("country"));
+      setAboutMe(await AsyncStorage.getItem("info"));
+      var imageUri = await AsyncStorage.getItem("image")
+      imageUri = imageUri.substring(IMAGE_URL.length, imageUri.length)
+      setImage(imageUri);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  useEffect(() => {
+    getUser();
+  }, []);
 
   const usernameChange = (value) => {
     if (value.length !== 0) {
-      setData({
-        ...data,
-        username: value,
-        check_textInputChange: true,
-      });
+      setUsername(value);
     } else {
-      setData({
-        ...data,
-        username: value,
-        check_textInputChange: false,
-      });
+      setUsername(value);
     }
-  };
-
-  const handlePasswordChange = (value) => {
-    setData({
-      ...data,
-      password: value,
-    });
-  };
-
-  const handleConfirmPasswordChange = (value) => {
-    setData({
-      ...data,
-      confirm_password: value,
-    });
-  };
-
-  const handleEmailChange = (value) => {
-    setData({
-      ...data,
-      email: value,
-    });
   };
 
   const handlePhoneChange = (value) => {
-    setData({
-      ...data,
-      phone: value,
-    });
+      if (value !== phone) {
+        setPhone(value);
+      }
   };
 
   const handleStreetChange = (value) => {
-    setData({
-      ...data,
-      street: value,
-    });
+      if (value !== street) {
+        setStreet(value);
+      }
   };
 
   const handlePLZChange = (value) => {
-    setData({
-      ...data,
-      PLZ: value,
-    });
+      if (value !== PLZ) {
+        setPLZ(value);
+      }
   };
 
   const handleCityChange = (value) => {
-    setData({
-      ...data,
-      city: value,
-    });
+    if (value !== city) {
+      setCity(value);
+    }
   };
 
   const handleCountryChange = (value) => {
-    setData({
-      ...data,
-      country: value,
-    });
-    console.log(data);
+      if (value !== country) {
+        setCountry(value);
+      }
   };
 
   const handleAboutMEChange = (value) => {
-    setData({
-      ...data,
-      aboutMe: value,
-    });
+      if (value !== aboutMe) {
+        setAboutMe(value);
+      }
+    
   };
 
   const handleImages = (imageUris) => {
-    var images = [];
-    for (const uri of imageUris) {
-      var mime = uri.split(".").pop().toLowerCase();
-      const ext = mime;
-      if (mime === "jpg") mime = "jpeg"
-      const name = Math.floor(Math.random() * Math.floor(999999999999999999999));
-      images.push({ "uri": uri, "name": name + "." + ext, "type": "image/" + mime })
+    if (imageUris) {
+      var images = [];
+      for (const uri of imageUris) {
+        var mime = uri.split(".").pop().toLowerCase();
+        const ext = mime;
+        if (mime === "jpg") mime = "jpeg"
+        const name = Math.floor(Math.random() * Math.floor(999999999999999999999));
+        images.push({ "uri": uri, "name": name + "." + ext, "type": "image/" + mime })
+      }
+      if (images[0] != image) {
+          setImage(images[0]);
+      }
     }
-    setData({
-      ...data,
-      image: images[0],
-    });
   }
 
-  const handleRegistration = async () => {
-    const formdata = new FormData();
-    //if (data.picture) formdata.append("picture", data.picture);
-    formdata.append("username", data.username);
-    formdata.append("password", data.password);
-    formdata.append("email", data.email);
-    formdata.append("phone", data.phone);
-    formdata.append("street", data.street);
-    formdata.append("zipCode", data.PLZ);
-    formdata.append("city", data.city);
-    formdata.append("country", data.country);
-    formdata.append("info", data.aboutMe);
-    formdata.append("image", data.image);
+  const handleEdit = async () => {
 
-    signUp(formdata);
+    const formdata = new FormData();
+    //if (image) formdata.append("picture", image);
+    formdata.append("username", username);
+    formdata.append("email", email);
+    formdata.append("phone", phone);
+    formdata.append("street", street);
+    formdata.append("zipCode", PLZ);
+    formdata.append("city", city);
+    formdata.append("country", country);
+    formdata.append("info", aboutMe);
+    formdata.append("image", image);
+
+    let res;
+    let requestOptions = {
+      method: "PUT",
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Accept: "application/json",
+      },
+      body: formdata
+    }
+    try {
+      res = await fetch(BACKEND_URL + `users/${await AsyncStorage.getItem("userId")}`, requestOptions) 
+    } catch (err) {
+      console.log(err);
+    }
+    if (res.status === 201) {
+     
+      const resJson = await res.json();
+      const data = resJson.data;
+      AsyncStorage.multiSet([
+        ["userId", data._id],
+        ["username", data.username],
+        ["email", data.email],
+        ["phone", data.phone],
+        ["street", data.street],
+        ["zipCode", data.zipCode],
+        ["city", data.city],
+        ["country", data.country],
+        ["info", data.info],
+        ["image", IMAGE_URL + data.image]
+      ]);
+      Alert.alert(resJson.message);
+    }
+    else {
+      const errMess = await res.json();
+      Alert.alert(errMess.message);
+    }
+    //updateUserContext(username, city, image);
+    navigation.goBack();
   };
 
   return (
@@ -152,7 +169,8 @@ const RegisterScreen = ({ navigation }) => {
       <ImageChooser handleImages={handleImages} />
 
       <View style={styles.userInfo}>
-        <View style={styles.inputView}>
+
+      <View style={styles.inputView}>
           <TextInput
             style={styles.inputText}
             placeholder="Username"
@@ -161,7 +179,8 @@ const RegisterScreen = ({ navigation }) => {
             onChangeText={(value) => usernameChange(value)}
           />
         </View>
-
+        {/* Passwort ändern als extra screen */}
+{/* 
         <View style={styles.inputView}>
           <TextInput
             secureTextEntry
@@ -180,23 +199,12 @@ const RegisterScreen = ({ navigation }) => {
             placeholderTextColor="#7E7E7E"
             onChangeText={(value) => handleConfirmPasswordChange(value)}
           />
-        </View>
-
-        <View style={styles.inputView}>
-          <TextInput
-            style={styles.inputText}
-            placeholder="Email Adresse"
-            placeholderTextColor="#7E7E7E"
-            autoCapitalize="none"
-            keyboardType="email-address"
-            onChangeText={(value) => handleEmailChange(value)}
-          />
-        </View>
+        </View> */}
 
         <View style={styles.inputViewLast}>
           <TextInput
             style={styles.inputText}
-            placeholder="Telefon"
+            placeholder="Gib deine neue Telefonnummer ein"
             placeholderTextColor="#7E7E7E"
             autoCapitalize="none"
             keyboardType="phone-pad"
@@ -236,13 +244,11 @@ const RegisterScreen = ({ navigation }) => {
 
         <View style={styles.picker}>
           <Picker
-            selectedValue={data.country}
+            selectedValue={country}
             style={{ backgroundColor: "#fff", width: "95%", height: 40 }}
             itemStyle={{ justifyContent: "flex-start" }}
             mode={"dropdown"}
-            onValueChange={(itemValue, itemIndex) =>
-              handleCountryChange(itemValue)
-            }
+            onValueChange={(itemValue, itemIndex) => handleCountryChange(itemValue)}
           >
             <Picker.Item label="Deutschland" value="de" />
             <Picker.Item label="Österreich" value="au" />
@@ -263,15 +269,15 @@ const RegisterScreen = ({ navigation }) => {
       </View>
 
       <View style={styles.container}>
-        <TouchableOpacity style={styles.signUpBtn} onPress={handleRegistration}>
-          <Text style={styles.loginText}>Registrieren</Text>
+        <TouchableOpacity style={styles.signUpBtn} onPress={handleEdit}>
+          <Text style={styles.loginText}>Speichern</Text>
         </TouchableOpacity>
       </View>
     </KeyboardAwareScrollView>
   );
 };
 
-export default RegisterScreen;
+export default EditProfileScreen;
 
 const styles = StyleSheet.create({
   container: {

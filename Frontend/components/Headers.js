@@ -27,6 +27,7 @@ import DetailViewScreen from "./DetailViewScreen";
 import { Header } from "react-native/Libraries/NewAppScreen";
 import EditItemScreen from "./EditItemScreen";
 import SettingsScreen from "./SettingsScreen";
+import EditProfileScreen from "./EditProfileScreen";
 const inactiveTintColor = "#333740";
 const BurrowedStack = createStackNavigator();
 const StockStack = createStackNavigator();
@@ -39,6 +40,7 @@ const DetailReturnStack = createStackNavigator();
 const ArticleRequestStack = createStackNavigator();
 const ProfileStack = createStackNavigator();
 const SettingsStack = createStackNavigator();
+const EditProfileStack = createStackNavigator();
 
 function ProfileStackScreen({ navigation }) {
   return (
@@ -566,6 +568,34 @@ function SettingsStackScreen({ navigation }) {
   );
 }
 
+function EditProfileStackScreen({ navigation }) {
+  return (
+    <EditProfileStack.Navigator>
+      <EditProfileStack.Screen 
+        name="EditProfile"
+        component={EditProfileScreen}
+        options={{
+          title: "Profil bearbeiten",
+          headerStyle: {
+            backgroundColor: inactiveTintColor,
+          },
+          headerTitleAlign: "center",
+          headerTintColor: "#fff",
+          headerTitleStyle: {
+            fontFamily: "Roboto",
+          },
+          headerLeft: () => (
+            <HeaderBackButton
+              onPress={() => navigation.goBack()}
+              tintColor={"white"}
+            />
+          ),
+        }}
+      />      
+    </EditProfileStack.Navigator>
+  );
+}
+
 const styles = StyleSheet.create({
   leftIcon: {
     color: "#fff",
@@ -589,4 +619,5 @@ export {
   ArticleRequestStackScreen,
   ProfileStackScreen,
   SettingsStackScreen,
+  EditProfileStackScreen,
 };

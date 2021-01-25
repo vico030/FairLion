@@ -12,8 +12,7 @@ import { AuthContext } from "../context";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-community/async-storage";
 
-
-export default function DrawerContent({ navigation }) {
+const DrawerContent = ({ navigation }) => {
   const { signOut } = useContext(AuthContext);
 
   const [username, setUsername] = useState("");
@@ -32,7 +31,12 @@ export default function DrawerContent({ navigation }) {
 
   useEffect(() => {
     getUserdata();
-  }, []);
+    console.log("render!");
+    /* const unsubscribe = navigation.addListener("focus", () => {
+      getUserdata();
+    });
+    return unsubscribe; */
+  }, [navigation]);
 
   return (
     <View style={styles.container}>
@@ -69,7 +73,10 @@ export default function DrawerContent({ navigation }) {
 
       {/* <View style={styles.divider} /> */}
 
-      <TouchableOpacity style={styles.buttonContainer}>
+      <TouchableOpacity
+        style={styles.buttonContainer}
+        onPress={() => navigation.navigate("EditProfile")}
+      >
         <MaterialCommunityIcons
           style={styles.icon}
           name="account"
@@ -106,6 +113,9 @@ export default function DrawerContent({ navigation }) {
     </View>
   );
 }
+
+export default DrawerContent;
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,

@@ -15,20 +15,22 @@ import { createDrawerNavigator } from "@react-navigation/drawer";
 import { Button, View } from "react-native";
 import DrawerContent from "./components/DrawerContent";
 
-import { ProfileStackScreen, SettingsStackScreen } from "./components/Headers";
+import { ProfileStackScreen, SettingsStackScreen, EditProfileStackScreen } from "./components/Headers";
 import { Alert } from "react-native";
 
 const Drawer = createDrawerNavigator();
 
-const DrawerNavigator = () => {
+const DrawerNavigator = ({ props }) => {
   return (
     <Drawer.Navigator
-      // style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
       drawerContent={(props) => <DrawerContent {...props} />}
+      backBehavior="history"
+      drawerType="slide"
     >
-      <Drawer.Screen name="Home" component={AppTabs} />
-      <Drawer.Screen name="Profile" component={ProfileStackScreen} />
-      <Drawer.Screen name="Settings" component={SettingsStackScreen} />
+      <Drawer.Screen name="Home" component={AppTabs} options={{unmountOnBlur:true}}/>
+      <Drawer.Screen name="Profile" component={ProfileStackScreen} options={{unmountOnBlur:true}}/>
+      <Drawer.Screen name="Settings" component={SettingsStackScreen} options={{unmountOnBlur:true}}/>
+      <Drawer.Screen name="EditProfile" component={EditProfileStackScreen} options={{unmountOnBlur:true}}/>
     </Drawer.Navigator>
   );
 };
@@ -50,6 +52,7 @@ export default function App() {
         },
         body: JSON.stringify({ email: email, password: password }),
       };
+      console.log(BACKEND_URL);
       try {
         res = await fetch(BACKEND_URL + "auth/login", requestOptions);
       } catch (e) {
