@@ -1,10 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  View,
-  Image,
-  TouchableOpacity,
-  StyleSheet,
-} from "react-native";
+import { View, Image, TouchableOpacity, StyleSheet } from "react-native";
 import * as Permissions from "expo-permissions";
 import * as ImagePicker from "expo-image-picker";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -31,8 +26,7 @@ export default function ImageChooser(props) {
       aspect: [4, 3],
       quality: 1,
     });
-
-    props.handleImages([result.uri]);
+    if (result.uri) props.handleImages([result.uri]);
 
     if (!result.cancelled) {
       setImageSource(result.uri);
