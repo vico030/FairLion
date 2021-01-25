@@ -1,4 +1,5 @@
 import React, { useContext, useState } from "react";
+import { Modal } from "react-native";
 import {
   StyleSheet,
   Text,
@@ -9,9 +10,10 @@ import {
   Dimensions,
   Alert
 } from "react-native";
+import { TouchableHighlight } from "react-native-gesture-handler";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scrollview";
 import { AuthContext } from "../context";
-import {isValid} from "../helpers/validation";
+import { isValid } from "../helpers/validation";
 
 const LoginScreen = ({ navigation }) => {
   const [user, setUser] = useState({
@@ -83,13 +85,13 @@ const LoginScreen = ({ navigation }) => {
         </View>
 
         <TouchableOpacity>
-          <Text style={styles.forgot}>Passwort vergessen?</Text>
+          <Text style={styles.forgot} onPress={() => navigation.navigate("ForgotPasswordStackScreen")}>Passwort vergessen?</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
           style={styles.loginBtn}
           onPress={() => {
-            if(isValid(user.email, "Email") && isValid(user.password, "Passwort")) handleLogin(user.email, user.password);
+            if (isValid(user.email, "Email") && isValid(user.password, "Passwort")) handleLogin(user.email, user.password);
           }}
         >
           <Text style={styles.loginText}>Login</Text>

@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import { View, Text, FlatList, StyleSheet, ScrollView } from "react-native";
 import ItemProfile from "./ItemProfile";
 
-export default function ProfileStockItemList({ friendId, artikelzahl, navigation }) {
+export default function ProfileStockItemList({ artikelzahl, navigation, id }) {
 
   const [articles, setArticles] = useState([]);
 
@@ -22,7 +22,7 @@ export default function ProfileStockItemList({ friendId, artikelzahl, navigation
     var resJson;
     try {
       res = await fetch(
-        BACKEND_URL + `users/${friendId}/ownedArticles`,
+        BACKEND_URL + `users/${id}/ownedArticles`,
         requestOptions
       );
 
@@ -62,6 +62,7 @@ export default function ProfileStockItemList({ friendId, artikelzahl, navigation
             favored={item.favourite}
             status={item.status}
             articleId={item._id}
+            user={item.user}
           />
         )}
       />

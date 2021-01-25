@@ -19,6 +19,7 @@ const ArticleRequestScreen = ({
   ausleihfrist,
   images,
   navigation,
+  user
 }) => {
   return (
     <ScrollView style={styles.container}>
@@ -33,7 +34,7 @@ const ArticleRequestScreen = ({
           </View>
 
           <View style={styles.items}>
-            <UserButton username={besitzer} />
+            <UserButton user={user} navigation={navigation} />
             <TouchableOpacity>
                 <MaterialCommunityIcons name="heart-outline" size={24} color="black" />
             </TouchableOpacity>

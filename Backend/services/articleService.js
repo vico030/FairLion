@@ -5,7 +5,11 @@ const getAllArticles = function (userId) {
     return new Promise((resolve, reject) => {
         Article.find({})
             .then(async (articles) => {
-                const user = await User.findById(userId);
+                const user = await User.findById(userId)
+                    .select("-password")
+                    .select("-refreshToken")
+                    .select("-verificationHash")
+                    .select("-friends");
                 articles.forEach(article => {
                     if (user.favourites.includes(article._id)) {
                         article.favourite = true;
@@ -14,8 +18,13 @@ const getAllArticles = function (userId) {
                         article.favourite = false;
                     }
                 });
+                    
+                let newArticles = [];
+                for(let article of articles){
+                    newArticles.push({...article._doc, user});
+                }
                 return resolve({
-                    data: articles,
+                    data: newArticles,
                     message: 'Einträge wurden gefunden.',
                     status: 200
                 })
@@ -36,9 +45,15 @@ const getArticlesFromFriendsByName = function (userId, title) {
             const articles = {};
             const user = await User.findById(userId);
             for (let i = 0; i < user.friends.length; i++) {
-                const { username } = await User.findById(user.friends[i]);
+                const friend = await User.findById(user.friends[i])
+                    .select("-password")
+                    .select("-refreshToken")
+                    .select("-verificationHash")
+                    .select("-friends");
                 const articlesFromFriend = await Article.find({ "owner": user.friends[i], 'title': { $regex: title, $options: 'i' } });
+                
                 if (articlesFromFriend.length != null) {
+                    
                     articlesFromFriend.forEach(article => {
                         if (user.favourites.includes(article._id)) {
                             article.favourite = true;
@@ -47,9 +62,16 @@ const getArticlesFromFriendsByName = function (userId, title) {
                             article.favourite = false;
                         }
                     });
-                    articles[username] = articlesFromFriend;
+                    let newArticlesFromFriend = []
+                    for(let article of articlesFromFriend){
+                        //console.log(friend);
+                        newArticlesFromFriend.push({...article._doc, user: friend._doc});
+                    }
+                    //console.log(newArticlesFromFriend);
+                    articles[friend.username] = newArticlesFromFriend;
                 }
             }
+            //console.log(articles);
             return resolve({
                 data: articles,
                 message: 'Einträge wurden gefunden.',
@@ -69,16 +91,20 @@ const getArticlesFromFriendsByName = function (userId, title) {
 const getArticleById = function (userId, articleId) {
     return new Promise((resolve, reject) => {
         Article.findById(articleId)
-            .then(async (articles) => {
-                const user = await User.findById(userId);
+            .then(async (article) => {
+                const user = await User.findById(userId)
+                    .select("-password")
+                    .select("-refreshToken")
+                    .select("-verificationHash")
+                    .select("-friends");
                 if (user.favourites.includes(articleId)) {
-                    articles.favourite = true;
+                    article.favourite = true;
                 }
                 else {
-                    articles.favourite = false;
+                    article.favourite = false;
                 }
                 return resolve({
-                    data: articles,
+                    data: {...article._doc, user},
                     message: 'Einträge wurden gefunden.',
                     status: 200
                 })

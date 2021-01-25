@@ -2,17 +2,13 @@ import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 import ProfileInfoBox from "./ProfileInfoBox";
 import ProfileStockItemList from "./ProfileStockItemList";
-const ProfileScreen = ({
-  route,
-  navigation,
-}) => {
-
+const ProfileScreen = ({ route, navigation }) => {
   const {
+    id,
     name,
     wohnort,
     artikelzahl,
     image,
-    friendId,
     strasse,
     plz,
     land,
@@ -20,7 +16,7 @@ const ProfileScreen = ({
     email,
     telefon,
   } = route.params;
-  console.log(name)
+  
   return (
     <View style={styles.container}>
       <ProfileInfoBox
@@ -29,7 +25,6 @@ const ProfileScreen = ({
         artikelzahl={artikelzahl}
         image={image}
         navigation={navigation}
-        friendId={friendId}
         strasse={strasse}
         plz={plz}
         land={land}
@@ -39,8 +34,8 @@ const ProfileScreen = ({
       />
       <ProfileStockItemList
         navigation={navigation}
-        friendId={friendId}
         artikelzahl={artikelzahl}
+        id={id}
         />
     </View>
   );

@@ -27,6 +27,7 @@ const DetailReturnViewScreen = ({ route, navigation }) => {
     kategorie,
     displayRemainingTimeUnit,
     displayRemainingTime,
+    user
   } = route.params;
   
   const [returned, setReturned] = useState(false);
@@ -55,7 +56,7 @@ const DetailReturnViewScreen = ({ route, navigation }) => {
     }
 
     if(res.status === 201) {
-      Alert.alert(besitzer +"Der Artikel wurde an "+besitzer+" zurückgegeben")
+      Alert.alert("Der Artikel wurde an "+user.username+" zurückgegeben")
       setReturned(true)
     }
     else if(res.status === 500) {
@@ -108,7 +109,7 @@ const DetailReturnViewScreen = ({ route, navigation }) => {
           </View>
 
           <View style={styles.items}>
-            <UserButton userName={besitzer} navigation={navigation} />
+            <UserButton user={user} navigation={navigation} />
             <TouchableOpacity>
               <MaterialCommunityIcons
                 name="heart-outline"

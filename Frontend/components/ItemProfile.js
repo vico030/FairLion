@@ -24,6 +24,7 @@ export default function ItemProfile({
   favored,
   status,
   articleId,
+  user
 }) {
   return (
     // change image link to correct parameter url
@@ -41,6 +42,7 @@ export default function ItemProfile({
           favored: favored,
           status: status,
           articleId: articleId,
+          user: user
         })
       }
     >
@@ -62,7 +64,7 @@ export default function ItemProfile({
           />
         </View>
         <View style={styles.items}>
-          <ProfileUserButton userName={besitzer} />
+          <ProfileUserButton user={user} />
           <Text style={styles.itemTime} numberOfLines={1}>
             {verliehen}
           </Text>

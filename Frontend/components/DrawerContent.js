@@ -59,7 +59,7 @@ const DrawerContent = ({ navigation }) => {
 
       <TouchableOpacity
         style={styles.profilButton}
-        onPress={() => navigation.navigate("Profile")}
+        //onPress={() => navigation.navigate("Profile", {})}
       >
         <Image
           style={styles.profilImage}

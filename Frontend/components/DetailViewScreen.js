@@ -17,12 +17,12 @@ import UserButton from "./UserButton";
 const windowHeight = Dimensions.get("window").height;
 
 const DetailViewScreen = ({ route, navigation }) => {
-  const { besitzer, produktName, beschreibung, articleId, images, ausleihfrist, kategorie, status } = route.params;
+  const { besitzer, produktName, beschreibung, articleId, images, ausleihfrist, kategorie, status, user } = route.params;
 
   const [requested, setRequested] = useState(false);
 
   const handleLend = async () => {
-    console.log(articleId)
+    //console.log(articleId)
     let res;
     let requestOptions = {
       method: 'POST',
@@ -43,7 +43,7 @@ const DetailViewScreen = ({ route, navigation }) => {
     }
 
     if(res.status === 201) {
-      Alert.alert(besitzer +" wurde eine Anfrage gesendet")
+      Alert.alert(user.username +" wurde eine Anfrage gesendet")
       setRequested(true);
     }
     else if(res.status === 500) {
@@ -92,7 +92,7 @@ const DetailViewScreen = ({ route, navigation }) => {
   useEffect(() => {
     isRequested()
   }, []);
-
+ 
   return (
     <ScrollView style={styles.container}>
       <View style={styles.main}>
@@ -106,7 +106,7 @@ const DetailViewScreen = ({ route, navigation }) => {
           </View>
 
           <View style={styles.items}>
-            <UserButton userName={besitzer} navigation={navigation} />
+            <UserButton user={user} navigation={navigation} />
             <TouchableOpacity>
               <MaterialCommunityIcons
                 name="heart-outline"

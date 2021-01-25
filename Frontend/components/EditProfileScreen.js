@@ -164,7 +164,7 @@ const EditProfileScreen = ({ route, navigation }) => {
 
         [
           {
-            text: "ok",
+            text: "Ok",
             onPress: () => DevSettings.reload(),
           },
         ],
@@ -172,7 +172,7 @@ const EditProfileScreen = ({ route, navigation }) => {
       );
     } else {
       const errMess = await res.json();
-      Alert.alert("Update gescheitert", errMess.message);
+      Alert.alert("Update gescheitert ", errMess.message);
     }
     //updateUserContext(username, city, image);
 

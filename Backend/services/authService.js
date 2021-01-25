@@ -95,10 +95,10 @@ const resetPassword = email => {
         try {
             const newPassword = generateUID();
             const user = await userModel.findOne({ email });
-            if (!user) return reject({ error: null, message: "User does not exist.", status: 200 });
-            //await userModel.findOneAndUpdate({ email }, { password: newPassword });
-            user.overwrite({ ...user.toObject(), password: newPassword });
-            await user.save()
+            if (user) {
+                user.overwrite({ ...user.toObject(), password: newPassword });
+                await user.save();
+            }
             sendEmail(user.email, newPassword, "pwreset");
             return resolve({ data: null, message: "Successfully reset password.", status: 200 });
         }

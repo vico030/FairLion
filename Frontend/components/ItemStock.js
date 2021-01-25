@@ -20,6 +20,7 @@ export default function ItemStock({
   kategorie,
   navigation,
   beschreibung,
+  user
 }) {
   // Hier steht nur Text, damit da Bilder sind
   return (
@@ -34,6 +35,7 @@ export default function ItemStock({
           ausleihfrist: ausleihfrist,
           kategorie: kategorie,
           beschreibung: beschreibung,
+          user: user
         })
       }
     >
@@ -55,9 +57,9 @@ export default function ItemStock({
           />
         </View>
         <View style={styles.items}>
-          <UserButton userName={besitzer} navigation={navigation} />
+          <UserButton user={user} navigation={navigation} />
           <Text style={styles.itemTime} numberOfLines={1}>
-            Noch: {ausleihfrist}
+            Frist: {ausleihfrist}
           </Text>
         </View>
       </View>

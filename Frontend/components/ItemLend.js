@@ -22,9 +22,10 @@ export default function ItemLend({
   images,
   favored,
   returnDate,
-  articleId
+  articleId,
+  user
 }) {
-  console.log(images);
+  //console.log(images);
   // console.log(returnDate);
   let remainingTime = returnDate.getTime() - new Date().getTime();
   let remainingTimeSeconds = remainingTime / 1000;
@@ -32,8 +33,8 @@ export default function ItemLend({
   let remainingTimeHours = remainingTimeMinutes / 60;
   let remainingTimeDays = remainingTimeHours / 24;
   let remainingTimeMonths = remainingTimeDays / 31;
-  console.log(remainingTimeHours);
-  console.log(remainingTimeDays);
+  //console.log(remainingTimeHours);
+  //console.log(remainingTimeDays);
   // console.log(new Date().getTime());
   // console.log(new Date(returnDate.getTime));
   let displayRemainingTime = remainingTimeHours;
@@ -63,7 +64,8 @@ export default function ItemLend({
           beschreibung: beschreibung,
           displayRemainingTime: Math.floor(displayRemainingTime),
           displayRemainingTimeUnit: displayRemainingTimeUnit,
-          articleId: articleId
+          articleId: articleId,
+          user: user
         })
       }
     >
@@ -85,7 +87,7 @@ export default function ItemLend({
           )}
         </View>
         <View style={styles.items}>
-          <UserButton userName={String(besitzer)} navigation={navigation} />
+          <UserButton user={user} navigation={navigation} />
           {displayRemainingTime < 0 ? (
             <Text style={styles.itemExpired} numberOfLines={1}>
               Frist abgelaufen!

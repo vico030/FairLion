@@ -1,7 +1,7 @@
 import env from "../env.js";
-const {BACKEND_URL, IMAGE_URL} = env;
-import { View, Text, FlatList } from "react-native";
-import React, {useState, useEffect} from "react";
+const { BACKEND_URL, IMAGE_URL } = env;
+import { View, Text, FlatList, StyleSheet} from "react-native";
+import React, { useState, useEffect } from "react";
 import Friend from "./Friend";
 import AsyncStorage from "@react-native-community/async-storage";
 import ItemLend from "./ItemLend";
@@ -22,7 +22,6 @@ const FriendsScreen = ({ navigation }) => {
     var res;
     var resJson;
     var userId = await AsyncStorage.getItem("userId");
-    console.log(BACKEND_URL + `users/${userId}/friends`);
     try {
       res = await fetch(
         BACKEND_URL + `users/${userId}/friends`,
@@ -35,7 +34,7 @@ const FriendsScreen = ({ navigation }) => {
     }
     if (res.status === 200) {
       setFriends(resJson.data);
-      console.log(resJson.data)
+      //console.log(resJson.data)
     }
   };
 
@@ -55,11 +54,16 @@ const FriendsScreen = ({ navigation }) => {
         marginTop: 3,
       }}
     >
+
+      {friends.length === 0 &&
+        <Text style={styles.infoText}>Hier erscheinen deine Freunde, von denen du dir Artikel ausleihen kannst!</Text>
+      }
+      
       <FlatList
         data={friends}
         renderItem={({ item }) => (
           <Friend
-            friendId={item._id}
+            id={item._id}
             name={item.username}
             strasse={item.street}
             plz={item.zipCode}
@@ -68,7 +72,7 @@ const FriendsScreen = ({ navigation }) => {
             info={item.info}
             email={item.email}
             telefon={item.phone}
-            image={IMAGE_URL+item.image}
+            image={IMAGE_URL + item.image}
             artikelzahl={"99999"}
             navigation={navigation}
           />
@@ -80,3 +84,14 @@ const FriendsScreen = ({ navigation }) => {
 };
 
 export default FriendsScreen;
+
+const styles = StyleSheet.create({
+  infoText: {
+    fontWeight: "bold",
+    marginLeft: 10,
+    color: "#333740",
+    top: "50%",
+    fontSize: 20,
+    textAlign: "center",
+  },
+});
