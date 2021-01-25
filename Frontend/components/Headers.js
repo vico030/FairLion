@@ -27,6 +27,7 @@ import DetailViewScreen from "./DetailViewScreen";
 import { Header } from "react-native/Libraries/NewAppScreen";
 import EditItemScreen from "./EditItemScreen";
 import SettingsScreen from "./SettingsScreen";
+import { ForgotPasswordScreen } from "./ForgotPasswordScreen";
 const inactiveTintColor = "#333740";
 const BurrowedStack = createStackNavigator();
 const StockStack = createStackNavigator();
@@ -39,6 +40,7 @@ const DetailReturnStack = createStackNavigator();
 const ArticleRequestStack = createStackNavigator();
 const ProfileStack = createStackNavigator();
 const SettingsStack = createStackNavigator();
+const ForgotPasswordStack = createStackNavigator();
 
 function ProfileStackScreen({ navigation }) {
   return (
@@ -447,6 +449,35 @@ const RegisterStackScreen = ({ navigation: { goBack } }) => (
   </RegisterStack.Navigator>
 );
 
+const ForgotPasswordStackScreen = ({ navigation: { goBack } }) => (
+  <ForgotPasswordStack.Navigator>
+    <ForgotPasswordStack.Screen
+      name="Forgot password"
+      component={ForgotPasswordScreen}
+      options={{
+        title: "Passwort vergessen",
+        headerStyle: {
+          backgroundColor: inactiveTintColor,
+        },
+        headerTitleAlign: "center",
+        headerTintColor: "#fff",
+        headerTitleStyle: {
+          fontFamily: "Roboto",
+        },
+        headerLeft: () => (
+          <Ionicons
+            name="md-arrow-back"
+            size={28}
+            style={styles.leftIcon}
+            onPress={() => goBack()}
+          />
+        ),
+      }}
+    >
+    </ForgotPasswordStack.Screen>
+  </ForgotPasswordStack.Navigator>
+)
+
 const DetailEditViewStackScreen = ({ navigation: { goBack } }) => (
   <DetailEditStack.Navigator>
     <DetailEditStack.Screen
@@ -541,7 +572,7 @@ const ArticleRequestStackScreen = ({ navigation: { goBack } }) => (
 function SettingsStackScreen({ navigation }) {
   return (
     <SettingsStack.Navigator>
-      <SettingsStack.Screen 
+      <SettingsStack.Screen
         name="Settings"
         component={SettingsScreen}
         options={{
@@ -561,7 +592,7 @@ function SettingsStackScreen({ navigation }) {
             />
           ),
         }}
-      />      
+      />
     </SettingsStack.Navigator>
   );
 }
@@ -589,4 +620,5 @@ export {
   ArticleRequestStackScreen,
   ProfileStackScreen,
   SettingsStackScreen,
+  ForgotPasswordStackScreen
 };
