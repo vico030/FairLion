@@ -1,5 +1,5 @@
 import env from "../env.js";
-const {BACKEND_URL, IMAGE_URL} = env;
+const { BACKEND_URL, IMAGE_URL } = env;
 import AsyncStorage from "@react-native-community/async-storage";
 import React, { useContext, useEffect, useReducer, useState } from "react";
 import {
@@ -12,10 +12,9 @@ import {
 import { Picker } from "@react-native-picker/picker";
 import ImageChooser from "./ImageChooser";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scrollview";
-import { Alert } from "react-native";
+import { Alert, DevSettings } from "react-native";
 
 const EditProfileScreen = ({ route, navigation }) => {
-
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
@@ -36,13 +35,13 @@ const EditProfileScreen = ({ route, navigation }) => {
       setCity(await AsyncStorage.getItem("city"));
       setCountry(await AsyncStorage.getItem("country"));
       setAboutMe(await AsyncStorage.getItem("info"));
-      var imageUri = await AsyncStorage.getItem("image")
-      imageUri = imageUri.substring(IMAGE_URL.length, imageUri.length)
+      var imageUri = await AsyncStorage.getItem("image");
+      imageUri = imageUri.substring(IMAGE_URL.length, imageUri.length);
       setImage(imageUri);
     } catch (err) {
       console.log(err);
     }
-  }
+  };
 
   useEffect(() => {
     getUser();
@@ -57,21 +56,21 @@ const EditProfileScreen = ({ route, navigation }) => {
   };
 
   const handlePhoneChange = (value) => {
-      if (value !== phone) {
-        setPhone(value);
-      }
+    if (value !== phone) {
+      setPhone(value);
+    }
   };
 
   const handleStreetChange = (value) => {
-      if (value !== street) {
-        setStreet(value);
-      }
+    if (value !== street) {
+      setStreet(value);
+    }
   };
 
   const handlePLZChange = (value) => {
-      if (value !== PLZ) {
-        setPLZ(value);
-      }
+    if (value !== PLZ) {
+      setPLZ(value);
+    }
   };
 
   const handleCityChange = (value) => {
@@ -81,16 +80,15 @@ const EditProfileScreen = ({ route, navigation }) => {
   };
 
   const handleCountryChange = (value) => {
-      if (value !== country) {
-        setCountry(value);
-      }
+    if (value !== country) {
+      setCountry(value);
+    }
   };
 
   const handleAboutMEChange = (value) => {
-      if (value !== aboutMe) {
-        setAboutMe(value);
-      }
-    
+    if (value !== aboutMe) {
+      setAboutMe(value);
+    }
   };
 
   const handleImages = (imageUris) => {
@@ -99,18 +97,23 @@ const EditProfileScreen = ({ route, navigation }) => {
       for (const uri of imageUris) {
         var mime = uri.split(".").pop().toLowerCase();
         const ext = mime;
-        if (mime === "jpg") mime = "jpeg"
-        const name = Math.floor(Math.random() * Math.floor(999999999999999999999));
-        images.push({ "uri": uri, "name": name + "." + ext, "type": "image/" + mime })
+        if (mime === "jpg") mime = "jpeg";
+        const name = Math.floor(
+          Math.random() * Math.floor(999999999999999999999)
+        );
+        images.push({
+          uri: uri,
+          name: name + "." + ext,
+          type: "image/" + mime,
+        });
       }
       if (images[0] != image) {
-          setImage(images[0]);
+        setImage(images[0]);
       }
     }
-  }
+  };
 
   const handleEdit = async () => {
-
     const formdata = new FormData();
     //if (image) formdata.append("picture", image);
     formdata.append("username", username);
@@ -130,15 +133,17 @@ const EditProfileScreen = ({ route, navigation }) => {
         "Content-Type": "multipart/form-data",
         Accept: "application/json",
       },
-      body: formdata
-    }
+      body: formdata,
+    };
     try {
-      res = await fetch(BACKEND_URL + `users/${await AsyncStorage.getItem("userId")}`, requestOptions) 
+      res = await fetch(
+        BACKEND_URL + `users/${await AsyncStorage.getItem("userId")}`,
+        requestOptions
+      );
     } catch (err) {
       console.log(err);
     }
     if (res.status === 201) {
-     
       const resJson = await res.json();
       const data = resJson.data;
       AsyncStorage.multiSet([
@@ -151,26 +156,34 @@ const EditProfileScreen = ({ route, navigation }) => {
         ["city", data.city],
         ["country", data.country],
         ["info", data.info],
-        ["image", IMAGE_URL + data.image]
+        ["image", IMAGE_URL + data.image],
       ]);
-      Alert.alert(resJson.message);
-    }
-    else {
+      Alert.alert(
+        resJson.message,
+        "213234124",
+        [
+          {
+            text: "ok",
+            onPress: () => DevSettings.reload(),
+          },
+        ],
+        { cancelable: false }
+      );
+    } else {
       const errMess = await res.json();
       Alert.alert(errMess.message);
     }
     //updateUserContext(username, city, image);
+
     navigation.goBack();
   };
 
   return (
     <KeyboardAwareScrollView style={{ flex: 1 }}>
-
       <ImageChooser handleImages={handleImages} />
 
       <View style={styles.userInfo}>
-
-      <View style={styles.inputView}>
+        <View style={styles.inputView}>
           <TextInput
             style={styles.inputText}
             placeholder="Username"
@@ -180,7 +193,7 @@ const EditProfileScreen = ({ route, navigation }) => {
           />
         </View>
         {/* Passwort ändern als extra screen */}
-{/* 
+        {/* 
         <View style={styles.inputView}>
           <TextInput
             secureTextEntry
@@ -248,7 +261,9 @@ const EditProfileScreen = ({ route, navigation }) => {
             style={{ backgroundColor: "#fff", width: "95%", height: 40 }}
             itemStyle={{ justifyContent: "flex-start" }}
             mode={"dropdown"}
-            onValueChange={(itemValue, itemIndex) => handleCountryChange(itemValue)}
+            onValueChange={(itemValue, itemIndex) =>
+              handleCountryChange(itemValue)
+            }
           >
             <Picker.Item label="Deutschland" value="de" />
             <Picker.Item label="Österreich" value="au" />
