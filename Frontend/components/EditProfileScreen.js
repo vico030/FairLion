@@ -159,8 +159,9 @@ const EditProfileScreen = ({ route, navigation }) => {
         ["image", IMAGE_URL + data.image],
       ]);
       Alert.alert(
+        "Update erfolgreich",
         resJson.message,
-        "213234124",
+
         [
           {
             text: "ok",
@@ -171,7 +172,7 @@ const EditProfileScreen = ({ route, navigation }) => {
       );
     } else {
       const errMess = await res.json();
-      Alert.alert(errMess.message);
+      Alert.alert("Update gescheitert", errMess.message);
     }
     //updateUserContext(username, city, image);
 
