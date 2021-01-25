@@ -455,7 +455,7 @@ const ForgotPasswordStackScreen = ({ navigation: { goBack } }) => (
       name="Forgot password"
       component={ForgotPasswordScreen}
       options={{
-        title: "Passwort vergessen",
+        title: "Passwort zurücksetzen",
         headerStyle: {
           backgroundColor: inactiveTintColor,
         },
