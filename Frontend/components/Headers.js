@@ -178,6 +178,21 @@ const RequestsStackScreen = ({ navigation }) => (
         ),
       }}
     />
+    <RequestStack.Screen
+      name="Profile"
+      component={ProfileScreen}
+      options={{
+        title: "Profil",
+        headerStyle: {
+          backgroundColor: inactiveTintColor,
+        },
+        headerTitleAlign: "center",
+        headerTintColor: "#fff",
+        headerTitleStyle: {
+          fontFamily: "Roboto",
+        },
+      }}
+    />
   </RequestStack.Navigator>
 );
 
@@ -352,7 +367,6 @@ const StockStackScreen = ({ navigation }) => (
         },
       }}
     />
-
   </StockStack.Navigator>
 );
 
@@ -473,10 +487,9 @@ const ForgotPasswordStackScreen = ({ navigation: { goBack } }) => (
           />
         ),
       }}
-    >
-    </ForgotPasswordStack.Screen>
+    ></ForgotPasswordStack.Screen>
   </ForgotPasswordStack.Navigator>
-)
+);
 
 const DetailEditViewStackScreen = ({ navigation: { goBack } }) => (
   <DetailEditStack.Navigator>
@@ -620,5 +633,5 @@ export {
   ArticleRequestStackScreen,
   ProfileStackScreen,
   SettingsStackScreen,
-  ForgotPasswordStackScreen
+  ForgotPasswordStackScreen,
 };

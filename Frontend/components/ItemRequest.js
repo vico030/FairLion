@@ -10,17 +10,13 @@ export default function ItemRequest({
   declineRequest,
   acceptRequest,
   requestId,
-  user
+  user,
 }) {
-  
   return (
     // change image link to correct parameter url
     <View style={styles.wrapper}>
       <View>
-        <Image
-          style={styles.itemImage}
-          source={{uri: image}}
-        />
+        <Image style={styles.itemImage} source={{ uri: image }} />
       </View>
       <View style={styles.itemBottomView}>
         <View style={styles.items}>
@@ -36,8 +32,18 @@ export default function ItemRequest({
         <View style={styles.items}>
           <UserButton user={user} navigation={navigation} />
           <View style={styles.icons}>
-            <AntDesign name="check" size={24} color="green" onPress={() => acceptRequest(requestId)} />
-            <Feather name="x" size={24} color="red" onPress={() => declineRequest(requestId)} />
+            <AntDesign
+              name="check"
+              size={24}
+              color="green"
+              onPress={() => acceptRequest(requestId)}
+            />
+            <Feather
+              name="x"
+              size={24}
+              color="red"
+              onPress={() => declineRequest(requestId)}
+            />
           </View>
         </View>
       </View>
