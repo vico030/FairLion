@@ -1,5 +1,5 @@
 import env from "../env.js";
-const {IMAGE_URL} = env;
+const { IMAGE_URL } = env;
 import React from "react";
 import {
   View,
@@ -11,6 +11,7 @@ import {
 } from "react-native";
 import UserButton from "./UserButton";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import FavouritesButton from "./FavouritesButton";
 
 export default function ItemLend({
   navigation,
@@ -23,7 +24,7 @@ export default function ItemLend({
   favored,
   returnDate,
   articleId,
-  user
+  user,
 }) {
   //console.log(images);
   // console.log(returnDate);
@@ -65,7 +66,7 @@ export default function ItemLend({
           displayRemainingTime: Math.floor(displayRemainingTime),
           displayRemainingTimeUnit: displayRemainingTimeUnit,
           articleId: articleId,
-          user: user
+          user: user,
         })
       }
     >
@@ -80,11 +81,7 @@ export default function ItemLend({
           <Text style={styles.itemName} numberOfLines={1}>
             {produktName}
           </Text>
-          {favored == true ? (
-            <MaterialCommunityIcons name="heart" size={24} color="#333740" />
-          ) : (
-            <MaterialCommunityIcons name="heart-outline" size={24} />
-          )}
+          <FavouritesButton favored={favored} articleId={articleId} />
         </View>
         <View style={styles.items}>
           <UserButton user={user} navigation={navigation} />

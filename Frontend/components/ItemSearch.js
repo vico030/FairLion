@@ -1,6 +1,6 @@
 import React from "react";
 import env from "../env.js";
-const {IMAGE_URL} = env;
+const { IMAGE_URL } = env;
 import {
   View,
   Text,
@@ -10,6 +10,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import UserButton from "./UserButton";
+import FavouritesButton from "./FavouritesButton";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 export default function ItemSearch({
@@ -23,7 +24,7 @@ export default function ItemSearch({
   kategorie,
   status,
   articleId,
-  user
+  user,
 }) {
   console.log(images);
   return (
@@ -39,7 +40,7 @@ export default function ItemSearch({
           kategorie: kategorie,
           status: status,
           articleId: articleId,
-          user: user
+          user: user,
         })
       }
     >
@@ -54,11 +55,7 @@ export default function ItemSearch({
           <Text style={styles.itemName} numberOfLines={1}>
             {produktName}
           </Text>
-          {favored == true ? (
-            <MaterialCommunityIcons name="heart" size={24} color="#333740" />
-          ) : (
-            <MaterialCommunityIcons name="heart-outline" size={24} />
-          )}
+          <FavouritesButton articleId={articleId} favored={favored} />
         </View>
         <View style={styles.items}>
           <UserButton user={user} navigation={navigation} />

@@ -16,10 +16,14 @@ const userSchema = mongoose.Schema({
   friends: {
     type: [ObjectId],
     default: [],
+    unique: true,
+    dropDups: true,
   },
   favourites: {
     type: [ObjectId],
     default: [],
+    unique: true,
+    dropDups: true,
   },
   refreshToken: {
     type: String,

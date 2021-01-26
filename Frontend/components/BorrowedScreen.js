@@ -22,7 +22,7 @@ const BorrowedScreen = ({ navigation }) => {
     try {
       res = await fetch(
         BACKEND_URL +
-        `users/${await AsyncStorage.getItem("userId")}/borrowedArticles`,
+          `users/${await AsyncStorage.getItem("userId")}/borrowedArticles`,
         requestOptions
       );
       resJson = await res.json();
@@ -36,12 +36,11 @@ const BorrowedScreen = ({ navigation }) => {
 
   useEffect(() => {
     const unsubscribe = navigation.addListener("focus", () => {
+      setArticles([]);
       getArticles();
-      console.log(articles);
     });
     return unsubscribe;
   }, [navigation]);
-
   return (
     <View
       style={{
@@ -51,9 +50,11 @@ const BorrowedScreen = ({ navigation }) => {
         marginTop: 3,
       }}
     >
-      {articles.length === 0 &&
-        <Text style={styles.infoText}>Hier erscheinen Artikel, die du dir ausgeliehen hast!</Text>
-      }
+      {articles.length === 0 && (
+        <Text style={styles.infoText}>
+          Hier erscheinen Artikel, die du dir ausgeliehen hast!
+        </Text>
+      )}
       <FlatList
         data={articles}
         keyExtractor={(item) => item._id}
@@ -69,6 +70,7 @@ const BorrowedScreen = ({ navigation }) => {
             returnDate={new Date(item.returnDate)}
             articleId={item._id}
             user={item.user}
+            favored={item.favourite}
           />
         )}
       />

@@ -100,8 +100,15 @@ function getArticles(userId, possesionType) {
         .select("-verificationHash")
         .select("-friends");
       let newArticles = [];
-      for(let article of articles){
-        newArticles.push({...article._doc, user});
+      for (let article of articles) {
+        let favourite = false;
+        if (
+          possesionType === "borrower" &&
+          user.favourites.includes(article._id)
+        ) {
+          favourite = true;
+        }
+        newArticles.push({ ...article._doc, user, favourite });
       }
       return resolve({
         data: newArticles,
@@ -196,7 +203,7 @@ function createArticle(body, userId) {
         .select("-verificationHash")
         .select("-friends");
       return resolve({
-        data: {...newArticle._doc, user},
+        data: { ...newArticle._doc, user },
         message: "Artikel wurde erstellt.",
         status: 201,
       });
@@ -234,7 +241,7 @@ function getFriendRequests(userId) {
             ...friendrequest._doc,
             requesterName: requester.username,
             requesterImage: requester.image,
-            requesterCity: requester.city
+            requesterCity: requester.city,
           });
         } catch (err) {
           throw err;
