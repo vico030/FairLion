@@ -215,7 +215,7 @@ const generateAuthToken = (userDetails, key, callback) => {
 const generateTokens = (userDetails, callback) => {
     jwt.sign(userDetails, privateAuthKey, { expiresIn: "5m" }, (err, authToken) => { //generate authToken
         if (err) return callback(err);
-        jwt.sign(userDetails, privateRefreshKey, { expiresIn: "3d" }, (err, refreshToken) => {
+        jwt.sign(userDetails, privateRefreshKey, { expiresIn: "30d" }, (err, refreshToken) => {
             if (err) callback(err);
             callback(null, authToken, refreshToken);
         })

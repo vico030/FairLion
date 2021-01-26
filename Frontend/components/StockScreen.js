@@ -66,6 +66,7 @@ const StockScreen = ({ navigation }) => {
             images={item.images}
             kategorie={item.category}
             beschreibung={item.description}
+            borrower={item.borrower}
           />
         )}
       />
