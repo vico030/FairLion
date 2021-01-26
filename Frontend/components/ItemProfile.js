@@ -1,5 +1,5 @@
 import env from "../env.js";
-const {IMAGE_URL} = env;
+const { IMAGE_URL } = env;
 import React from "react";
 import {
   View,
@@ -11,7 +11,7 @@ import {
 } from "react-native";
 import ProfileUserButton from "./ProfileUserButton";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-
+import FavouritesButton from "./FavouritesButton";
 export default function ItemProfile({
   navigation,
   besitzer,
@@ -24,7 +24,7 @@ export default function ItemProfile({
   favored,
   status,
   articleId,
-  user
+  user,
 }) {
   return (
     // change image link to correct parameter url
@@ -38,11 +38,12 @@ export default function ItemProfile({
           verliehen: verliehen,
           images: images,
           ausleihfrist,
-          kategorie, ausleihfrist,
+          kategorie,
+          ausleihfrist,
           favored: favored,
           status: status,
           articleId: articleId,
-          user: user
+          user: user,
         })
       }
     >
@@ -57,11 +58,7 @@ export default function ItemProfile({
           <Text style={styles.itemName} numberOfLines={1}>
             {produktName}
           </Text>
-          <MaterialCommunityIcons
-            name="heart-outline"
-            size={24}
-            style={styles.icon}
-          />
+          <FavouritesButton favored={favored} articleId={articleId} />
         </View>
         <View style={styles.items}>
           <ProfileUserButton user={user} />
@@ -83,7 +80,7 @@ const styles = StyleSheet.create({
   },
   itemImage: {
     height: 90,
-    width: 120
+    width: 120,
   },
   items: {
     flex: 1,

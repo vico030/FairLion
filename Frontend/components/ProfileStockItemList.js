@@ -1,11 +1,10 @@
 import env from "../env.js";
-const {BACKEND_URL} = env;
+const { BACKEND_URL } = env;
 import React, { useState, useEffect } from "react";
 import { View, Text, FlatList, StyleSheet, ScrollView } from "react-native";
 import ItemProfile from "./ItemProfile";
 
 export default function ProfileStockItemList({ artikelzahl, navigation, id }) {
-
   const [articles, setArticles] = useState([]);
 
   const fetchArticles = async () => {
@@ -37,6 +36,7 @@ export default function ProfileStockItemList({ artikelzahl, navigation, id }) {
 
   useEffect(() => {
     const unsubscribe = navigation.addListener("focus", () => {
+      setArticles([]);
       fetchArticles();
     });
     return unsubscribe;
