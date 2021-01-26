@@ -6,9 +6,7 @@ import {
   Text,
   Dimensions,
   TouchableOpacity,
-  Alert
 } from "react-native";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 
 export default function Friend({
@@ -25,25 +23,6 @@ export default function Friend({
   telefon,
   navigation,
 }) {
-
-  const alertDelete = () => {
-    Alert.alert(
-      "Freund entfernen",
-      "Achtung! Möchtest Du "+name+" wirklich als Freund entfernen?",
-      [
-        {
-          text: "Abbrechen",
-          style: "cancel"
-        },
-        { text: "Ja", onPress: () => deleteFriend() }
-      ],
-      { cancelable: false }
-    );
-  }
-
-  const deleteFriend = () => {
-    console.log("Removing Friend "+friendId)
-  }
 
   return (
     <TouchableOpacity
@@ -73,9 +52,6 @@ export default function Friend({
       <View style={styles.wrapperRight}>
         <View style={styles.upperRowRight}>
           <Text style={styles.userName}>{name}</Text>
-          <TouchableOpacity onPress={() => alertDelete()}>
-            <MaterialCommunityIcons name="delete-outline" size={24} color="#333740" />
-          </TouchableOpacity>
         </View>
         <View style={styles.bottomRowRight}>
           <Text style={styles.wohnort}>{wohnort}</Text>

@@ -356,6 +356,33 @@ function confirmFriendRequest(requestId) {
   });
 }
 
+function deleteFriend(userId, friendId) {
+  console.log(friendId)
+  return new Promise(async (resolve, reject) => {
+    try {
+      userModel.findByIdAndUpdate(userId, {$pull: {friends: friendId}},{new: true,})
+        .catch((err) => {
+          throw err;
+        });
+      userModel.findByIdAndUpdate(friendId, {$pull: { friends: userId }},{new: true})
+        .catch((err) => {
+          throw err;
+        });
+      
+      return resolve({
+        message: "Freund wurde entfernt",
+        status: 200,
+      });
+    } catch (err) {
+      return reject({
+        error: err,
+        status: 500,
+        message: "Freund konnte nicht entfernt werden.",
+      });
+    }
+  });
+}
+
 function updateUser(body, userId) {
   return new Promise(async (resolve, reject) => {
     try {
@@ -478,4 +505,5 @@ module.exports = {
   createFriendRequest,
   confirmFriendRequest,
   updateUser,
+  deleteFriend
 };

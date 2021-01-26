@@ -36,6 +36,7 @@ const ProfileScreen = ({
         info={info}
         email={email}
         telefon={telefon}
+        navigation={navigation}
       />
       <ProfileStockItemList
         navigation={navigation}
