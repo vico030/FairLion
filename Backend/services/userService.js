@@ -125,6 +125,45 @@ function getArticles(userId, possesionType) {
   });
 }
 
+function getArticlesWithFavorites(userId, favourerId) {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const articles = await articleModel
+        .find({
+          owner: userId,
+        })
+        .catch((err) => {
+          throw err;
+        });
+      const user = await userModel
+        .findById(favourerId)
+        .select("-password")
+        .select("-refreshToken")
+        .select("-verificationHash")
+        .select("-friends");
+      let newArticles = [];
+      for (let article of articles) {
+        let favourite = false;
+        if (user.favourites.includes(article._id)) {
+          favourite = true;
+        }
+        newArticles.push({ ...article._doc, user, favourite });
+      }
+      return resolve({
+        data: newArticles,
+        message: "Artikel wurden gefunden.",
+        status: 200,
+      });
+    } catch (err) {
+      return reject({
+        error: err,
+        status: 500,
+        message: "Artikel konnten nicht gefunden werden.",
+      });
+    }
+  });
+}
+
 function deleteAllUsers() {
   return new Promise(async (resolve, reject) => {
     try {
@@ -491,6 +530,7 @@ module.exports = {
   getUsersByName,
   getUserById,
   getArticles,
+  getArticlesWithFavorites,
   getFriends,
   getFriendRequests,
   deleteAllUsers,

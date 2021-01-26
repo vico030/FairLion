@@ -170,6 +170,22 @@ router.delete("/:userId/ownedArticles", isAuthenticated, async (req, res) => {
     }
 });
 
+// Get all articles owned by a single user with favourites info for another user
+router.get("/:userId/ownedArticles/:favourerId", isAuthenticated, async (req, res) => {
+    try {
+        const response = await service.getArticlesWithFavorites(req.params.userId, req.params.favourerId);
+        res.status(response.status).json({
+            'data': response.data,
+            'message': response.message
+        });
+    } catch ({ error, status, message }) {
+        res.status(status).json({
+            'error': error,
+            'message': message
+        });
+    }
+});
+
 // Get all articles borrowed by a single user
 router.get("/:userId/borrowedArticles", isAuthenticated, async (req, res) => {
     try {

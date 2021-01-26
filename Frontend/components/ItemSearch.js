@@ -40,6 +40,7 @@ export default function ItemSearch({
           kategorie: kategorie,
           status: status,
           articleId: articleId,
+          favored: favored,
           user: user,
         })
       }

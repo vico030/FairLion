@@ -3,6 +3,7 @@ const { BACKEND_URL } = env;
 import React, { useState, useEffect } from "react";
 import { View, Text, FlatList, StyleSheet, ScrollView } from "react-native";
 import ItemProfile from "./ItemProfile";
+import AsyncStorage from "@react-native-community/async-storage";
 
 export default function ProfileStockItemList({ artikelzahl, navigation, id }) {
   const [articles, setArticles] = useState([]);
@@ -20,8 +21,10 @@ export default function ProfileStockItemList({ artikelzahl, navigation, id }) {
     var res;
     var resJson;
     try {
+      const favourerId = await AsyncStorage.getItem("userId");
+      console.log(favourerId)
       res = await fetch(
-        BACKEND_URL + `users/${id}/ownedArticles`,
+        BACKEND_URL + `users/${id}/ownedArticles/${favourerId}`,
         requestOptions
       );
 
