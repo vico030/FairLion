@@ -27,6 +27,9 @@ import DetailViewScreen from "./DetailViewScreen";
 import { Header } from "react-native/Libraries/NewAppScreen";
 import EditItemScreen from "./EditItemScreen";
 import SettingsScreen from "./SettingsScreen";
+import { TouchableOpacity } from "react-native-gesture-handler";
+import {deleteArticle} from "../helpers/headerRequests";
+import { forModalPresentationIOS } from "@react-navigation/stack/lib/typescript/src/TransitionConfigs/CardStyleInterpolators";
 const inactiveTintColor = "#333740";
 const BurrowedStack = createStackNavigator();
 const StockStack = createStackNavigator();
@@ -285,12 +288,14 @@ const StockStackScreen = ({ navigation }) => (
         },
 
         headerRight: () => (
-          <Feather
-            name="trash"
-            style={styles.rightIcon}
-            size={22}
-            color="black"
-          />
+          <TouchableOpacity onPress={() => deleteArticle()}>
+            <Feather
+              name="trash"
+              style={styles.rightIcon}
+              size={22}
+              color="black"
+            />
+          </TouchableOpacity>
         ),
       }}
     />
