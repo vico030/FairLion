@@ -109,6 +109,22 @@ const resetPassword = email => {
     })
 }
 
+const changePassword = ({ email, password }) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const user = await userModel.findOne({ email });
+        if (user) {
+          user.overwrite({ ...user.toObject(), password: password });
+          await user.save();
+        }
+        return resolve({ data: null, message: "Successfully changed password.", status: 200 });
+      } catch (err) {
+        console.log(err);
+        return reject({ error: err, message: "Server error. Try later again.", status: 500 });
+      }
+    });
+  };
+
 function generateUID() {
     // I generate the UID from two parts here 
     // to ensure the random number provide enough bits.
@@ -229,5 +245,6 @@ module.exports = {
     isAuthenticated,
     loginUser,
     verifyUser,
-    resetPassword
+    resetPassword,
+    changePassword,
 };
