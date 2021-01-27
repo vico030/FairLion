@@ -244,10 +244,10 @@ const RequestsScreen = ({ navigation }) => {
       })
   }
 
-  useEffect(() => {
+/*   useEffect(() => {
     getFriendRequests();
     getArticleRequests();
-  }, [userId])
+  }, [userId]) */
 
 
   useEffect(() => {
