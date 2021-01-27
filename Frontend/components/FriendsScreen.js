@@ -5,11 +5,14 @@ import React, { useState, useEffect } from "react";
 import Friend from "./Friend";
 import AsyncStorage from "@react-native-community/async-storage";
 import ItemLend from "./ItemLend";
+import { ActivityIndicator } from "react-native";
 
 const FriendsScreen = ({ navigation }) => {
   const [friends, setFriends] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const fetchFriends = async () => {
+    setLoading(true);
     const requestOptions = {
       method: "get",
       headers: {
@@ -27,9 +30,10 @@ const FriendsScreen = ({ navigation }) => {
         BACKEND_URL + `users/${userId}/friends`,
         requestOptions
       );
-
+      setLoading(false);
       resJson = await res.json();
     } catch (err) {
+      setLoading(false);
       console.log(err);
     }
     if (res.status === 200) {
@@ -59,6 +63,7 @@ const FriendsScreen = ({ navigation }) => {
         <Text style={styles.infoText}>Hier erscheinen deine Freunde, von denen du dir Artikel ausleihen kannst!</Text>
       }
       
+      {loading && <ActivityIndicator color="#E77F23" size="large" />}
       <FlatList
         data={friends}
         renderItem={({ item }) => (

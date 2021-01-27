@@ -21,6 +21,7 @@ const LoginScreen = ({ navigation }) => {
     password: "",
   });
   const { signIn } = useContext(AuthContext);
+  const [loading, setLoading] = useState(false);
 
   const handleEmailChange = (val) => {
     if (val.length != 0) {

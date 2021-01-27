@@ -1,6 +1,6 @@
 import env from "../env.js";
 const { BACKEND_URL, IMAGE_URL } = env;
-import { View, FlatList, Text, StyleSheet } from "react-native";
+import { View, FlatList, Text, StyleSheet, ActivityIndicator } from "react-native";
 import React, { useContext, useEffect, useState } from "react";
 import FriendRequest from "./FriendRequest";
 import ItemRequest from "./ItemRequest";
@@ -17,6 +17,8 @@ const RequestsScreen = ({ navigation }) => {
   });
   const [userId, setUserId] = useState(null);
   const { signOut } = useContext(AuthContext);
+  const [loadingFriendRequests, setLoadingFriendRequests] = useState(false);
+  const [loadingArticleRequests, setLoadingArticleRequests] = useState(false);
 
   const acceptFriendRequest = id => {
     fetch(`${BACKEND_URL}users/${userId}/friendrequests/${id}`, {
@@ -151,9 +153,11 @@ const RequestsScreen = ({ navigation }) => {
     .then(userId => setUserId(userId))
 
   const getArticleRequests = () => {
+    setLoadingArticleRequests(true);
     let status = null;
     fetch(BACKEND_URL + "articleRequest")
       .then(response => {
+        setLoadingArticleRequests(false);
         if (response.status === 200) return response.json();
         else if (response.status === 401) {
           status = 401;
@@ -184,6 +188,7 @@ const RequestsScreen = ({ navigation }) => {
         }
       })
       .catch(err => {
+        setLoadingArticleRequests(false);
         console.log(err);
         setError({
           occured: true,
@@ -192,15 +197,13 @@ const RequestsScreen = ({ navigation }) => {
       })
   }
 
-  useEffect(() => {
-    getArticleRequests();
-  }, [])
-
   const getFriendRequests = () => {
+    setLoadingFriendRequests(true);
     if (!userId) return;
     let status = null;
     fetch(BACKEND_URL + "users" + "/" + userId + "/" + "friendrequests")
       .then(response => {
+        setLoadingFriendRequests(false);
         console.log(response.status);
         if (response.ok) return response.json();
         else if (response.status === 401) {
@@ -232,6 +235,7 @@ const RequestsScreen = ({ navigation }) => {
         }
       })
       .catch(err => {
+        setLoadingFriendRequests(false);
         console.log(err);
         setError({
           occured: true,
@@ -242,13 +246,14 @@ const RequestsScreen = ({ navigation }) => {
 
   useEffect(() => {
     getFriendRequests();
+    getArticleRequests();
   }, [userId])
 
 
   useEffect(() => {
     const unsubscribe = navigation.addListener("focus", () => {
       getFriendRequests();
-
+      getArticleRequests();
     });
     return unsubscribe;
   }, [navigation]);
@@ -257,6 +262,7 @@ const RequestsScreen = ({ navigation }) => {
     <View style={{ alignItems: "center", justifyContent: "center" }}>
 
       {friendRequests.length !== 0 && <Text style={styles.listHeader}>Freundesanfragen:</Text>}
+      {loadingFriendRequests && <ActivityIndicator color="#E77F23" size="large" />}
       <FlatList
         data={friendRequests}
         renderItem={({ item }) => (
@@ -278,6 +284,7 @@ const RequestsScreen = ({ navigation }) => {
       {(friendRequests.length === 0 && articleRequests.length === 0) &&
         <Text style={styles.infoText}>Hier erscheinen Anfragen von Nutzern, die deine Freunde sein oder deine Artikel ausleihen möchten!</Text>
       }
+      {loadingArticleRequests && <ActivityIndicator color="#E77F23" size="large" />}
       <FlatList
         data={articleRequests}
         renderItem={({ item }) => (
@@ -293,6 +300,7 @@ const RequestsScreen = ({ navigation }) => {
         )}
         keyExtractor={(item, index) => index.toString()}
       />
+      {error.occured && Alert(error.label)}
     </View>
   );
 };

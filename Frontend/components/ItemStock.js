@@ -20,7 +20,8 @@ export default function ItemStock({
   kategorie,
   navigation,
   beschreibung,
-  user
+  user,
+  borrower
 }) {
   // Hier steht nur Text, damit da Bilder sind
   return (
@@ -50,11 +51,14 @@ export default function ItemStock({
           <Text style={styles.itemName} numberOfLines={1}>
             {produktName}
           </Text>
-          <MaterialCommunityIcons
+          <View>
+            {borrower && <Text style={styles.borrowed}>Verliehen</Text>}
+          </View>
+          {/*<MaterialCommunityIcons
             name="heart-outline"
             size={24}
             style={styles.icon}
-          />
+          />*/}
         </View>
         <View style={styles.items}>
           <UserButton user={user} navigation={navigation} />
@@ -103,8 +107,12 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: "bold",
     width: "85%",
+    flex: 0.5
   },
   icon: {
     color: "#fff",
   },
+  borrowed: {
+    color: "red",
+  }
 });
