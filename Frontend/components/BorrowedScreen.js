@@ -55,7 +55,7 @@ const BorrowedScreen = ({ navigation }) => {
         marginTop: 3,
       }}
     >
-      {articles.length === 0 &&
+      {articles.length === 0 && !loading &&
         <Text style={styles.infoText}>Hier erscheinen Artikel, die du dir ausgeliehen hast!</Text>
       }
       {loading && <ActivityIndicator color="#E77F23" size="large" />}

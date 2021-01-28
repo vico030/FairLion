@@ -96,10 +96,12 @@ function updateArticleRequest(body, requestId, userId) {
             articleRequest.borrower
           );
         }
-        if (
-          oldArticleRequest.status === "confirmed" &&
-          body.status === "returned"
-        ) {
+        if (oldArticleRequest.status === "confirmed" && body.status === "returnPending") {
+          await ArticleModel.ArticleRequestModel(requestId, {
+            status: "returnPending"
+          })
+        }
+        if (oldArticleRequest.status === "returnPending" && body.status === "returned") {
           //oder das lieber zu delete?
           await ArticleModel.findByIdAndUpdate(articleRequest.articleId, {
             borrower: null,
@@ -114,7 +116,7 @@ function updateArticleRequest(body, requestId, userId) {
           status: 201,
         });
       }
-      if(oldArticleRequest.borrower == userId) {
+      if (oldArticleRequest.borrower == userId) {
         const articleRequest = await ArticleRequest.findByIdAndUpdate(
           requestId,
           body,

@@ -1,5 +1,5 @@
 import env from "../env.js";
-const {BACKEND_URL} = env;
+const { BACKEND_URL } = env;
 import AsyncStorage from "@react-native-community/async-storage";
 import { View, Text, FlatList, StyleSheet } from "react-native";
 import React, { useEffect, useState } from "react";
@@ -54,7 +54,7 @@ const StockScreen = ({ navigation }) => {
         marginTop: 3,
       }}
     >
-      {articles.length === 0 &&
+      {articles.length === 0 && !loading &&
         <Text style={styles.infoText}>Hier erscheinen Artikel, die du deinen Freunden ausleihen können möchtest!</Text>
       }
       {loading && <ActivityIndicator color="#E77F23" size="large" />}
