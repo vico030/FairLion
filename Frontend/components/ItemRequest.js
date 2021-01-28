@@ -38,12 +38,14 @@ export default function ItemRequest({
               color="green"
               onPress={() => acceptRequest(requestId)}
             />
-            <Feather
-              name="x"
-              size={24}
-              color="red"
-              onPress={() => declineRequest(requestId)}
-            />
+            {declineRequest &&
+              <Feather
+                name="x"
+                size={24}
+                color="red"
+                onPress={() => declineRequest(requestId)}
+              />
+            }
           </View>
         </View>
       </View>

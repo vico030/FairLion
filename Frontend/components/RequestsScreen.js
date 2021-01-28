@@ -7,9 +7,11 @@ import ItemRequest from "./ItemRequest";
 import AsyncStorage from "@react-native-community/async-storage";
 import { AuthContext } from "../context";
 import { Alert } from "react-native";
+console.log(BACKEND_URL);
 
 const RequestsScreen = ({ navigation }) => {
-  const [articleRequests, setArticleRequests] = useState([]);
+  const [pendingArticleRequests, setPendingArticleRequests] = useState([]);
+  const [returnedArticles, setReturnedArticles] = useState([]);
   const [friendRequests, setFiendRequests] = useState([]);
   const [error, setError] = useState({
     occured: false,
@@ -111,8 +113,8 @@ const RequestsScreen = ({ navigation }) => {
           })
             .then(response => {
               if (response.ok) {
-                const newRequests = articleRequests.filter(request => request._id !== id);
-                setArticleRequests(newRequests);
+                const newRequests = pendingArticleRequests.filter(request => request._id !== id);
+                setPendingArticleRequests(newRequests);
               }
             })
         }
@@ -136,8 +138,34 @@ const RequestsScreen = ({ navigation }) => {
     })
       .then(response => {
         if (response.ok) {
-          const newRequests = articleRequests.filter(request => request._id !== id);
-          setArticleRequests(newRequests);
+          const newRequests = pendingArticleRequests.filter(request => request._id !== id);
+          setPendingArticleRequests(newRequests);
+        }
+      })
+      .catch(err => {
+        console.log(err);
+        setError({
+          occured: true,
+          label: "Something went wrong trying to accept your request. Please try later again."
+        })
+      })
+  }
+
+  const acceptReturnedArticleRequest = requestId => {
+    fetch(BACKEND_URL + "articleRequest" + "/" + id, {
+      method: "PUT",
+      headers: {
+        "content-type": "application/json"
+      },
+      credentials: "include",
+      body: JSON.stringify({
+        status: "returned"
+      })
+    })
+      .then(response => {
+        if (response.ok) {
+          const newRequests = returnedArticles.filter(request => request._id !== id);
+          setReturnedArticles(newRequests);
         }
       })
       .catch(err => {
@@ -184,7 +212,10 @@ const RequestsScreen = ({ navigation }) => {
         }
         else {
           const { data: incomingRequests } = data;
-          setArticleRequests(incomingRequests);
+          const returnedRequests = incomingRequests.filter(request => request.status === "returnPending");
+          const pendingRequests = incomingRequests.filter(request => request.status === "pending");
+          setPendingArticleRequests(pendingRequests);
+          setReturnedArticles(returnedRequests);
         }
       })
       .catch(err => {
@@ -244,10 +275,10 @@ const RequestsScreen = ({ navigation }) => {
       })
   }
 
-/*   useEffect(() => {
-    getFriendRequests();
-    getArticleRequests();
-  }, [userId]) */
+  /*   useEffect(() => {
+      getFriendRequests();
+      getArticleRequests();
+    }, [userId]) */
 
 
   useEffect(() => {
@@ -278,15 +309,15 @@ const RequestsScreen = ({ navigation }) => {
         keyExtractor={(item, index) => index.toString()}
       />
 
-      {articleRequests.length !== 0 && <Text style={styles.listHeader}>Artikelanfragen:</Text>}
+      {pendingArticleRequests.length !== 0 && <Text style={styles.listHeader}>Artikelanfragen:</Text>}
       {error.occured && Alert(error.label)}
 
-      {(friendRequests.length === 0 && articleRequests.length === 0) &&
+      {(friendRequests.length === 0 && pendingArticleRequests.length === 0 && returnedArticles.length === 0) &&
         <Text style={styles.infoText}>Hier erscheinen Anfragen von Nutzern, die deine Freunde sein oder deine Artikel ausleihen möchten!</Text>
       }
       {loadingArticleRequests && <ActivityIndicator color="#E77F23" size="large" />}
       <FlatList
-        data={articleRequests}
+        data={pendingArticleRequests}
         renderItem={({ item }) => (
           <ItemRequest
             navigation={navigation}
@@ -294,6 +325,21 @@ const RequestsScreen = ({ navigation }) => {
             requestId={item._id}
             acceptRequest={acceptArticleRequest}
             declineRequest={declineArticleRequest}
+            image={IMAGE_URL + item.images[0]}
+            user={item.user}
+          />
+        )}
+        keyExtractor={(item, index) => index.toString()}
+      />
+      {returnedArticles.length !== 0 && <Text style={styles.listHeader}>Von Freunden zurückgegebene Artikel:</Text>}
+      <FlatList
+        data={returnedArticles}
+        renderItem={({ item }) => (
+          <ItemRequest
+            navigation={navigation}
+            produktName={item.title}
+            requestId={item._id}
+            acceptRequest={acceptReturnedArticleRequest}
             image={IMAGE_URL + item.images[0]}
             user={item.user}
           />
