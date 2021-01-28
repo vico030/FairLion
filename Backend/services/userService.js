@@ -95,7 +95,7 @@ function getArticles(userId, possesionType) {
         .catch((err) => {
           throw err;
         });
-      const user = await userModel
+      let user = await userModel
         .findById(userId)
         .select("-password")
         .select("-refreshToken")
@@ -109,6 +109,14 @@ function getArticles(userId, possesionType) {
           user.favourites.includes(article._id)
         ) {
           favourite = true;
+        }
+        if (possesionType === "borrower") {
+          user = await userModel
+            .findById(article.owner)
+            .select("-password")
+            .select("-refreshToken")
+            .select("-verificationHash")
+            .select("-friends");
         }
         newArticles.push({
           ...article._doc,

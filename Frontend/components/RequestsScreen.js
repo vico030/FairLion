@@ -151,7 +151,7 @@ const RequestsScreen = ({ navigation }) => {
       })
   }
 
-  const acceptReturnedArticleRequest = requestId => {
+  const acceptReturnedArticleRequest = id => {
     fetch(BACKEND_URL + "articleRequest" + "/" + id, {
       method: "PUT",
       headers: {

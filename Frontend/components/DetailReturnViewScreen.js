@@ -1,6 +1,6 @@
-import React, {useState} from "react";
+import React, { useState, useEffect } from "react";
 import env from "../env.js";
-const {BACKEND_URL} = env;
+const { BACKEND_URL } = env;
 import {
   View,
   Text,
@@ -29,7 +29,7 @@ const DetailReturnViewScreen = ({ route, navigation }) => {
     displayRemainingTime,
     user
   } = route.params;
-  
+
   const [returned, setReturned] = useState(false);
 
 
@@ -44,27 +44,28 @@ const DetailReturnViewScreen = ({ route, navigation }) => {
         "Accept": "application/json",
       },
       body: JSON.stringify({
-        status: "returned"
+        status: "returnPending"
       })
     }
 
-    try{
-      res = await fetch(BACKEND_URL + "articleRequest/"+requestId, requestOptions)
+    try {
+      res = await fetch(BACKEND_URL + "articleRequest/" + requestId, requestOptions)
     }
-    catch(err) {
+    catch (err) {
       console.log(err);
     }
 
-    if(res.status === 201) {
-      Alert.alert("Der Artikel wurde an "+user.username+" zurückgegeben")
-      setReturned(true)
+    if (res.status === 201) {
+      Alert.alert("Eine Rückgabeanfrage wurde an " + user.username + " verschickt.")
+      setReturned(true);
+      console.log("return Articles");
     }
-    else if(res.status === 500) {
+    else if (res.status === 500) {
       const errMess = await res.json();
       Alert.alert("Fehler", errMess.message);
     }
   }
-  
+
   const getArticleRequest = async () => {
     let res;
     let requestOptions = {
@@ -75,27 +76,34 @@ const DetailReturnViewScreen = ({ route, navigation }) => {
       },
     }
 
-    try{
+    try {
       res = await fetch(BACKEND_URL + "articleRequest/pending", requestOptions)
     }
-    catch(err) {
+    catch (err) {
       console.log(err);
     }
 
-    if(res.status === 200) {
+    if (res.status === 200) {
       let response = await res.json()
       let articleRequests = response["data"]
-      for(let req of articleRequests) {
-        if(req["articleId"] === articleId)
+      for (let req of articleRequests) {
+        if (req["articleId"] === articleId) {
+          console.log(req.status)
+          if (req.status === "returnPending") setReturned(true);
           return req;
+        }
       }
     }
-    else if(res.status === 500) {
+    else if (res.status === 500) {
       const errMess = await res.json();
       Alert.alert("Fehler", errMess.message);
     }
   }
   
+  useEffect(() => {
+    getArticleRequest();
+  }, [])
+
   return (
     <ScrollView style={styles.container}>
       <View style={styles.main}>
@@ -146,15 +154,15 @@ const DetailReturnViewScreen = ({ route, navigation }) => {
             {displayRemainingTime < 0 ? (
               <Text style={styles.timeExpired}>Frist abgelaufen!</Text>
             ) : (
-              <Text style={styles.elementTextRight}>
-                Noch: {displayRemainingTime} {displayRemainingTimeUnit}
-              </Text>
-            )}
+                <Text style={styles.elementTextRight}>
+                  Noch: {displayRemainingTime} {displayRemainingTimeUnit}
+                </Text>
+              )}
           </View>
         </View>
 
         <View style={styles.buttonContainer}>
-          <TouchableOpacity disabled={returned} style={returned? styles.disabledBtn:styles.signUpBtn} onPress={() => returnArticle()}>
+          <TouchableOpacity disabled={returned} style={returned ? styles.disabledBtn : styles.signUpBtn} onPress={() => returnArticle()}>
             <Text style={styles.loginText}>Zurückgeben</Text>
           </TouchableOpacity>
         </View>
