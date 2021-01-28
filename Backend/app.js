@@ -25,8 +25,8 @@ app.use('/auth', allRoutes.authRoute);
 app.use("/articleRequest", allRoutes.articleRequestRoute);
 
 app.get("/.well-known/pki-validation/3675EFC7AF7E0937FB04977F9F7A6B17.txt", (req, res) => {
-  var text = '2D52FF6750C24F5947AE9865793614ADBFED6217E6E99B7810DD7E425B294A8A\ncomodoca.com\n7ddf900cdbdb34c'
-  res.attachment('3675EFC7AF7E0937FB04977F9F7A6B17.txt')
+  var text = '953BBDECA5A01578BC3CAC988670E3ED30FE76FF5729AC110EB550DE8A8B1608\ncomodoca.com\n7a82026923f2108'
+  res.attachment('F72E950EE01A5C306B6B90AF3BB71E16.txt')
   res.type('txt')
   res.send(text)
 });
