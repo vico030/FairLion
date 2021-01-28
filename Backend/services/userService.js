@@ -3,7 +3,9 @@ const userModel = require("../models/UserModel");
 const articleModel = require("../models/ArticleModel");
 const friendRequestModel = require("../models/FriendRequestModel");
 const articleRequestModel = require("../models/ArticleRequestModel");
-const { request } = require("express");
+const {
+  request
+} = require("express");
 
 function getAllUsers() {
   return new Promise(async (resolve, reject) => {
@@ -108,7 +110,11 @@ function getArticles(userId, possesionType) {
         ) {
           favourite = true;
         }
-        newArticles.push({ ...article._doc, user, favourite });
+        newArticles.push({
+          ...article._doc,
+          user,
+          favourite
+        });
       }
       return resolve({
         data: newArticles,
@@ -136,6 +142,12 @@ function getArticlesWithFavorites(userId, favourerId) {
           throw err;
         });
       const user = await userModel
+        .findById(userId)
+        .select("-password")
+        .select("-refreshToken")
+        .select("-verificationHash")
+        .select("-friends");
+      const favourer = await userModel
         .findById(favourerId)
         .select("-password")
         .select("-refreshToken")
@@ -144,10 +156,14 @@ function getArticlesWithFavorites(userId, favourerId) {
       let newArticles = [];
       for (let article of articles) {
         let favourite = false;
-        if (user.favourites.includes(article._id)) {
+        if (favourer.favourites.includes(article._id)) {
           favourite = true;
         }
-        newArticles.push({ ...article._doc, user, favourite });
+        newArticles.push({
+          ...article._doc,
+          user,
+          favourite
+        });
       }
       return resolve({
         data: newArticles,
@@ -242,7 +258,10 @@ function createArticle(body, userId) {
         .select("-verificationHash")
         .select("-friends");
       return resolve({
-        data: { ...newArticle._doc, user },
+        data: {
+          ...newArticle._doc,
+          user
+        },
         message: "Artikel wurde erstellt.",
         status: 201,
       });
@@ -359,11 +378,9 @@ function confirmFriendRequest(requestId) {
     try {
       const friendrequest = await friendRequestModel
         .findByIdAndUpdate(
-          requestId,
-          {
+          requestId, {
             confirmed: true,
-          },
-          {
+          }, {
             new: true,
           }
         )
@@ -372,13 +389,11 @@ function confirmFriendRequest(requestId) {
         });
       userModel
         .findByIdAndUpdate(
-          friendrequest.receiverId,
-          {
+          friendrequest.receiverId, {
             $push: {
               friends: friendrequest.requesterId,
             },
-          },
-          {
+          }, {
             new: true,
           }
         )
@@ -387,13 +402,11 @@ function confirmFriendRequest(requestId) {
         });
       userModel
         .findByIdAndUpdate(
-          friendrequest.requesterId,
-          {
+          friendrequest.requesterId, {
             $push: {
               friends: friendrequest.receiverId,
             },
-          },
-          {
+          }, {
             new: true,
           }
         )
