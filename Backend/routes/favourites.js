@@ -22,11 +22,12 @@ router.get("/", isAuthenticated, async (req, res) => {
 //add favourite to logged in user
 router.put("/", isAuthenticated, async (req, res) => {
   try {
-    console.log(req.body.articleId);
+    //console.log(req.body.articleId);
     const response = await service.addFavouriteArticle(
       req.userId,
       req.body.articleId
     );
+    console.log(response.status);
     res.status(response.status).json({
       data: response.data,
       message: response.message,
@@ -46,6 +47,7 @@ router.delete("/", isAuthenticated, async (req, res) => {
       req.userId,
       req.body.articleId
     );
+    console.log(response.status);
     res.status(response.status).json({
       data: response.data,
       message: response.message,

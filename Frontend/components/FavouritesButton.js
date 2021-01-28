@@ -6,17 +6,19 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-community/async-storage";
 
 export default function FavouritesButton({ favored, articleId }) {
-  //   console.log(favored);
-  //   console.log(articleId);
+  
   let favoredVar = favored;
   const [isFavored, setFavored] = useState(favoredVar);
+  console.log(isFavored);
+  console.log(articleId);
+
   const toggleFavorite = async () => {
     const userId = await AsyncStorage.getItem("userId");
     let method = "put";
     if (isFavored) {
       method = "delete";
     }
-    const requestOptionsPut = {
+    const requestOptions = {
       method: method,
       headers: {
         "Content-Type": "application/json",
@@ -31,7 +33,7 @@ export default function FavouritesButton({ favored, articleId }) {
     var res;
     var resJson;
     try {
-      res = await fetch(BACKEND_URL + `favourites`, requestOptionsPut);
+      res = await fetch(BACKEND_URL + `favourites`, requestOptions);
       resJson = await res.json();
       //   console.log(resJson);
     } catch (err) {

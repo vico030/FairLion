@@ -150,7 +150,7 @@ const DetailViewScreen = ({ route, navigation }) => {
 
           <View style={styles.items}>
             <UserButton user={user} navigation={navigation} />
-            <FavouritesButton favored={isFavored} articleId={articleId} />
+            {/*<FavouritesButton favored={isFavored} articleId={articleId} />*/}
           </View>
         </View>
 

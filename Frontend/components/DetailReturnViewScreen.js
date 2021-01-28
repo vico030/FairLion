@@ -110,13 +110,7 @@ const DetailReturnViewScreen = ({ route, navigation }) => {
 
           <View style={styles.items}>
             <UserButton user={user} navigation={navigation} />
-            <TouchableOpacity>
-              <MaterialCommunityIcons
-                name="heart-outline"
-                size={24}
-                color="black"
-              />
-            </TouchableOpacity>
+            {/*FavouritesButton*/}
           </View>
         </View>
 

@@ -26,6 +26,7 @@ export default function ItemLend({
   articleId,
   user,
 }) {
+
   //console.log(images);
   // console.log(returnDate);
   let remainingTime = returnDate.getTime() - new Date().getTime();
@@ -55,7 +56,22 @@ export default function ItemLend({
   return (
     <TouchableOpacity
       style={styles.itemStyle}
-      onPress={() =>
+      onPress={() => {
+        /* navigation.setParams(
+          {
+            besitzer: besitzer,
+            produktName: produktName,
+            images: images,
+            ausleihfrist: ausleihfrist,
+            kategorie: kategorie,
+            beschreibung: beschreibung,
+            displayRemainingTime: Math.floor(displayRemainingTime),
+            displayRemainingTimeUnit: displayRemainingTimeUnit,
+            articleId: articleId,
+            user: user,
+          }
+        ) */
+        
         navigation.navigate("Details", {
           besitzer: besitzer,
           produktName: produktName,
@@ -67,7 +83,9 @@ export default function ItemLend({
           displayRemainingTimeUnit: displayRemainingTimeUnit,
           articleId: articleId,
           user: user,
+          favored: favored
         })
+      }
       }
     >
       <View>
@@ -90,11 +108,11 @@ export default function ItemLend({
               Frist abgelaufen!
             </Text>
           ) : (
-            <Text style={styles.itemTime} numberOfLines={1}>
-              Noch: {Math.floor(displayRemainingTime)}{" "}
-              {displayRemainingTimeUnit}
-            </Text>
-          )}
+              <Text style={styles.itemTime} numberOfLines={1}>
+                Noch: {Math.floor(displayRemainingTime)}{" "}
+                {displayRemainingTimeUnit}
+              </Text>
+            )}
         </View>
       </View>
     </TouchableOpacity>
