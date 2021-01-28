@@ -91,7 +91,6 @@ const SearchScreen = ({ navigation }) => {
     });
     return unsubscribe;
   }, [navigation]);
-
   return (
     <View>
       <SearchBar
@@ -118,17 +117,18 @@ const SearchScreen = ({ navigation }) => {
       />
 
       {searching ? (
-        articles.length === 0 ?
-          (<Text style={styles.infoText}>Leider nichts gefunden!{"\n"}:(
-          </Text>)
-          :
-          (<Text style={styles.text}> Suchergebnisse: </Text>)
-      ) : (
-          articles.length === 0 ?
-            (<Text style={styles.infoText}>Hier erscheinen Artikel, die du als Favoriten gekennzeichnet hast!</Text>)
-            :
-            (<Text style={styles.text}> Meine Favoriten: </Text>)
-        )}
+        articles.length === 0 ? (
+          <Text style={styles.infoText}>Leider nichts gefunden!{"\n"}:(</Text>
+        ) : (
+            <Text style={styles.text}> Suchergebnisse: </Text>
+          )
+      ) : articles.length === 0 ? (
+        <Text style={styles.infoText}>
+          Hier erscheinen Artikel, die du als Favoriten gekennzeichnet hast!
+        </Text>
+      ) :
+          (<Text style={styles.text}> Meine Favoriten: </Text>)
+      }
       {loading && <ActivityIndicator color="#E77F23" size="large" />}
 
       <FlatList

@@ -1,5 +1,5 @@
 import env from "../env.js";
-const {IMAGE_URL} = env;
+const { IMAGE_URL } = env;
 import React from "react";
 import {
   View,
@@ -11,6 +11,7 @@ import {
 } from "react-native";
 import UserButton from "./UserButton";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import FavouritesButton from "./FavouritesButton";
 
 export default function ItemLend({
   navigation,
@@ -23,8 +24,9 @@ export default function ItemLend({
   favored,
   returnDate,
   articleId,
-  user
+  user,
 }) {
+
   //console.log(images);
   // console.log(returnDate);
   let remainingTime = returnDate.getTime() - new Date().getTime();
@@ -54,7 +56,22 @@ export default function ItemLend({
   return (
     <TouchableOpacity
       style={styles.itemStyle}
-      onPress={() =>
+      onPress={() => {
+        /* navigation.setParams(
+          {
+            besitzer: besitzer,
+            produktName: produktName,
+            images: images,
+            ausleihfrist: ausleihfrist,
+            kategorie: kategorie,
+            beschreibung: beschreibung,
+            displayRemainingTime: Math.floor(displayRemainingTime),
+            displayRemainingTimeUnit: displayRemainingTimeUnit,
+            articleId: articleId,
+            user: user,
+          }
+        ) */
+        
         navigation.navigate("Details", {
           besitzer: besitzer,
           produktName: produktName,
@@ -65,8 +82,10 @@ export default function ItemLend({
           displayRemainingTime: Math.floor(displayRemainingTime),
           displayRemainingTimeUnit: displayRemainingTimeUnit,
           articleId: articleId,
-          user: user
+          user: user,
+          favored: favored
         })
+      }
       }
     >
       <View>
@@ -80,11 +99,7 @@ export default function ItemLend({
           <Text style={styles.itemName} numberOfLines={1}>
             {produktName}
           </Text>
-          {favored == true ? (
-            <MaterialCommunityIcons name="heart" size={24} color="#333740" />
-          ) : (
-            <MaterialCommunityIcons name="heart-outline" size={24} />
-          )}
+          <FavouritesButton favored={favored} articleId={articleId} />
         </View>
         <View style={styles.items}>
           <UserButton user={user} navigation={navigation} />
@@ -93,11 +108,11 @@ export default function ItemLend({
               Frist abgelaufen!
             </Text>
           ) : (
-            <Text style={styles.itemTime} numberOfLines={1}>
-              Noch: {Math.floor(displayRemainingTime)}{" "}
-              {displayRemainingTimeUnit}
-            </Text>
-          )}
+              <Text style={styles.itemTime} numberOfLines={1}>
+                Noch: {Math.floor(displayRemainingTime)}{" "}
+                {displayRemainingTimeUnit}
+              </Text>
+            )}
         </View>
       </View>
     </TouchableOpacity>

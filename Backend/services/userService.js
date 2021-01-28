@@ -3,7 +3,9 @@ const userModel = require("../models/UserModel");
 const articleModel = require("../models/ArticleModel");
 const friendRequestModel = require("../models/FriendRequestModel");
 const articleRequestModel = require("../models/ArticleRequestModel");
-const { request } = require("express");
+const {
+  request
+} = require("express");
 
 function getAllUsers() {
   return new Promise(async (resolve, reject) => {
@@ -100,8 +102,68 @@ function getArticles(userId, possesionType) {
         .select("-verificationHash")
         .select("-friends");
       let newArticles = [];
-      for(let article of articles){
-        newArticles.push({...article._doc, user});
+      for (let article of articles) {
+        let favourite = false;
+        if (
+          possesionType === "borrower" &&
+          user.favourites.includes(article._id)
+        ) {
+          favourite = true;
+        }
+        newArticles.push({
+          ...article._doc,
+          user,
+          favourite
+        });
+      }
+      return resolve({
+        data: newArticles,
+        message: "Artikel wurden gefunden.",
+        status: 200,
+      });
+    } catch (err) {
+      return reject({
+        error: err,
+        status: 500,
+        message: "Artikel konnten nicht gefunden werden.",
+      });
+    }
+  });
+}
+
+function getArticlesWithFavorites(userId, favourerId) {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const articles = await articleModel
+        .find({
+          owner: userId,
+        })
+        .catch((err) => {
+          throw err;
+        });
+      const user = await userModel
+        .findById(userId)
+        .select("-password")
+        .select("-refreshToken")
+        .select("-verificationHash")
+        .select("-friends");
+      const favourer = await userModel
+        .findById(favourerId)
+        .select("-password")
+        .select("-refreshToken")
+        .select("-verificationHash")
+        .select("-friends");
+      let newArticles = [];
+      for (let article of articles) {
+        let favourite = false;
+        if (favourer.favourites.includes(article._id)) {
+          favourite = true;
+        }
+        newArticles.push({
+          ...article._doc,
+          user,
+          favourite
+        });
       }
       return resolve({
         data: newArticles,
@@ -196,7 +258,10 @@ function createArticle(body, userId) {
         .select("-verificationHash")
         .select("-friends");
       return resolve({
-        data: {...newArticle._doc, user},
+        data: {
+          ...newArticle._doc,
+          user
+        },
         message: "Artikel wurde erstellt.",
         status: 201,
       });
@@ -234,7 +299,7 @@ function getFriendRequests(userId) {
             ...friendrequest._doc,
             requesterName: requester.username,
             requesterImage: requester.image,
-            requesterCity: requester.city
+            requesterCity: requester.city,
           });
         } catch (err) {
           throw err;
@@ -313,11 +378,9 @@ function confirmFriendRequest(requestId) {
     try {
       const friendrequest = await friendRequestModel
         .findByIdAndUpdate(
-          requestId,
-          {
+          requestId, {
             confirmed: true,
-          },
-          {
+          }, {
             new: true,
           }
         )
@@ -326,13 +389,11 @@ function confirmFriendRequest(requestId) {
         });
       userModel
         .findByIdAndUpdate(
-          friendrequest.receiverId,
-          {
+          friendrequest.receiverId, {
             $push: {
               friends: friendrequest.requesterId,
             },
-          },
-          {
+          }, {
             new: true,
           }
         )
@@ -341,13 +402,11 @@ function confirmFriendRequest(requestId) {
         });
       userModel
         .findByIdAndUpdate(
-          friendrequest.requesterId,
-          {
+          friendrequest.requesterId, {
             $push: {
               friends: friendrequest.receiverId,
             },
-          },
-          {
+          }, {
             new: true,
           }
         )
@@ -484,6 +543,7 @@ module.exports = {
   getUsersByName,
   getUserById,
   getArticles,
+  getArticlesWithFavorites,
   getFriends,
   getFriendRequests,
   deleteAllUsers,

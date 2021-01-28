@@ -1,6 +1,6 @@
 import React, { useContext, useState, useEffect } from "react";
 import env from "../env.js";
-const {BACKEND_URL} = env;
+const { BACKEND_URL } = env;
 import {
   View,
   Text,
@@ -13,13 +13,18 @@ import {
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Carousel from "./CarouselComponent";
 import UserButton from "./UserButton";
+import FavouritesButton from "./FavouritesButton";
+import AsyncStorage from "@react-native-community/async-storage";
 
 const windowHeight = Dimensions.get("window").height;
 
 const DetailViewScreen = ({ route, navigation }) => {
-  const { besitzer, produktName, beschreibung, articleId, images, ausleihfrist, kategorie, status, user } = route.params;
+  const { besitzer, produktName, beschreibung, articleId, images, ausleihfrist, kategorie, status, user, favored } = route.params;
 
+  let favoredVar = favored;
   const [requested, setRequested] = useState(false);
+  const [article, setArticle] = useState({});
+  const [isFavored, setFavored] = useState(favoredVar);
 
   const handleLend = async () => {
     //console.log(articleId)
@@ -35,20 +40,48 @@ const DetailViewScreen = ({ route, navigation }) => {
       })
     }
 
-    try{
+    try {
       res = await fetch(BACKEND_URL + "articleRequest", requestOptions)
     }
-    catch(err) {
+    catch (err) {
       console.log(err);
     }
 
-    if(res.status === 201) {
-      Alert.alert(user.username +" wurde eine Anfrage gesendet")
+    if (res.status === 201) {
+      Alert.alert(user.username + " wurde eine Anfrage gesendet")
       setRequested(true);
     }
-    else if(res.status === 500) {
+    else if (res.status === 500) {
       const errMess = await res.json();
       Alert.alert("Fehler", errMess.message);
+    }
+  }
+
+  const fetchArticle = async () => {
+    let requestOptions = {
+      method: 'GET',
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+      }
+    }
+    let res;
+    let resJson;
+    try {
+      res = await fetch(BACKEND_URL + `users/${await AsyncStorage.getItem("userId")}`, requestOptions);
+      resJson = await res.json();
+
+    } catch (error) {
+      console.log(error);
+    }
+    if (res.status === 200) {
+      console.log(resJson.data.favourites.includes(articleId))
+      if (await resJson.data.favourites.includes(articleId)) {
+        setFavored(true);
+      }
+      else {
+        setFavored(false);
+      }
     }
   }
 
@@ -62,25 +95,25 @@ const DetailViewScreen = ({ route, navigation }) => {
       }
     }
 
-    try{
+    try {
       res = await fetch(BACKEND_URL + "articleRequest/pending", requestOptions)
     }
-    catch(err) {
+    catch (err) {
       console.log(err);
     }
 
-    if(res.status === 200) {
+    if (res.status === 200) {
       let response = await res.json();
       let requestedArticles = response["data"]
-      for(let art of requestedArticles) {
-        if(art["articleId"] === articleId) {
+      for (let art of requestedArticles) {
+        if (art["articleId"] === articleId) {
           setRequested(true);
           return
         }
       }
       setRequested(false);
     }
-    else if(res.status === 500) {
+    else if (res.status === 500) {
       const errMess = await res.json();
       Alert.alert("Fehler", errMess.message);
     }
@@ -89,10 +122,20 @@ const DetailViewScreen = ({ route, navigation }) => {
     }
   }
 
+  /*   useEffect(() => {
+      isRequested();
+      fetchArticle();
+    }, []); */
+
   useEffect(() => {
-    isRequested()
-  }, []);
- 
+    const unsubscribe = navigation.addListener("focus", () => {
+      isRequested();
+      fetchArticle();
+    });
+    return unsubscribe;
+  }, [navigation]);
+
+  console.log(isFavored);
   return (
     <ScrollView style={styles.container}>
       <View style={styles.main}>
@@ -107,13 +150,7 @@ const DetailViewScreen = ({ route, navigation }) => {
 
           <View style={styles.items}>
             <UserButton user={user} navigation={navigation} />
-            <TouchableOpacity>
-              <MaterialCommunityIcons
-                name="heart-outline"
-                size={24}
-                color="black"
-              />
-            </TouchableOpacity>
+            {/*<FavouritesButton favored={isFavored} articleId={articleId} />*/}
           </View>
         </View>
 
@@ -150,8 +187,8 @@ const DetailViewScreen = ({ route, navigation }) => {
           </View>
         </View>
         <View style={styles.buttonContainer}>
-          <TouchableOpacity disabled={requested} style={requested? styles.disabledBtn:styles.signUpBtn} onPress={() => handleLend()}>
-            <Text style={styles.loginText}>{requested? "Angefragt":"Anfragen"}</Text>
+          <TouchableOpacity disabled={requested} style={requested ? styles.disabledBtn : styles.signUpBtn} onPress={() => handleLend()}>
+            <Text style={styles.loginText}>{requested ? "Angefragt" : "Anfragen"}</Text>
           </TouchableOpacity>
         </View>
       </View>
