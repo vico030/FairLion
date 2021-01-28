@@ -15,7 +15,7 @@ import { createDrawerNavigator } from "@react-navigation/drawer";
 import { Button, View } from "react-native";
 import DrawerContent from "./components/DrawerContent";
 
-import { ProfileStackScreen, SettingsStackScreen, EditProfileStackScreen } from "./components/Headers";
+import { ProfileStackScreen, SettingsStackScreen, EditProfileStackScreen, ChangePasswordStackScreen } from "./components/Headers";
 import { Alert } from "react-native";
 
 const Drawer = createDrawerNavigator();
@@ -26,10 +26,11 @@ const DrawerNavigator = ({ props }) => {
       drawerContent={(props) => <DrawerContent {...props} />}
       backBehavior="history"
     >
-      <Drawer.Screen name="Home" component={AppTabs} options={{unmountOnBlur:true}}/>
-      <Drawer.Screen name="Profile" component={ProfileStackScreen} options={{unmountOnBlur:true}}/>
-      <Drawer.Screen name="Settings" component={SettingsStackScreen} options={{unmountOnBlur:true}}/>
-      <Drawer.Screen name="EditProfile" component={EditProfileStackScreen} options={{unmountOnBlur:true}}/>
+      <Drawer.Screen name="Home" component={AppTabs} />
+      <Drawer.Screen name="Profile" component={ProfileStackScreen} />
+      <Drawer.Screen name="Settings" component={SettingsStackScreen} />
+      <Drawer.Screen name="EditProfile" component={EditProfileStackScreen} />
+      <Drawer.Screen name="ChangePassword" component={ChangePasswordStackScreen} />
     </Drawer.Navigator>
   );
 };

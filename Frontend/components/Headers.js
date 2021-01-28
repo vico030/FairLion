@@ -29,6 +29,7 @@ import EditItemScreen from "./EditItemScreen";
 import SettingsScreen from "./SettingsScreen";
 import EditProfileScreen from "./EditProfileScreen";
 import { ForgotPasswordScreen } from "./ForgotPasswordScreen";
+import { ChangePasswordScreen } from "./ChangePasswordScreen";
 const inactiveTintColor = "#333740";
 const BurrowedStack = createStackNavigator();
 const StockStack = createStackNavigator();
@@ -43,6 +44,7 @@ const ProfileStack = createStackNavigator();
 const SettingsStack = createStackNavigator();
 const EditProfileStack = createStackNavigator();
 const ForgotPasswordStack = createStackNavigator();
+const ChangePasswordStack = createStackNavigator();
 
 function ProfileStackScreen({ navigation }) {
   return (
@@ -640,6 +642,34 @@ function EditProfileStackScreen({ navigation }) {
   );
 }
 
+function ChangePasswordStackScreen({ navigation }) {
+  return (
+    <ChangePasswordStack.Navigator>
+      <ChangePasswordStack.Screen 
+        name="ChangePassword"
+        component={ChangePasswordScreen}
+        options={{
+          title: "Passwort ändern",
+          headerStyle: {
+            backgroundColor: inactiveTintColor,
+          },
+          headerTitleAlign: "center",
+          headerTintColor: "#fff",
+          headerTitleStyle: {
+            fontFamily: "Roboto",
+          },
+          headerLeft: () => (
+            <HeaderBackButton
+              onPress={() => navigation.goBack()}
+              tintColor={"white"}
+            />
+          ),
+        }}
+      />
+    </ChangePasswordStack.Navigator>
+  )
+}
+
 const styles = StyleSheet.create({
   leftIcon: {
     color: "#fff",
@@ -665,4 +695,5 @@ export {
   SettingsStackScreen,
   EditProfileStackScreen,
   ForgotPasswordStackScreen,
+  ChangePasswordStackScreen,
 };

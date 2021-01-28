@@ -83,4 +83,21 @@ router.post("/pwreset", async (req, res) => {
     }
 })
 
+// change user password
+router.post("/pwchange", async (req, res) => {
+    try {
+        const response = await service.changePassword(req.body);
+        res.status(response.status).json({
+            'data': response.data,
+            'message': response.message
+        });
+    }
+    catch ({ error, status, message }) {
+        res.status(status).json({
+            'error': error,
+            'message': message
+        })
+    }
+})
+
 module.exports = router;

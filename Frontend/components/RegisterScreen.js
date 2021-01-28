@@ -4,6 +4,7 @@ import AsyncStorage from "@react-native-community/async-storage";
 import React, { useContext, useReducer } from "react";
 import { loginReducer, initialLoginState } from "../reducers/loginReducer";
 import { AuthContext } from "../context";
+import { Alert } from "react-native";
 import {
   StyleSheet,
   Text,
@@ -132,20 +133,27 @@ const RegisterScreen = ({ navigation }) => {
   };
 
   const handleRegistration = async () => {
-    const formdata = new FormData();
-    if (data.image !== "") formdata.append("image", data.image);
-    formdata.append("username", data.username);
-    formdata.append("password", data.password);
-    formdata.append("email", data.email);
-    formdata.append("phone", data.phone);
-    formdata.append("street", data.street);
-    formdata.append("zipCode", data.PLZ);
-    formdata.append("city", data.city);
-    formdata.append("country", data.country);
-    formdata.append("info", data.aboutMe);
-    // formdata.append("image", data.image);
+    if (!data.password || !data.confirm_password || (!data.password && !data.confirm_password)) {
+      Alert.alert("Fehler", "Es müssen beide Passwort-Felder ausgefüllt sein!");
+    } else if (data.password === data.confirm_password) {
 
-    signUp(formdata);
+      const formdata = new FormData();
+      if (data.image !== "") formdata.append("image", data.image);
+      formdata.append("username", data.username);
+      formdata.append("password", data.password);
+      formdata.append("email", data.email);
+      formdata.append("phone", data.phone);
+      formdata.append("street", data.street);
+      formdata.append("zipCode", data.PLZ);
+      formdata.append("city", data.city);
+      formdata.append("country", data.country);
+      formdata.append("info", data.aboutMe);
+      // formdata.append("image", data.image);
+
+      signUp(formdata);
+    } else {
+      Alert.alert("Fehler", "Die Passwörter stimmen nicht überein!");
+    }
   };
 
   return (

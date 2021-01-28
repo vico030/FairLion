@@ -1,4 +1,5 @@
-import { BACKEND_URL } from "@env";
+import env from "../env.js";
+const { BACKEND_URL, IMAGE_URL } = env;
 import React, { useState } from "react";
 import { Alert } from "react-native";
 import {
