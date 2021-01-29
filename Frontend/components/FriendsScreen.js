@@ -78,7 +78,7 @@ const FriendsScreen = ({ navigation }) => {
             email={item.email}
             telefon={item.phone}
             image={IMAGE_URL + item.image}
-            artikelzahl={"99999"}
+            artikelzahl={item.articleCount}
             navigation={navigation}
           />
         )}

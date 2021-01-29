@@ -259,6 +259,7 @@ function createArticle(body, userId) {
         owner: userId,
       });
       const newArticle = await article.save();
+      await userModel.findByIdAndUpdate(userId, {$inc: {articleCount: 1}})
       const user = await userModel
         .findById(userId)
         .select("-password")
