@@ -23,8 +23,9 @@ const DetailEditViewScreen = ({
     produktName, 
     ausleihfrist, 
     kategorie, 
-    beschreibung ,
-    user
+    beschreibung,
+    user,
+    articleId,
   } = route.params;
 
   return (
@@ -89,6 +90,8 @@ const DetailEditViewScreen = ({
               beschreibung: beschreibung,
               frist: ausleihfrist,
               kategorie: kategorie,
+              images: images,
+              articleId: articleId,
             })
             }
           >

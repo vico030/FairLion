@@ -1,3 +1,5 @@
+import env from "../env.js";
+const {BACKEND_URL} = env;
 import React, { useState } from "react";
 import {
   StyleSheet,
@@ -10,6 +12,7 @@ import {
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scrollview";
 import { Picker } from "@react-native-picker/picker";
 import ImageChooser from "./ImageChooser";
+import { Alert } from "react-native";
 
 const EditItemScreen = ({
   route,
@@ -20,44 +23,82 @@ const EditItemScreen = ({
     beschreibung,
     frist,
     kategorie,
+    images,
+    articleId,
   } = route.params;
 
   const ausleihfrist = frist.match(/\d/g).join("");
+  const [durationValue, setDurationValue] = useState(frist.split(" ")[0]);
+  const [durationUnit, setDurationUnit] = useState(frist.split(" ")[1]);
 
-  const [timeFrame, setTimeFrame] = useState();
-  const [category, setCategory] = useState();
+  const [title, setTitle] = useState(titel);
+  const [description, setDescription] = useState(beschreibung);
+  const [category, setCategory] = useState(kategorie);
+  const [image, setImage] = useState([]);
 
-  const timeFrameChange = (value) => {
-    console.log(value);
-  };
+  const handleImages = (imageUris) => {
+    var images = [];
+    for (const uri of imageUris) {
+      var mime = uri.split(".").pop().toLowerCase();
+      const ext = mime;
+      if (mime === "jpg") mime = "jpeg"
+      const name = Math.floor(Math.random() * Math.floor(999999999999999999999));
+      images.push({ "uri": uri, "name": name + "." + ext, "type": "image/" + mime })
+    }
+    setImage(images);
+  }
 
-  const titleChange = (value) => {
-    console.log(value);
-  };
+  const handleEdit = async () => {
+    const formdata = new FormData();
+    formdata.append("title", title);
+    formdata.append("description", description);
+    formdata.append("duration", durationValue + " " + durationUnit);
+    formdata.append("category", category);
+    
+    //console.log(image);
+    if (image.length !== 0) {
+      for (const img of image) {
+        console.log(img);
+        formdata.append("images", img);
+      }
+    }
+    console.log(formdata);
 
-  const descriptionChange = (value) => {
-    console.log(value);
-  };
-
-  const categoryChange = (value) => {
-    console.log(value);
-  };
-
-  function test() {
-    console.log({ titel });
+    const requestOptions = {
+      method: "PUT",
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Accept: "application/json",
+      },
+      body: formdata,
+    };
+    let res;
+    let resJson;
+    try {
+      res = await fetch(BACKEND_URL + "articles/" + articleId, requestOptions);
+    } catch (err) {
+      console.log(err);
+    }
+    resJson = await res.json();
+    if (res.status === 201) {
+      Alert.alert("Erfolg!", resJson.message);
+      navigation.goBack();
+    } else {
+      Alert.alert("Fehler!", resJson.message);
+    }
   }
 
   return (
     <KeyboardAwareScrollView style={{ flex: 1 }}>
-      <ImageChooser />
+      <ImageChooser handleImages={handleImages}/>
 
       <View style={styles.itemInfo}>
         <View style={styles.inputView}>
           <TextInput
             style={styles.titleInputText}
-            placeholder={titel}
+            value={title}
             placeholderTextColor="#7E7E7E"
-            onChangeText={(value) => titleChange(value)}
+            onChangeText={(value) => setTitle(value)}
           />
         </View>
 
@@ -65,9 +106,9 @@ const EditItemScreen = ({
           <TextInput
             style={styles.inputText}
             multiline={true}
-            placeholder={beschreibung}
+            value={description}
             placeholderTextColor="#7E7E7E"
-            onChangeText={(value) => descriptionChange(value)}
+            onChangeText={(value) => setDescription(value)}
           />
         </View>
 
@@ -77,22 +118,22 @@ const EditItemScreen = ({
           <TextInput
             style={styles.timeInputText}
             keyboardType="number-pad"
-            placeholder={ausleihfrist}
+            value={durationValue}
             placeholderTextColor="#7E7E7E"
-            onChangeText={(value) => timeFrameChange(value)}
+            onChangeText={(value) => setDurationValue(value)}
           />
 
           <View style={styles.datePickerContainer}>
             <Picker
-              selectedValue={timeFrame}
+              selectedValue={durationUnit}
               style={styles.datePicker}
               itemStyle={styles.datePickerItems}
               placeholder="Wähle ein Zeiteinheit aus."
-              onValueChange={(itemValue, itemIndex) => setTimeFrame(itemValue)}
+              onValueChange={(itemValue, itemIndex) => setDurationUnit(itemValue)}
             >
-              <Picker.Item label="Tag(e)" value="tage" />
-              <Picker.Item label="Woche(n)" value="wochen" />
-              <Picker.Item label="Monat(e)" value="monate" />
+              <Picker.Item label="Tag(e)" value="day" />
+              <Picker.Item label="Woche(n)" value="week" />
+              <Picker.Item label="Monat(e)" value="month" />
             </Picker>
           </View>
         </View>
@@ -123,7 +164,10 @@ const EditItemScreen = ({
       </View>
 
       <View style={styles.ButtonContainer}>
-        <TouchableOpacity style={styles.saveBtn}>
+        <TouchableOpacity
+          style={styles.saveBtn}
+          onPress={() => handleEdit()}
+        >
           <Text style={styles.saveText}>Speichern</Text>
         </TouchableOpacity>
       </View>

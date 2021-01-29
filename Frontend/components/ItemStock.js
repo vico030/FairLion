@@ -21,7 +21,8 @@ export default function ItemStock({
   navigation,
   beschreibung,
   user,
-  borrower
+  borrower,
+  articleId,
 }) {
   // Hier steht nur Text, damit da Bilder sind
   return (
@@ -36,7 +37,8 @@ export default function ItemStock({
           ausleihfrist: ausleihfrist,
           kategorie: kategorie,
           beschreibung: beschreibung,
-          user: user
+          user: user,
+          articleId: articleId,
         })
       }
     >
