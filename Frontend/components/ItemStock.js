@@ -39,6 +39,7 @@ export default function ItemStock({
           beschreibung: beschreibung,
           user: user,
           articleId: articleId,
+          borrower: borrower
         })
       }
     >

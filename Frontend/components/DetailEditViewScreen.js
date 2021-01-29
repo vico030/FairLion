@@ -17,15 +17,16 @@ const DetailEditViewScreen = ({
   route,
   navigation,
 }) => {
-  const { 
-    besitzer, 
-    images, 
-    produktName, 
-    ausleihfrist, 
-    kategorie, 
+  const {
+    besitzer,
+    images,
+    produktName,
+    ausleihfrist,
+    kategorie,
     beschreibung,
     user,
     articleId,
+    borrower
   } = route.params;
 
   return (
@@ -84,7 +85,7 @@ const DetailEditViewScreen = ({
 
         <View style={styles.buttonContainer}>
           <TouchableOpacity
-            style={styles.signUpBtn}
+            disabled={borrower} style={borrower ? styles.disabledBtn : styles.signUpBtn}
             onPress={() => navigation.navigate("EditItem", {
               titel: produktName,
               beschreibung: beschreibung,
@@ -216,4 +217,20 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "bold",
   },
+  disabledBtn: {
+    width: "60%",
+    backgroundColor: "#CFCFCF",
+    borderRadius: 25,
+    height: 45,
+    alignItems: "center",
+    justifyContent: "center",
+    marginVertical: 20,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+  }
 });
