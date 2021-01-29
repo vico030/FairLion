@@ -72,6 +72,7 @@ const StockScreen = ({ navigation }) => {
             beschreibung={item.description}
             user={item.user}
             borrower={item.borrower}
+            articleId={item._id}
           />
         )}
       />

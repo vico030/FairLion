@@ -1,5 +1,6 @@
 const Article = require('../models/ArticleModel');
 const User = require("../models/UserModel");
+const fs = require("fs");
 
 const getAllArticles = function (userId) {
     return new Promise((resolve, reject) => {
@@ -168,6 +169,7 @@ function updateArticleById(body, articleId) {
                     });
                 }
             }
+            console.log(err);
             return reject({
                 error: err,
                 status: 500,
