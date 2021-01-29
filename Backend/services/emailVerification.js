@@ -42,7 +42,14 @@ const sendEmail = async (to, hash, type) => {
                 from: user,
                 to,
                 subject: "Confirm Email",
-                html: `<a href="${link}">Confirm email</a>`
+                html:
+                    `
+                <div style="height: 10rem">
+                    <img src="../logo.png" />
+                    <p>Bestätige deine Email-Adresse, in dem du auf den Button drückst.</p>
+                    <a style="color: white; background: #E77F23; text-decoration: none; padding: 0.5rem 1rem; border-radius: 25px; display: block; width: 7rem; font-size: 15px; text-align: center" href="${link}">Confirm email</a>
+                </div>
+                `
             })
             console.log(info.messageId);
         }
