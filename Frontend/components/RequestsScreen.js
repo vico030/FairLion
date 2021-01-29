@@ -12,7 +12,7 @@ console.log(BACKEND_URL);
 const RequestsScreen = ({ navigation }) => {
   const [pendingArticleRequests, setPendingArticleRequests] = useState([]);
   const [returnedArticles, setReturnedArticles] = useState([]);
-  const [friendRequests, setFiendRequests] = useState([]);
+  const [friendRequests, setFriendRequests] = useState([]);
   const [error, setError] = useState({
     occured: false,
     label: ""
@@ -43,7 +43,7 @@ const RequestsScreen = ({ navigation }) => {
               if (response.ok) {
                 const acceptedReq = friendRequests.find(request => request._id === id);
                 const newRequests = friendRequests.filter(request => request._id !== id);
-                setFiendRequests(newRequests);
+                setFriendRequests(newRequests);
                 let newFriends = JSON.parse(await AsyncStorage.getItem("friends"));
                 newFriends.push(acceptedReq.requesterId);
                 AsyncStorage.setItem("friends", JSON.stringify(newFriends));
@@ -75,7 +75,7 @@ const RequestsScreen = ({ navigation }) => {
         console.log(`${BACKEND_URL}${userId}/friendrequests/${id}`, response.status);
         if (response.ok) {
           const newRequests = friendRequests.filter(request => request._id !== id);
-          setFiendRequests(newRequests);
+          setFriendRequests(newRequests);
         }
         else if (response.status === 401) {
           setError({
@@ -230,7 +230,6 @@ const RequestsScreen = ({ navigation }) => {
 
   const getFriendRequests = () => {
     setLoadingFriendRequests(true);
-    if (!userId) return;
     let status = null;
     fetch(BACKEND_URL + "users" + "/" + userId + "/" + "friendrequests")
       .then(response => {
@@ -254,15 +253,10 @@ const RequestsScreen = ({ navigation }) => {
             label: data
           })
         }
-        else if (status === 500) {
-          setError({
-            occured: true,
-            label: data.message
-          })
-        }
+        else if (status === 500) return;
         else { //200
           const { data: incomingFriendRequests } = data;
-          setFiendRequests(incomingFriendRequests);
+          setFriendRequests(incomingFriendRequests);
         }
       })
       .catch(err => {
@@ -274,12 +268,6 @@ const RequestsScreen = ({ navigation }) => {
         })
       })
   }
-
-  /*   useEffect(() => {
-      getFriendRequests();
-      getArticleRequests();
-    }, [userId]) */
-
 
   useEffect(() => {
     const unsubscribe = navigation.addListener("focus", () => {
@@ -293,7 +281,7 @@ const RequestsScreen = ({ navigation }) => {
     <View style={{ alignItems: "center", justifyContent: "center" }}>
 
       {friendRequests.length !== 0 && <Text style={styles.listHeader}>Freundesanfragen:</Text>}
-      {loadingFriendRequests && <ActivityIndicator color="#E77F23" size="large" />}
+      {loadingFriendRequests && <View style={styles.spinner}><ActivityIndicator color="#E77F23" size="large" /></View>}
       <FlatList
         data={friendRequests}
         renderItem={({ item }) => (
@@ -310,12 +298,12 @@ const RequestsScreen = ({ navigation }) => {
       />
 
       {pendingArticleRequests.length !== 0 && <Text style={styles.listHeader}>Artikelanfragen:</Text>}
-      {error.occured && Alert(error.label)}
+      {error.occured && Alert.alert(error.label)}
 
-      {(friendRequests.length === 0 && pendingArticleRequests.length === 0 && returnedArticles.length === 0) &&
+      {(friendRequests.length === 0 && pendingArticleRequests.length === 0 && returnedArticles.length === 0) && !loadingArticleRequests && !loadingFriendRequests &&
         <Text style={styles.infoText}>Hier erscheinen Anfragen von Nutzern, die deine Freunde sein oder deine Artikel ausleihen möchten!</Text>
       }
-      {loadingArticleRequests && <ActivityIndicator color="#E77F23" size="large" />}
+      {loadingArticleRequests && <View style={styles.spinner}><ActivityIndicator color="#E77F23" size="large" /></View>}
       <FlatList
         data={pendingArticleRequests}
         renderItem={({ item }) => (
