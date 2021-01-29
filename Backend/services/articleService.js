@@ -216,8 +216,10 @@ const deleteArticleById = function (articleId) {
         await User.updateMany({}, { $pull: { favourites: articleId } }, { new: true });
         Article.findById(articleId)
             .then((article) => {
+                let userId = article.owner;
                 copy = article;
                 article.delete();
+                User.findByIdAndUpdate(userId, {$inc: {articleCount: -1}})
                 // Delete images in storage
                 if(copy.images){
                     for(var image of copy.images){

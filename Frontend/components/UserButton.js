@@ -18,7 +18,7 @@ export default function UserButton({ navigation, user }) {
           info: user.info,
           email: user.email,
           telefon: user.phone,
-          artikelzahl: 99999,
+          artikelzahl: user.articleCount,
         })
       }
     >
