@@ -3,7 +3,9 @@ const {BACKEND_URL, IMAGE_URL} = env;
 import "react-native-gesture-handler";
 import React, { useEffect, useMemo, useReducer } from "react";
 import { loginReducer, initialLoginState } from "./reducers/loginReducer";
-
+import * as Font from "expo-font";
+import { useFonts } from "@use-expo/font";
+import { AppLoading } from "expo";
 import { NavigationContainer } from "@react-navigation/native";
 
 import RootStackScreen from "./components/RootStackScreen";
@@ -35,8 +37,12 @@ const DrawerNavigator = ({ props }) => {
   );
 };
 
-export default function App() {
+const customFonts = {
+  Roboto: require("./assets/fonts/Roboto-Regular.ttf"),
+};
 
+export default function App() {
+  const [isLoaded] = useFonts(customFonts);
   const [loginState, dispatch] = useReducer(loginReducer, initialLoginState);
 
   const authContext = useMemo(() => ({
@@ -155,6 +161,8 @@ export default function App() {
   if (loginState.isLoading) {
     return <SplashScreen />;
   }
+
+  if (!isLoaded) return <AppLoading />
 
   return (
     <AuthContext.Provider value={authContext}>
