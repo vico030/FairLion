@@ -82,7 +82,7 @@ const EditItemScreen = ({
     resJson = await res.json();
     if (res.status === 201) {
       Alert.alert("Erfolg!", resJson.message);
-      navigation.goBack();
+      navigation.navigate("Lager");
     } else {
       Alert.alert("Fehler!", resJson.message);
     }

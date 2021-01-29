@@ -103,7 +103,7 @@ router.get("/:articleId", isAuthenticated, async (req, res, next) => {
 //update a single article
 router.put("/:articleId", isAuthenticated, upload.array("images"), async (req, res, next) => {
     try {
-        if (req.files) {
+        if (req.files.length !== 0) {
             req.body.images = [];
             for(var file of req.files)
             {

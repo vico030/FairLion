@@ -1,5 +1,6 @@
 const Article = require('../models/ArticleModel');
 const User = require("../models/UserModel");
+const fs = require("fs");
 
 const getAllArticles = function (userId) {
     return new Promise((resolve, reject) => {
@@ -152,7 +153,7 @@ const updateAllArticles = function (body) {
 function updateArticleById(body, articleId) {
     return new Promise(async (resolve, reject) => {
         try {
-            const article = await Article.findByIdAndUpdate(articleId, ...body, { new: true })
+            const article = await Article.findByIdAndUpdate(articleId, body, { new: true })
                 .catch(err => { throw err });
             return resolve({
                 data: article,
@@ -168,6 +169,7 @@ function updateArticleById(body, articleId) {
                     });
                 }
             }
+            console.log(err);
             return reject({
                 error: err,
                 status: 500,

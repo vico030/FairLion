@@ -133,7 +133,7 @@ router.get("/:userId/ownedArticles", isAuthenticated, async (req, res) => {
 // Create a new article for one user
 router.post("/:userId/ownedArticles", isAuthenticated, upload.array("images"), async (req, res) => {
     try {
-        if (req.files) {
+        if (req.files.length !== 0) {
             req.body.images = [];
             for(var file of req.files)
             {
