@@ -193,27 +193,6 @@ const EditProfileScreen = ({ route, navigation }) => {
             onChangeText={(value) => usernameChange(value)}
           />
         </View>
-        {/* Passwort ändern als extra screen */}
-        {/* 
-        <View style={styles.inputView}>
-          <TextInput
-            secureTextEntry
-            style={styles.inputText}
-            placeholder="Passwort"
-            placeholderTextColor="#7E7E7E"
-            onChangeText={(value) => handlePasswordChange(value)}
-          />
-        </View>
-
-        <View style={styles.inputView}>
-          <TextInput
-            secureTextEntry
-            style={styles.inputText}
-            placeholder="Passwort bestätigen"
-            placeholderTextColor="#7E7E7E"
-            onChangeText={(value) => handleConfirmPasswordChange(value)}
-          />
-        </View> */}
 
         <View style={styles.inputViewLast}>
           <TextInput
@@ -256,23 +235,27 @@ const EditProfileScreen = ({ route, navigation }) => {
           />
         </View>
 
-        <View style={styles.picker}>
-          <Picker
-            selectedValue={country}
-            style={{ backgroundColor: "#fff", width: "95%", height: 40 }}
-            itemStyle={{ justifyContent: "flex-start" }}
-            mode={"dropdown"}
-            onValueChange={(itemValue, itemIndex) =>
-              handleCountryChange(itemValue)
-            }
-          >
-            <Picker.Item label="Deutschland" value="de" />
-            <Picker.Item label="Österreich" value="au" />
-            <Picker.Item label="Schweiz" value="ch" />
-          </Picker>
+        <View style={styles.pickerView}>
+          <Text style={styles.text}>Wähle ein Land:</Text>
+
+          <View style={styles.pickerContainer}>
+            <Picker
+              selectedValue={country}
+              style={styles.picker}
+              itemStyle={styles.pickerItems}
+              mode={"dropdown"}
+              onValueChange={(itemValue, itemIndex) =>
+                handleCountryChange(itemValue)
+              }
+            >
+              <Picker.Item label="Deutschland" value="de" />
+              <Picker.Item label="Österreich" value="au" />
+              <Picker.Item label="Schweiz" value="ch" />
+            </Picker>
+          </View>
         </View>
       </View>
-
+      
       <View style={styles.userPersonalInfo}>
         <View style={styles.inputAboutMeView}>
           <TextInput
@@ -343,12 +326,6 @@ const styles = StyleSheet.create({
     width: "100%",
     height: 150,
   },
-  picker: {
-    width: "100%",
-    height: 50,
-    justifyContent: "center",
-    alignItems: "center",
-  },
   signUpBtn: {
     width: "80%",
     backgroundColor: "#E77F23",
@@ -362,5 +339,49 @@ const styles = StyleSheet.create({
   loginText: {
     color: "#fff",
     fontSize: 20,
+  },
+  pickerView: {
+    flexDirection: "row",
+    paddingHorizontal: 20,
+    alignItems: "center",
+    borderBottomColor: "#C6C6C8",
+    borderBottomWidth: 0.5,
+    ...Platform.select({
+      ios: {
+        height: 88,
+        paddingHorizontal: 20,
+      },
+      android: {
+        height: 50,
+        paddingHorizontal: 15,
+      },
+      default: {
+        height: 50,
+        paddingHorizontal: 15,
+      },
+    }),
+  },
+  pickerContainer: {
+    //flex: 1,
+    width: "65%",
+    height: "100%",
+    justifyContent: "center",
+  },
+  picker: {
+    width: "100%",
+    height: 88,
+    fontSize: 14,
+    color: "#000",
+  },
+  pickerItems: {
+    fontSize: 14,
+    height: 88,
+    color: "#000",
+  },
+  text: {
+    width: "35%",
+    fontSize: 14,
+    color: "#7E7E7E",
+    alignContent: "center",
   },
 });
