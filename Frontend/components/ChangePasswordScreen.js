@@ -48,7 +48,7 @@ export const ChangePasswordScreen = ({ navigation }) => {
       } catch (err) {
         console.log(err);
       }
-      if (res.status === 201) {
+      if (res.status === 200) {
         const resJson = await res.json();
         Alert.alert(
           "Update erfolgreich",

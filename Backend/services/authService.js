@@ -117,10 +117,10 @@ const changePassword = ({ email, password }) => {
           user.overwrite({ ...user.toObject(), password: password });
           await user.save();
         }
-        return resolve({ data: null, message: "Successfully changed password.", status: 200 });
+        return resolve({ data: null, message: "Password wurde erfolgreich geändert.", status: 200 });
       } catch (err) {
         console.log(err);
-        return reject({ error: err, message: "Server error. Try later again.", status: 500 });
+        return reject({ error: err, message: "Server Error: Probiere es bitte später erneut.", status: 500 });
       }
     });
   };
