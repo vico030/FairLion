@@ -7,8 +7,8 @@ const envs = {
         IMAGE_URL: "http://10.0.2.2:3000/"
     },
     remote: {
-        BACKEND_URL: "http://3.137.198.47/",
-        IMAGE_URL: "http://3.137.198.47/"
+        BACKEND_URL: "https://3.137.198.47/",
+        IMAGE_URL: "https://3.137.198.47/"
     },
 }
 
