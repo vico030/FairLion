@@ -270,6 +270,13 @@ const RequestsScreen = ({ navigation }) => {
   }
 
   useEffect(() => {
+    if (userId) {
+      getFriendRequests();
+      getArticleRequests();
+    }
+  }, [userId])
+
+  useEffect(() => {
     const unsubscribe = navigation.addListener("focus", () => {
       getFriendRequests();
       getArticleRequests();
