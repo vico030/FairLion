@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const service = require("../services/authService");
 const multer = require('multer');
+const path = require("path");
 
 var storage = multer.diskStorage({
     destination: (req, file, callback) => {
@@ -58,7 +59,7 @@ router.post("/login", async (req, res) => {
 router.get("/verify/:hash", async (req, res) => { //verify through email, hash sent with the email, link in email contains hash
     try {
         const { data, status, message } = await service.verifyUser(req.params.hash)//check, if user has that hash
-        return res.status(status).send(message)
+        return res.sendFile(path.resolve(__dirname + "/../HTML/emailVerification.html"));
     }
     catch ({ err, message, status }) { //destruct reject object, one catch because both tries handled the same
         console.log(err, message, status);

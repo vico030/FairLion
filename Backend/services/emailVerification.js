@@ -44,12 +44,17 @@ const sendEmail = async (to, hash, type) => {
                 subject: "Confirm Email",
                 html:
                     `
-                <div style="height: 10rem">
-                    <img src="../logo.png" />
-                    <p>Bestätige deine Email-Adresse, in dem du auf den Button drückst.</p>
+                <div style="height: 20rem">
+                    <img src="cid:logo" width="100" height="100" />
+                    <p>Bestätige deine E-Mail-Adresse, indem du auf den Button drückst.</p>
                     <a style="color: white; background: #E77F23; text-decoration: none; padding: 0.5rem 1rem; border-radius: 25px; display: block; width: 7rem; font-size: 15px; text-align: center" href="${link}">Confirm email</a>
                 </div>
-                `
+                `,
+                attachments: [{
+                    filename: "logo.png",
+                    path: __dirname + "/../assets/logo.png",
+                    cid: 'logo'
+                }]
             })
             console.log(info.messageId);
         }
