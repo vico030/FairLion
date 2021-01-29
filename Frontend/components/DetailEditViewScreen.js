@@ -83,6 +83,16 @@ const DetailEditViewScreen = ({
           </View>
         </View>
 
+        {borrower && (<View style={styles.descriptionCard}>
+          <View style={styles.items}>
+            <Text style={styles.cardHeader}>Ausgeliehen von</Text>
+          </View>
+          <View style={styles.verticalLine} />
+          <View style={styles.items}>
+            <UserButton user={user} navigation={navigation} />
+          </View>
+        </View>)}
+
         <View style={styles.buttonContainer}>
           <TouchableOpacity
             disabled={borrower} style={borrower ? styles.disabledBtn : styles.signUpBtn}
