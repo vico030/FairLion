@@ -123,6 +123,7 @@ const SearchScreen = ({ navigation }) => {
             <Text style={styles.text}> Suchergebnisse: </Text>
           )
       ) : articles.length === 0 ? (
+        !loading &&
         <Text style={styles.infoText}>
           Hier erscheinen Artikel, die du als Favoriten gekennzeichnet hast!
         </Text>

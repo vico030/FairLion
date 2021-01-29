@@ -1,6 +1,6 @@
 import env from "../env.js";
 const { BACKEND_URL, IMAGE_URL } = env;
-import { View, Text, FlatList, StyleSheet} from "react-native";
+import { View, Text, FlatList, StyleSheet } from "react-native";
 import React, { useState, useEffect } from "react";
 import Friend from "./Friend";
 import AsyncStorage from "@react-native-community/async-storage";
@@ -59,10 +59,10 @@ const FriendsScreen = ({ navigation }) => {
       }}
     >
 
-      {friends.length === 0 &&
+      {friends.length === 0 && !loading &&
         <Text style={styles.infoText}>Hier erscheinen deine Freunde, von denen du dir Artikel ausleihen kannst!</Text>
       }
-      
+
       {loading && <ActivityIndicator color="#E77F23" size="large" />}
       <FlatList
         data={friends}
