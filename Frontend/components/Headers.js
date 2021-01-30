@@ -385,14 +385,15 @@ const StockStackScreen = ({ navigation }) => (
           fontFamily: "Roboto",
         },
 
-        headerRight: () => (
+        /* headerRight: () => (
           <Feather
             name="trash"
             style={styles.rightIcon}
             size={22}
             color="black"
+            onPress={()=> {}}
           />
-        ),
+        ), */
       }}
     />
     <StockStack.Screen
