@@ -222,24 +222,65 @@ function deleteAllUsers() {
 function deleteUser(userId) {
   return new Promise(async (resolve, reject) => {
     try {
-      const user = await userModel
-        .findById(userId)
-        .select("-password")
-        .catch((err) => {
+      const articleRequest = await ArticleRequestModel.findOne({
+        $or: [{
+            borrower: userId
+          },
+          {
+            owner: userId
+          },
+        ]
+      })
+      if (!articleRequest) {
+        const user = await userModel
+          .findById(userId)
+          .select("-password")
+          .select("-refreshToken")
+          .select("-verificationHash")
+          .catch((err) => {
+            throw err;
+          });
+
+        friendRequestModel.deleteMany({
+          $or: [{
+              requesterId: userId
+            },
+            {
+              receiverId: userId
+            },
+          ]
+        });
+
+        userModel.updateMany({
+          friends: userId
+        }, {
+          $pull: {
+            friends: userId
+          }
+        }, {
+          new: true,
+        })
+
+        userModel.findByIdAndDelete(userId).catch((err) => {
           throw err;
         });
-      userModel.findByIdAndDelete(userId).catch((err) => {
-        throw err;
-      });
-      // Delete image in storage
-      fs.unlink(user.image, (err) => {
-        // in case of error, skip and continue
-      });
-      return resolve({
-        data: user,
-        message: "User wurde erfolgreich entfernt.",
-        status: 200,
-      });
+        // Delete image in storage
+        fs.unlink(user.image, (err) => {
+          // in case of error, skip and continue
+        });
+        return resolve({
+          data: user,
+          message: "User wurde erfolgreich entfernt.",
+          status: 200,
+        });
+      } else {
+        return resolve({
+          data: articleRequest,
+          message: "Account kann nicht gelöscht werden, da sich noch Artikel in der Ausleihe befinden.",
+          status: 400,
+        });
+      }
+
     } catch (err) {
       return reject({
         error: err,
@@ -526,7 +567,7 @@ function unFriend(userId, friendId) {
             owner: userId
           },
         ]
-      })
+      });
       if (!articleRequest) {
         const user = await userModel
           .findByIdAndUpdate(userId, {
