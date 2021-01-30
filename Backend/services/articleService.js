@@ -14,15 +14,17 @@ const getAllArticles = function (userId) {
                 articles.forEach(article => {
                     if (user.favourites.includes(article._id)) {
                         article.favourite = true;
-                    }
-                    else {
+                    } else {
                         article.favourite = false;
                     }
                 });
-                    
+
                 let newArticles = [];
-                for(let article of articles){
-                    newArticles.push({...article._doc, user});
+                for (let article of articles) {
+                    newArticles.push({
+                        ...article._doc,
+                        user
+                    });
                 }
                 return resolve({
                     data: newArticles,
@@ -51,22 +53,30 @@ const getArticlesFromFriendsByName = function (userId, title) {
                     .select("-refreshToken")
                     .select("-verificationHash")
                     .select("-friends");
-                const articlesFromFriend = await Article.find({ "owner": user.friends[i], 'title': { $regex: title, $options: 'i' } });
-                
+                const articlesFromFriend = await Article.find({
+                    "owner": user.friends[i],
+                    'title': {
+                        $regex: title,
+                        $options: 'i'
+                    }
+                });
+
                 if (articlesFromFriend.length != null) {
-                    
+
                     articlesFromFriend.forEach(article => {
                         if (user.favourites.includes(article._id)) {
                             article.favourite = true;
-                        }
-                        else {
+                        } else {
                             article.favourite = false;
                         }
                     });
                     let newArticlesFromFriend = []
-                    for(let article of articlesFromFriend){
+                    for (let article of articlesFromFriend) {
                         //console.log(friend);
-                        newArticlesFromFriend.push({...article._doc, user: friend._doc});
+                        newArticlesFromFriend.push({
+                            ...article._doc,
+                            user: friend._doc
+                        });
                     }
                     //console.log(newArticlesFromFriend);
                     articles[friend.username] = newArticlesFromFriend;
@@ -78,8 +88,7 @@ const getArticlesFromFriendsByName = function (userId, title) {
                 message: 'Einträge wurden gefunden.',
                 status: 200
             })
-        }
-        catch (err) {
+        } catch (err) {
             return reject({
                 error: err,
                 status: 500,
@@ -100,12 +109,14 @@ const getArticleById = function (userId, articleId) {
                     .select("-friends");
                 if (user.favourites.includes(articleId)) {
                     article.favourite = true;
-                }
-                else {
+                } else {
                     article.favourite = false;
                 }
                 return resolve({
-                    data: {...article._doc, user},
+                    data: {
+                        ...article._doc,
+                        user
+                    },
                     message: 'Einträge wurden gefunden.',
                     status: 200
                 })
@@ -153,8 +164,12 @@ const updateAllArticles = function (body) {
 function updateArticleById(body, articleId) {
     return new Promise(async (resolve, reject) => {
         try {
-            const article = await Article.findByIdAndUpdate(articleId, body, { new: true })
-                .catch(err => { throw err });
+            const article = await Article.findByIdAndUpdate(articleId, body, {
+                    new: true
+                })
+                .catch(err => {
+                    throw err
+                });
             return resolve({
                 data: article,
                 message: 'Article-Update wurde durchgeführt.',
@@ -162,9 +177,9 @@ function updateArticleById(body, articleId) {
             });
         } catch (err) {
             //Delete images from storage if upload is faulty
-            if(body.images){
-                for(var image of body.images){
-                    fs.unlink(image,(err)=>{
+            if (body.images) {
+                for (var image of body.images) {
+                    fs.unlink(image, (err) => {
                         // in case of error, skip and continue
                     });
                 }
@@ -181,17 +196,22 @@ function updateArticleById(body, articleId) {
 
 const deleteAllArticles = function () {
     return new Promise(async (resolve, reject) => {
-        await User.updateMany({}, { $set: { favourites: [] } });
+        await User.updateMany({}, {
+            $set: {
+                favourites: []
+            }
+        });
         articles = {}
-        Article.find({}).then(findings => { articles = findings })
+        Article.find({}).then(findings => {
+            articles = findings
+        })
         Article.deleteMany({})
             .then(() => {
                 // Delete images in storage
-                for(var article of articles)
-                {
-                    if(article.images){
-                        for(var image of article.images){
-                            fs.unlink(image,(err)=>{
+                for (var article of articles) {
+                    if (article.images) {
+                        for (var image of article.images) {
+                            fs.unlink(image, (err) => {
                                 // in case of error, skip and continue
                             });
                         }
@@ -215,32 +235,61 @@ const deleteAllArticles = function () {
 
 const deleteArticleById = function (articleId) {
     return new Promise(async (resolve, reject) => {
-        await User.updateMany({}, { $pull: { favourites: articleId } }, { new: true });
-        Article.findById(articleId)
-            .then((article) => {
-                copy = article;
-                article.delete();
-                // Delete images in storage
-                if(copy.images){
-                    for(var image of copy.images){
-                        fs.unlink(image,(err)=>{
-                            // in case of error, skip and continue
-                        });
+        try {
+            const article = await Article.findById(articleId);
+            if (article.status === "Vorhanden") {
+                await User.updateMany({}, {
+                    $pull: {
+                        favourites: articleId
                     }
-                }
-                return resolve({
-                    data: copy,
-                    message: 'Artikel wurde entfernt.',
-                    status: 200
-                })
-            })
-            .catch((err) => {
+                }, {
+                    new: true
+                });
+                Article.findById(articleId)
+                    .then((article) => {
+                        let userId = article.owner;
+                        copy = article;
+                        article.delete();
+                        User.findByIdAndUpdate(userId, {
+                            $inc: {
+                                articleCount: -1
+                            }
+                        })
+                        // Delete images in storage
+                        if (copy.images) {
+                            for (var image of copy.images) {
+                                fs.unlink(image, (err) => {
+                                    // in case of error, skip and continue
+                                });
+                            }
+                        }
+                        return resolve({
+                            data: copy,
+                            message: 'Artikel wurde entfernt.',
+                            status: 200
+                        })
+                    })
+                    .catch((err) => {
+                        return reject({
+                            error: err,
+                            status: 500,
+                            message: 'Artikel konnten nicht gefunden werden.'
+                        })
+                    });
+            } else {
                 return reject({
-                    error: err,
-                    status: 500,
-                    message: 'Artikel konnten nicht gefunden werden.'
-                })
+                    data: article,
+                    status: 400,
+                    message: "Artikel befindet sich in Ausleihe und kann deshalb noch nicht gelöscht werden."
+                });
+            }
+        } catch {
+            return reject({
+                error: err,
+                status: 500,
+                message: 'Artikel konnten nicht gefunden werden.'
             });
+        }
     });
 }
 

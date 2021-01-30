@@ -64,7 +64,7 @@ export default function ItemStock({
           />*/}
         </View>
         <View style={styles.items}>
-          <UserButton user={user} navigation={navigation} />
+          <UserButton user={user} navigation={navigation} disabled={true} />
           <Text style={styles.itemTime} numberOfLines={1}>
             Frist: {ausleihfrist}
           </Text>

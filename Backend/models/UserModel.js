@@ -16,14 +16,10 @@ const userSchema = mongoose.Schema({
   friends: {
     type: [ObjectId],
     default: [],
-    unique: true,
-    dropDups: true,
   },
   favourites: {
     type: [ObjectId],
     default: [],
-    unique: true,
-    dropDups: true,
   },
   refreshToken: {
     type: String,
@@ -35,6 +31,7 @@ const userSchema = mongoose.Schema({
   verificationHash: {
     type: String,
   },
+  articleCount: { type: Number, default: 0},
 });
 
 //cant use arrow functions -> user.isModified is not a function

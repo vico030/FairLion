@@ -22,8 +22,8 @@ const RequestsScreen = ({ navigation }) => {
   const [loadingFriendRequests, setLoadingFriendRequests] = useState(false);
   const [loadingArticleRequests, setLoadingArticleRequests] = useState(false);
 
-  const acceptFriendRequest = id => {
-    fetch(`${BACKEND_URL}users/${userId}/friendrequests/${id}`, {
+  const acceptFriendRequest = async (id) => {
+    fetch(`${BACKEND_URL}users/${await AsyncStorage.getItem("userId")}/friendrequests/${id}`, {
       method: "PUT",
       credentials: "include",
       headers: {
@@ -33,9 +33,9 @@ const RequestsScreen = ({ navigation }) => {
         confirmed: true
       })
     })
-      .then(response => {
+      .then(async (response) => {
         if (response.ok) {
-          fetch(`${BACKEND_URL}users/${userId}/friendrequests/${id}`, {
+          fetch(`${BACKEND_URL}users/${await AsyncStorage.getItem("userId")}/friendrequests/${id}`, {
             method: "DELETE",
             credentials: "include"
           })
@@ -66,13 +66,13 @@ const RequestsScreen = ({ navigation }) => {
       })
   }
 
-  const declineFriendRequest = id => {
-    fetch(`${BACKEND_URL}users/${userId}/friendrequests/${id}`, {
+  const declineFriendRequest = async (id) => {
+    fetch(`${BACKEND_URL}users/${await AsyncStorage.getItem("userId")}/friendrequests/${id}`, {
       method: "DELETE",
       credentials: "include"
     })
-      .then(response => {
-        console.log(`${BACKEND_URL}${userId}/friendrequests/${id}`, response.status);
+      .then(async (response) => {
+        console.log(`${BACKEND_URL}${await AsyncStorage.getItem("userId")}/friendrequests/${id}`, response.status);
         if (response.ok) {
           const newRequests = friendRequests.filter(request => request._id !== id);
           setFriendRequests(newRequests);
@@ -177,9 +177,9 @@ const RequestsScreen = ({ navigation }) => {
       })
   }
 
-  AsyncStorage.getItem("userId")
+ /*  AsyncStorage.getItem("userId")
     .then(userId => setUserId(userId))
-
+ */
   const getArticleRequests = () => {
     setLoadingArticleRequests(true);
     let status = null;
@@ -228,10 +228,10 @@ const RequestsScreen = ({ navigation }) => {
       })
   }
 
-  const getFriendRequests = () => {
+  const getFriendRequests = async () => {
     setLoadingFriendRequests(true);
     let status = null;
-    fetch(BACKEND_URL + "users" + "/" + userId + "/" + "friendrequests")
+    fetch(BACKEND_URL + "users" + "/" + await AsyncStorage.getItem("userId") + "/" + "friendrequests")
       .then(response => {
         setLoadingFriendRequests(false);
         console.log(response.status);
@@ -269,12 +269,12 @@ const RequestsScreen = ({ navigation }) => {
       })
   }
 
-  useEffect(() => {
+/*   useEffect(() => {
     if (userId) {
       getFriendRequests();
       getArticleRequests();
     }
-  }, [userId])
+  }, [userId]) */
 
   useEffect(() => {
     const unsubscribe = navigation.addListener("focus", () => {
@@ -326,7 +326,7 @@ const RequestsScreen = ({ navigation }) => {
         )}
         keyExtractor={(item, index) => index.toString()}
       />
-      {returnedArticles.length !== 0 && <Text style={styles.listHeader}>Von Freunden zurückgegebene Artikel:</Text>}
+      {returnedArticles.length !== 0 && <Text style={styles.listHeader}>Rückgabeanfragen:</Text>}
       <FlatList
         data={returnedArticles}
         renderItem={({ item }) => (

@@ -1,4 +1,6 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import env from "../env.js";
+const { BACKEND_URL } = env;
 import {
   View,
   Text,
@@ -7,11 +9,13 @@ import {
   ScrollView,
   Dimensions,
 } from "react-native";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { MaterialCommunityIcons, Feather } from "@expo/vector-icons";
 import Carousel from "./CarouselComponent";
 import UserButton from "./UserButton";
+import { Alert } from "react-native";
 
 const windowHeight = Dimensions.get("window").height;
+
 
 const DetailEditViewScreen = ({
   route,
@@ -29,6 +33,67 @@ const DetailEditViewScreen = ({
     borrower
   } = route.params;
 
+  const [borrowerObject, setBorrowerObject] = useState(null)
+
+  async function getBorrower() {
+    const requestOptions = {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+    };
+    var res;
+    var resJson;
+    try {
+      res = await fetch(
+        BACKEND_URL +
+        `users/${borrower}`,
+        requestOptions
+      );
+      resJson = await res.json();
+    } catch (err) {
+      console.log(err);
+    }
+    if (res.status === 200) {
+      setBorrowerObject(await resJson.data);
+    }
+  }
+
+  const deleteArticle = async () => {
+    const requestOptions = {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+    };
+    let res;
+    let resJson;
+    let success;
+    try {
+      res = await fetch(BACKEND_URL + `articles/${articleId}`, requestOptions);
+      resJson = await res.json();
+      if (res.status === 200) {
+        Alert.alert(success, resJson.message);
+        navigation.goBack();
+      }
+      else {
+        success = "Fehler";
+        Alert.alert(success, resJson.message);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener("focus", () => {
+      getBorrower();
+    });
+    return unsubscribe;
+  }, [navigation]);
+
   return (
     <ScrollView style={styles.container}>
       <View style={styles.main}>
@@ -42,13 +107,27 @@ const DetailEditViewScreen = ({
           </View>
 
           <View style={styles.items}>
-            <UserButton user={user} navigation={navigation} />
-            <TouchableOpacity>
-              <MaterialCommunityIcons
-                name="eye-off-outline"
+            <UserButton user={user} navigation={navigation} disabled={true} />
+            <TouchableOpacity onPress={() => {
+              Alert.alert("Artikel Löschen", "Wirklich löschen?", [
+                {
+                  text: "Nein",
+                  style: "cancel"
+                },
+                { text: "Ja", onPress: () => deleteArticle() }
+              ])
+
+            }}>
+              <Feather
+                name="trash"
                 size={24}
                 color="black"
               />
+              {/* <MaterialCommunityIcons
+                name="eye-off-outline"
+                size={24}
+                color="black"
+              /> */}
             </TouchableOpacity>
           </View>
         </View>
@@ -82,6 +161,16 @@ const DetailEditViewScreen = ({
             <Text style={styles.elementTextRight}>{kategorie}</Text>
           </View>
         </View>
+
+        {borrowerObject && (<View style={styles.descriptionCard}>
+          <View style={styles.items}>
+            <Text style={styles.cardHeader}>Ausgeliehen von</Text>
+          </View>
+          <View style={styles.verticalLine} />
+          <View style={styles.items}>
+            <UserButton user={borrowerObject} navigation={navigation} />
+          </View>
+        </View>)}
 
         <View style={styles.buttonContainer}>
           <TouchableOpacity

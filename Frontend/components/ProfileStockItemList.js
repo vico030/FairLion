@@ -66,6 +66,7 @@ export default function ProfileStockItemList({ artikelzahl, navigation, id }) {
             status={item.status}
             articleId={item._id}
             user={item.user}
+            borrower={item.borrower}
           />
         )}
       />

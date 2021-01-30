@@ -219,6 +219,23 @@ router.get("/:userId/friendrequests", isAuthenticated, async (req, res) => {
     }
 });
 
+// Get all friendrequests for the user as requester
+router.get("/:userId/friendrequests/outgoing", isAuthenticated, async (req, res) => {
+    try {
+        const response = await service.getOutgoingFriendRequests(req.params.userId);
+        res.status(response.status).json({
+            'data': response.data,
+            'message': response.message
+        });
+    }
+    catch ({ error, status, message }) {
+        res.status(status).json({
+            'error': error,
+            'message': message
+        })
+    }
+});
+
 // Create a new friendrequest for the user as requester
 router.post("/:userId/friendrequests", isAuthenticated, async (req, res) => {
     try {
@@ -274,6 +291,22 @@ router.put("/:userId/friendrequests/:requestId", isAuthenticated, async (req, re
 router.get("/:userId/friends", isAuthenticated, async (req, res) => {
     try {
         const response = await service.getFriends(req.params.userId);
+        res.status(response.status).json({
+            'data': response.data,
+            'message': response.message
+        });
+    } catch ({ error, status, message }) {
+        res.status(status).json({
+            'error': error,
+            'message': message
+        });
+    }
+});
+
+// Remove Friend status for two users
+router.put("/:userId/friends/:friendId", isAuthenticated, async (req, res) => {
+    try {
+        const response = await service.unFriend(req.params.userId, req.params.friendId);
         res.status(response.status).json({
             'data': response.data,
             'message': response.message

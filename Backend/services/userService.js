@@ -6,6 +6,7 @@ const articleRequestModel = require("../models/ArticleRequestModel");
 const {
   request
 } = require("express");
+const ArticleRequestModel = require("../models/ArticleRequestModel");
 
 function getAllUsers() {
   return new Promise(async (resolve, reject) => {
@@ -221,24 +222,71 @@ function deleteAllUsers() {
 function deleteUser(userId) {
   return new Promise(async (resolve, reject) => {
     try {
-      const user = await userModel
-        .findById(userId)
-        .select("-password")
-        .catch((err) => {
+      const articleRequest = await ArticleRequestModel.findOne({
+        $or: [{
+            borrower: userId
+          },
+          {
+            owner: userId
+          },
+        ]
+      })
+      if (!articleRequest) {
+        const user = await userModel
+          .findById(userId)
+          .select("-password")
+          .select("-refreshToken")
+          .select("-verificationHash")
+          .catch((err) => {
+            throw err;
+          });
+
+        await articleModel.deleteMany({
+          owner: userId
+        });
+
+        await friendRequestModel.deleteMany({
+          $or: [{
+              requesterId: userId
+            },
+            {
+              receiverId: userId
+            },
+          ]
+        });
+
+        await userModel.updateMany({
+          friends: userId
+        }, {
+          $pull: {
+            friends: userId
+          }
+        }, {
+          new: true,
+        })
+
+        await userModel.findByIdAndDelete(userId).catch((err) => {
           throw err;
         });
-      userModel.findByIdAndDelete(userId).catch((err) => {
-        throw err;
-      });
-      // Delete image in storage
-      fs.unlink(user.image, (err) => {
-        // in case of error, skip and continue
-      });
-      return resolve({
-        data: user,
-        message: "User wurde erfolgreich entfernt.",
-        status: 200,
-      });
+        // Delete image in storage
+        if (user.image !== "files\\default_profile.png") {
+          fs.unlink(user.image, (err) => {
+            // in case of error, skip and continue
+          });
+        }
+        return resolve({
+          data: user,
+          message: "User wurde erfolgreich entfernt.",
+          status: 200,
+        });
+      } else {
+        return resolve({
+          data: articleRequest,
+          message: "Account kann nicht gelöscht werden, da sich noch Artikel in der Ausleihe befinden.",
+          status: 400,
+        });
+      }
+
     } catch (err) {
       return reject({
         error: err,
@@ -259,6 +307,11 @@ function createArticle(body, userId) {
         owner: userId,
       });
       const newArticle = await article.save();
+      await userModel.findByIdAndUpdate(userId, {
+        $inc: {
+          articleCount: 1
+        }
+      })
       const user = await userModel
         .findById(userId)
         .select("-password")
@@ -308,6 +361,43 @@ function getFriendRequests(userId) {
             requesterName: requester.username,
             requesterImage: requester.image,
             requesterCity: requester.city,
+          });
+        } catch (err) {
+          throw err;
+        }
+      }
+      return resolve({
+        data: newFriendRequests,
+        message: "Freundesanfragen wurden gefunden.",
+        status: 200,
+      });
+    } catch (err) {
+      return reject({
+        error: err,
+        status: 500,
+        message: "Freundesanfragen konnten nicht gefunden werden.",
+      });
+    }
+  });
+}
+
+function getOutgoingFriendRequests(userId) {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const newFriendRequests = [];
+      const friendrequests = await friendRequestModel.find({
+        requesterId: userId,
+      });
+      for (let friendrequest of friendrequests) {
+        try {
+          const receiver = await userModel
+            .findById(friendrequest.receiverId)
+            .select("username image");
+          newFriendRequests.push({
+            ...friendrequest._doc,
+            receiverName: receiver.username,
+            receiverImage: receiver.image,
+            receiverCity: receiver.city,
           });
         } catch (err) {
           throw err;
@@ -470,6 +560,65 @@ function updateUser(body, userId) {
   });
 }
 
+function unFriend(userId, friendId) {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const articleRequest = await ArticleRequestModel.findOne({
+        $or: [{
+            borrower: userId,
+            owner: friendId
+          },
+          {
+            borrower: friendId,
+            owner: userId
+          },
+        ]
+      });
+      if (!articleRequest) {
+        const user = await userModel
+          .findByIdAndUpdate(userId, {
+            $pull: {
+              friends: friendId
+            }
+          }, {
+            new: true,
+          })
+          .catch((err) => {
+            throw err;
+          });
+        const friend = await userModel
+          .findByIdAndUpdate(friendId, {
+            $pull: {
+              friends: userId
+            }
+          }, {
+            new: true,
+          })
+          .catch((err) => {
+            throw err;
+          });
+        return resolve({
+          data: user,
+          message: "Freundschaftsbeziehung wurde erfolgreich beendet.",
+          status: 201,
+        });
+      }
+      return resolve({
+        data: articleRequest,
+        message: "Freundschaftsbeziehung konnte wegen laufender Ausleihevorgänge nicht beendet werden.",
+        status: 400,
+      });
+
+    } catch (err) {
+      return reject({
+        error: err,
+        status: 500,
+        message: "Freundschaftsbeziehung konnte nicht gelöscht werden.",
+      });
+    }
+  });
+}
+
 // Move to ArticleService?
 function deleteAllUserArticles(userId) {
   return new Promise(async (resolve, reject) => {
@@ -554,6 +703,8 @@ module.exports = {
   getArticlesWithFavorites,
   getFriends,
   getFriendRequests,
+  unFriend,
+  getOutgoingFriendRequests,
   deleteAllUsers,
   deleteUser,
   deleteFriendRequest,

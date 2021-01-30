@@ -148,6 +148,7 @@ const SearchScreen = ({ navigation }) => {
             status={item.status}
             articleId={item._id}
             user={item.user}
+            borrower={item.borrower}
           />
         )}
       />
