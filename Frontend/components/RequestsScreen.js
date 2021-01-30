@@ -326,7 +326,7 @@ const RequestsScreen = ({ navigation }) => {
         )}
         keyExtractor={(item, index) => index.toString()}
       />
-      {returnedArticles.length !== 0 && <Text style={styles.listHeader}>Von Freunden zurückgegebene Artikel:</Text>}
+      {returnedArticles.length !== 0 && <Text style={styles.listHeader}>Rückgabeanfragen:</Text>}
       <FlatList
         data={returnedArticles}
         renderItem={({ item }) => (
