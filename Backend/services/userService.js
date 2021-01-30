@@ -329,6 +329,43 @@ function getFriendRequests(userId) {
   });
 }
 
+function getOutgoingFriendRequests(userId) {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const newFriendRequests = [];
+      const friendrequests = await friendRequestModel.find({
+        requesterId: userId,
+      });
+      for (let friendrequest of friendrequests) {
+        try {
+          const receiver = await userModel
+            .findById(friendrequest.receiverId)
+            .select("username image");
+          newFriendRequests.push({
+            ...friendrequest._doc,
+            receiverName: receiver.username,
+            receiverImage: receiver.image,
+            receiverCity: receiver.city,
+          });
+        } catch (err) {
+          throw err;
+        }
+      }
+      return resolve({
+        data: newFriendRequests,
+        message: "Freundesanfragen wurden gefunden.",
+        status: 200,
+      });
+    } catch (err) {
+      return reject({
+        error: err,
+        status: 500,
+        message: "Freundesanfragen konnten nicht gefunden werden.",
+      });
+    }
+  });
+}
+
 function createFriendRequest(body, userId) {
   return new Promise((resolve, reject) => {
     const request = new friendRequestModel({
@@ -555,6 +592,7 @@ module.exports = {
   getArticlesWithFavorites,
   getFriends,
   getFriendRequests,
+  getOutgoingFriendRequests,
   deleteAllUsers,
   deleteUser,
   deleteFriendRequest,
