@@ -241,7 +241,9 @@ function deleteUser(userId) {
             throw err;
           });
 
-        await articleModel.deleteMany({owner: userId});
+        await articleModel.deleteMany({
+          owner: userId
+        });
 
         await friendRequestModel.deleteMany({
           $or: [{
@@ -267,9 +269,11 @@ function deleteUser(userId) {
           throw err;
         });
         // Delete image in storage
-        fs.unlink(user.image, (err) => {
-          // in case of error, skip and continue
-        });
+        if (user.image !== "files\\default_profile.png") {
+          fs.unlink(user.image, (err) => {
+            // in case of error, skip and continue
+          });
+        }
         return resolve({
           data: user,
           message: "User wurde erfolgreich entfernt.",
