@@ -78,7 +78,7 @@ export default function ProfileInfoBox({
           <Feather
             name="trash"
             size={24}
-            color="black"
+            color="grey"
           />
         </TouchableOpacity>
 
@@ -154,6 +154,8 @@ const styles = StyleSheet.create({
     fontWeight: "700",
   },
   deleteFriend:{
-    justifyContent: "space-between"
+    paddingTop: 15,
+    position: "absolute",
+    right: 15,
   }
 });
