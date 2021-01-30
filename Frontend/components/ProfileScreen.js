@@ -31,6 +31,8 @@ const ProfileScreen = ({ route, navigation }) => {
         info={info}
         email={email}
         telefon={telefon}
+        friendId={id}
+        navigation={navigation}
       />
       <ProfileStockItemList
         navigation={navigation}

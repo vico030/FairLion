@@ -1,7 +1,11 @@
+import env from "../env.js";
+const { BACKEND_URL } = env;
 import React from "react";
 import { View, Text, StyleSheet, Image, Dimensions, TouchableOpacity, Linking } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
+import AsyncStorage from "@react-native-community/async-storage";
+import { Alert } from "react-native";
 export default function ProfileInfoBox({
   name,
   wohnort,
@@ -13,7 +17,37 @@ export default function ProfileInfoBox({
   info,
   email,
   telefon,
+  friendId,
+  navigation
 }) {
+
+  async function unFriend() {
+    const requestOptions = {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+    };
+    let res;
+    let resJson;
+    let success;
+    try {
+      res = await fetch(BACKEND_URL + `users/${await AsyncStorage.getItem("userId")}/friends/${friendId}`, requestOptions);
+      resJson = await res.json();
+
+    }
+    catch(err){
+      console.log(err);
+    }
+    if(res.status===201){
+      navigation.goBack();
+    }
+    else {
+      Alert.alert("Fehler", resJson.message);
+    }
+  }
+
   return (
     <View style={{ backgroundColor: "#fff" }}>
 
@@ -30,6 +64,23 @@ export default function ProfileInfoBox({
           <Text stlye={styles.userAddress}>{plz} {wohnort}</Text>
           <Text stlye={styles.userAddress}>{land}</Text>
         </View>
+
+        <TouchableOpacity style={styles.deleteFriend} onPress={() => {
+          Alert.alert("Freund entfernen", "Wirklich entfernen?", [
+            {
+              text: "Nein",
+              style: "cancel"
+            },
+            { text: "Ja", onPress: () => unFriend() }
+          ])
+
+        }}>
+          <Feather
+            name="trash"
+            size={24}
+            color="black"
+          />
+        </TouchableOpacity>
 
         <View style={styles.iconsWrapper}>
           <TouchableOpacity onPress={async () => {
@@ -102,4 +153,7 @@ const styles = StyleSheet.create({
   aboutHeader: {
     fontWeight: "700",
   },
+  deleteFriend:{
+    justifyContent: "space-between"
+  }
 });

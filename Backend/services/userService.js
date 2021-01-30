@@ -522,7 +522,7 @@ function unFriend(userId, friendId) {
       return resolve({
         data: articleRequest,
         message: "Freundschaftsbeziehung konnte wegen laufender Ausleihevorgänge nicht beendet werden.",
-        status: 201,
+        status: 400,
       });
 
     } catch (err) {
