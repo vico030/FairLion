@@ -108,8 +108,15 @@ const DetailEditViewScreen = ({
 
           <View style={styles.items}>
             <UserButton user={user} navigation={navigation} disabled={true} />
-            <TouchableOpacity onPress={()=>{
-              deleteArticle()
+            <TouchableOpacity onPress={() => {
+              Alert.alert("Artikel Löschen", "Wirklich löschen?", [
+                {
+                  text: "Nein",
+                  style: "cancel"
+                },
+                { text: "Ja", onPress: () => deleteArticle() }
+              ])
+
             }}>
               <Feather
                 name="trash"
