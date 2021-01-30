@@ -10,6 +10,8 @@ import AsyncStorage from "@react-native-community/async-storage";
 export default function HinzufügenScreen({ navigation }) {
   const [searchInput, setSearchInput] = useState("");
   const [users, setUsers] = useState([]);
+  const [friends, setFriends] = useState([])
+  const [disabledUsers, setDisabledUsers] = useState([]);
   const [searching, setSearching] = useState(false);
 
   const fetchUsers = async () => {
@@ -36,8 +38,76 @@ export default function HinzufügenScreen({ navigation }) {
     }
     if (res.status === 200) {
 
-      const array = cleanOutput(await resJson.data)
-      setUsers(await array);
+      const array = await cleanOutput(resJson.data, friends)
+      setUsers(array);
+    }
+  };
+
+  const fetchFriends = async () => {
+    const requestOptions = {
+      method: "get",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      credentials: "include",
+    };
+
+    var res;
+    var resJson;
+    var userId = await AsyncStorage.getItem("userId");
+    try {
+      res = await fetch(
+        BACKEND_URL + `users/${userId}/friends`,
+        requestOptions
+      );
+      resJson = await res.json();
+    } catch (err) {
+      console.log(err);
+    }
+    if (res.status === 200) {
+      return resJson.data;
+      //console.log(resJson.data)
+    }
+  };
+
+  const fetchFriendRequests = async () => {
+    const requestOptions = {
+      method: "get",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      credentials: "include",
+    };
+    let userId = await AsyncStorage.getItem("userId")
+
+    var res;
+    var resJson;
+    try {
+      res = await fetch(
+        BACKEND_URL + `users/${userId}/friendrequests/outgoing`,
+        requestOptions
+      );
+
+      resJson = await res.json();
+    } catch (err) {
+      console.log(err);
+    }
+    if (res.status === 200) {
+      let friendRequests = resJson.data;
+      console.log("FriendRequests", friendRequests)
+
+      let disabledUsersArray = [];
+      for(let user of users) {
+        for(let friendRequest of friendRequests) {
+          if(user._id == friendRequest.receiverId && !friendRequest.confirmed) {
+            disabledUsersArray.push(user._id)
+          }
+        }
+      }
+      setDisabledUsers(disabledUsersArray)
+      
     }
   };
 
@@ -72,31 +142,47 @@ export default function HinzufügenScreen({ navigation }) {
       console.log(err);
     }
     if (res.status === 200) {
-      const array = await cleanOutput(await resJson.data)
-      console.log(array);
+      let friendsTmp = await fetchFriends()
+      setFriends(friendsTmp)
+      const array = await cleanOutput(resJson.data, friendsTmp)
+      //console.log(array);
       setUsers(array);
     }
   }
 
-  const cleanOutput = async (array) => {
+  const cleanOutput = async (array, friends) => {
     var newArray = [];
-    const friends = JSON.parse(await AsyncStorage.getItem("friends"));
+    //const friends = JSON.parse(await AsyncStorage.getItem("friends"));
     for (var item of array) {
-      if (!(item._id === await AsyncStorage.getItem("userId") || friends?.includes(item._id))) {
+      let isFriend = false;
+      for(let friend of friends) {
+        if(friend._id == item._id) isFriend = true;
+      }
+      if (!(item._id === await AsyncStorage.getItem("userId")) && !(isFriend)) {
         newArray.push(item);
       }
     }
-
     return newArray;
   }
 
   useEffect(() => {
+    if(users.length!=0) {
+      fetchFriendRequests();
+    }
+  }, [users])
+
+
+  useEffect(() => {
     const unsubscribe = navigation.addListener("focus", () => {
-      if (searchInput.length === 0) getAllUsers();
+      if (searchInput.length === 0) {
+        getAllUsers();
+      }
     });
     return unsubscribe;
   }, [navigation]);
 
+  console.log("Friend state", friends)
+  console.log("Users state", users)
   return (
     <View>
       <SearchBar
@@ -114,8 +200,8 @@ export default function HinzufügenScreen({ navigation }) {
         value={searchInput}
         onChangeText={(input) => handleSearchInputChange(input)}
         onClear={() => {
-          setArticles([]);
-          console.log(articles);
+          getAllUsers();
+          fetchFriendRequests();
         }}
       />
 
@@ -129,6 +215,7 @@ export default function HinzufügenScreen({ navigation }) {
             wohnort={item.city}
             image={IMAGE_URL + item.image}
             friendId={item._id}
+            disabled={disabledUsers.includes(item._id)}
           />
         )}
       />

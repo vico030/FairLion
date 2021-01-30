@@ -1,7 +1,7 @@
 import React from "react";
 import { View, StyleSheet, Image, Text, Dimensions } from "react-native";
 import AddButton from "./AddButton";
-export default function AddFriend({ name, wohnort, image, friendId }) {
+export default function AddFriend({ name, wohnort, image, friendId, disabled }) {
   return (
     <View style={styles.wrapper}>
       <Image
@@ -15,7 +15,7 @@ export default function AddFriend({ name, wohnort, image, friendId }) {
         </View>
         <View style={styles.bottomRowRight}>
           <Text style={styles.wohnort}>{wohnort}</Text>
-          <AddButton friendId={friendId}/>
+          <AddButton friendId={friendId} disabled={disabled}/>
         </View>
       </View>
     </View>
