@@ -286,6 +286,22 @@ router.get("/:userId/friends", isAuthenticated, async (req, res) => {
     }
 });
 
+// Remove Friend status for two users
+router.put("/:userId/friends/:friendId", isAuthenticated, async (req, res) => {
+    try {
+        const response = await service.unFriend(req.params.userId, req.params.friendId);
+        res.status(response.status).json({
+            'data': response.data,
+            'message': response.message
+        });
+    } catch ({ error, status, message }) {
+        res.status(status).json({
+            'error': error,
+            'message': message
+        });
+    }
+});
+
 // Get all users with a certain username
 router.get("/query/:username", isAuthenticated, async (req, res) => {
     try {

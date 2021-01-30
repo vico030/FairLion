@@ -6,6 +6,7 @@ const articleRequestModel = require("../models/ArticleRequestModel");
 const {
   request
 } = require("express");
+const ArticleRequestModel = require("../models/ArticleRequestModel");
 
 function getAllUsers() {
   return new Promise(async (resolve, reject) => {
@@ -259,7 +260,11 @@ function createArticle(body, userId) {
         owner: userId,
       });
       const newArticle = await article.save();
-      await userModel.findByIdAndUpdate(userId, {$inc: {articleCount: 1}})
+      await userModel.findByIdAndUpdate(userId, {
+        $inc: {
+          articleCount: 1
+        }
+      })
       const user = await userModel
         .findById(userId)
         .select("-password")
@@ -471,6 +476,65 @@ function updateUser(body, userId) {
   });
 }
 
+function unFriend(userId, friendId) {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const articleRequest = await ArticleRequestModel.findOne({
+        $or: [{
+            borrower: userId,
+            owner: friendId
+          },
+          {
+            borrower: friendId,
+            owner: userId
+          },
+        ]
+      })
+      if (!articleRequest) {
+        const user = await userModel
+          .findByIdAndUpdate(userId, {
+            $pull: {
+              friends: friendId
+            }
+          }, {
+            new: true,
+          })
+          .catch((err) => {
+            throw err;
+          });
+        const friend = await userModel
+          .findByIdAndUpdate(friendId, {
+            $pull: {
+              friends: userId
+            }
+          }, {
+            new: true,
+          })
+          .catch((err) => {
+            throw err;
+          });
+        return resolve({
+          data: user,
+          message: "Freundschaftsbeziehung wurde erfolgreich beendet.",
+          status: 201,
+        });
+      }
+      return resolve({
+        data: articleRequest,
+        message: "Freundschaftsbeziehung konnte wegen laufender Ausleihevorgänge nicht beendet werden.",
+        status: 201,
+      });
+
+    } catch (err) {
+      return reject({
+        error: err,
+        status: 500,
+        message: "Freundschaftsbeziehung konnte nicht gelöscht werden.",
+      });
+    }
+  });
+}
+
 // Move to ArticleService?
 function deleteAllUserArticles(userId) {
   return new Promise(async (resolve, reject) => {
@@ -555,6 +619,7 @@ module.exports = {
   getArticlesWithFavorites,
   getFriends,
   getFriendRequests,
+  unFriend,
   deleteAllUsers,
   deleteUser,
   deleteFriendRequest,
