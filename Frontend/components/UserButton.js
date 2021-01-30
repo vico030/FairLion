@@ -3,9 +3,11 @@ const { IMAGE_URL } = env;
 import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 // change profile pic with correct link and not local
-export default function UserButton({ navigation, user }) {
+export default function UserButton({ navigation, user, disabled }) {
   return (
+
     <TouchableOpacity
+      disabled={disabled}
       onPress={() =>
         navigation.navigate("Profile", {
           id: user._id,

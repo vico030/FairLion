@@ -153,6 +153,39 @@ const FriendsStackScreen = ({ navigation }) => (
         },
       }}
     />
+
+
+    <FriendsStack.Screen
+      name="ReturnDetails"
+      component={DetailReturnViewScreen}
+      options={{
+        title: "Details",
+        headerStyle: {
+          backgroundColor: inactiveTintColor,
+        },
+        headerTitleAlign: "center",
+        headerTintColor: "#fff",
+        headerTitleStyle: {
+          fontFamily: "Roboto",
+        },
+      }}
+    />
+    <FriendsStack.Screen
+      name="ViewDetails"
+      component={DetailViewScreen}
+      options={{
+        title: "Details",
+        headerStyle: {
+          backgroundColor: inactiveTintColor,
+        },
+        headerTitleAlign: "center",
+        headerTintColor: "#fff",
+        headerTitleStyle: {
+          fontFamily: "Roboto",
+        },
+      }}
+    />
+
   </FriendsStack.Navigator>
 );
 
@@ -197,6 +230,38 @@ const RequestsStackScreen = ({ navigation }) => (
         },
       }}
     />
+
+    <RequestStack.Screen
+      name="ReturnDetails"
+      component={DetailReturnViewScreen}
+      options={{
+        title: "Details",
+        headerStyle: {
+          backgroundColor: inactiveTintColor,
+        },
+        headerTitleAlign: "center",
+        headerTintColor: "#fff",
+        headerTitleStyle: {
+          fontFamily: "Roboto",
+        },
+      }}
+    />
+    <RequestStack.Screen
+      name="ViewDetails"
+      component={DetailViewScreen}
+      options={{
+        title: "Details",
+        headerStyle: {
+          backgroundColor: inactiveTintColor,
+        },
+        headerTitleAlign: "center",
+        headerTintColor: "#fff",
+        headerTitleStyle: {
+          fontFamily: "Roboto",
+        },
+      }}
+    />
+
   </RequestStack.Navigator>
 );
 
@@ -226,8 +291,23 @@ const BurrowedStackScreen = ({ navigation }) => (
       }}
     />
     <BurrowedStack.Screen
-      name="Details"
+      name="ReturnDetails"
       component={DetailReturnViewScreen}
+      options={{
+        title: "Details",
+        headerStyle: {
+          backgroundColor: inactiveTintColor,
+        },
+        headerTitleAlign: "center",
+        headerTintColor: "#fff",
+        headerTitleStyle: {
+          fontFamily: "Roboto",
+        },
+      }}
+    />
+    <BurrowedStack.Screen
+      name="ViewDetails"
+      component={DetailViewScreen}
       options={{
         title: "Details",
         headerStyle: {
@@ -406,8 +486,24 @@ const SearchStackScreen = ({ navigation }) => (
         ),
       }}
     />
+
     <SearchStack.Screen
-      name="Details"
+      name="ReturnDetails"
+      component={DetailReturnViewScreen}
+      options={{
+        title: "Details",
+        headerStyle: {
+          backgroundColor: inactiveTintColor,
+        },
+        headerTitleAlign: "center",
+        headerTintColor: "#fff",
+        headerTitleStyle: {
+          fontFamily: "Roboto",
+        },
+      }}
+    />
+    <SearchStack.Screen
+      name="ViewDetails"
       component={DetailViewScreen}
       options={{
         title: "Details",
@@ -421,6 +517,7 @@ const SearchStackScreen = ({ navigation }) => (
         },
       }}
     />
+
     <SearchStack.Screen
       name="Profile"
       component={ProfileScreen}
@@ -645,7 +742,7 @@ function EditProfileStackScreen({ navigation }) {
 function ChangePasswordStackScreen({ navigation }) {
   return (
     <ChangePasswordStack.Navigator>
-      <ChangePasswordStack.Screen 
+      <ChangePasswordStack.Screen
         name="ChangePassword"
         component={ChangePasswordScreen}
         options={{

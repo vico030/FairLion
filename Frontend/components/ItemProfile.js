@@ -1,6 +1,6 @@
 import env from "../env.js";
 const { IMAGE_URL } = env;
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -12,6 +12,7 @@ import {
 import ProfileUserButton from "./ProfileUserButton";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import FavouritesButton from "./FavouritesButton";
+import AsyncStorage from "@react-native-community/async-storage";
 export default function ItemProfile({
   navigation,
   besitzer,
@@ -25,13 +26,25 @@ export default function ItemProfile({
   status,
   articleId,
   user,
+  borrower
 }) {
+
   return (
     // change image link to correct parameter url
     <TouchableOpacity
       style={styles.itemStyle}
-      onPress={() =>
-        navigation.navigate("Details", {
+      onPress={async () => {
+        const userId = await AsyncStorage.getItem("userId");
+        let screen;
+        if (borrower) {          
+          if (borrower == userId) {
+            screen = "ReturnDetails";
+          }
+        }
+        else {
+          screen = "ViewDetails";
+        }
+        navigation.navigate(screen, {
           besitzer: besitzer,
           produktName: produktName,
           beschreibung: beschreibung,
@@ -45,6 +58,7 @@ export default function ItemProfile({
           articleId: articleId,
           user: user,
         })
+      }
       }
     >
       <View>

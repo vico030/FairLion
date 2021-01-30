@@ -12,6 +12,7 @@ import {
 import UserButton from "./UserButton";
 import FavouritesButton from "./FavouritesButton";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import AsyncStorage from "@react-native-community/async-storage";
 
 export default function ItemSearch({
   navigation,
@@ -25,13 +26,24 @@ export default function ItemSearch({
   status,
   articleId,
   user,
+  borrower
 }) {
   console.log(images);
   return (
     <TouchableOpacity
       style={styles.itemStyle}
-      onPress={() =>
-        navigation.navigate("Details", {
+      onPress={async () =>{
+        const userId = await AsyncStorage.getItem("userId");
+        let screen;
+        if (borrower) {          
+          if (borrower == userId) {
+            screen = "ReturnDetails";
+          }
+        }
+        else {
+          screen = "ViewDetails";
+        }
+        navigation.navigate(screen, {
           besitzer: besitzer,
           produktName: produktName,
           images: images,
@@ -42,7 +54,7 @@ export default function ItemSearch({
           articleId: articleId,
           favored: favored,
           user: user,
-        })
+        })}
       }
     >
       <View>

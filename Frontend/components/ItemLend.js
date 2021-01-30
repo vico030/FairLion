@@ -72,7 +72,7 @@ export default function ItemLend({
           }
         ) */
         
-        navigation.navigate("Details", {
+        navigation.navigate("ReturnDetails", {
           besitzer: besitzer,
           produktName: produktName,
           images: images,
