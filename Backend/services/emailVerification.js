@@ -45,10 +45,18 @@ const sendEmail = async (to, hash, type) => {
                 html:
                     `
                 <div style="height: 20rem">
-                    <img src="cid:logo" width="100" height="100" />
-                    <p>Bestätige deine E-Mail-Adresse, indem du auf den Button drückst.</p>
+                    
+                    <p>
+                    Danke für das Registrieren auf FairLion!<br><br>
+                    Um deinen Account vollständig zu aktivieren, klicke bitte auf den Button.
+                    <br><br>
                     <a style="color: white; background: #E77F23; text-decoration: none; padding: 0.5rem 1rem; border-radius: 25px; display: block; width: 7rem; font-size: 15px; text-align: center" href="${link}">Confirm email</a>
-                </div>
+                    <br>
+                    Dein FairLion-Team
+                    <br><br>
+                    <img src="cid:logo" width="100" height="100" />
+                    </p>
+                    </div>
                 `,
                 attachments: [{
                     filename: "logo.png",
