@@ -395,7 +395,36 @@ const StockStackScreen = ({ navigation }) => (
         ),
       }}
     />
-
+    <StockStack.Screen
+      name="ReturnDetails"
+      component={DetailReturnViewScreen}
+      options={{
+        title: "Details",
+        headerStyle: {
+          backgroundColor: inactiveTintColor,
+        },
+        headerTitleAlign: "center",
+        headerTintColor: "#fff",
+        headerTitleStyle: {
+          fontFamily: "Roboto",
+        },
+      }}
+    />
+    <StockStack.Screen
+      name="ViewDetails"
+      component={DetailViewScreen}
+      options={{
+        title: "Details",
+        headerStyle: {
+          backgroundColor: inactiveTintColor,
+        },
+        headerTitleAlign: "center",
+        headerTintColor: "#fff",
+        headerTitleStyle: {
+          fontFamily: "Roboto",
+        },
+      }}
+    />
     <StockStack.Screen
       name="AddItem"
       component={AddItemScreen}
