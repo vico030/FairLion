@@ -241,7 +241,9 @@ function deleteUser(userId) {
             throw err;
           });
 
-        friendRequestModel.deleteMany({
+        await articleModel.deleteMany({owner: userId});
+
+        await friendRequestModel.deleteMany({
           $or: [{
               requesterId: userId
             },
@@ -251,7 +253,7 @@ function deleteUser(userId) {
           ]
         });
 
-        userModel.updateMany({
+        await userModel.updateMany({
           friends: userId
         }, {
           $pull: {
@@ -261,7 +263,7 @@ function deleteUser(userId) {
           new: true,
         })
 
-        userModel.findByIdAndDelete(userId).catch((err) => {
+        await userModel.findByIdAndDelete(userId).catch((err) => {
           throw err;
         });
         // Delete image in storage

@@ -1,8 +1,40 @@
-import React from "react";
+import env from "../env.js";
+const { BACKEND_URL } = env;
+import React, { useContext } from "react";
 import { View, TouchableOpacity, Text, StyleSheet } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
+import AsyncStorage from "@react-native-community/async-storage";
+import { Alert } from "react-native";
+import { AuthContext } from "../context";
 
 const SettingsScreen = ({ navigation }) => {
+  const { signOut } = useContext(AuthContext);
+
+  async function deleteAccount() {
+    const requestOptions = {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      credentials: "include",
+    };
+    let res;
+    let resJson;
+    try {
+      res = await fetch(BACKEND_URL + `users/${await AsyncStorage.getItem("userId")}`, requestOptions);
+      resJson = await res.json();
+    } catch (error) {
+      console.log(error);
+    }
+    if (res.status === 200) {
+      signOut();
+    }
+    else {
+      Alert.alert("Fehler", resJson.message);
+    }
+  }
+
   return (
     <View style={styles.main}>
       <View style={styles.container}>
@@ -29,8 +61,8 @@ const SettingsScreen = ({ navigation }) => {
 
       <View style={styles.container}>
         <TouchableOpacity
-            style={styles.subMenuBottom}
-            onPress={() => navigation.navigate("ChangePassword")}
+          style={styles.subMenuBottom}
+          onPress={() => navigation.navigate("ChangePassword")}
         >
           <Text style={styles.buttonText}>Password ändern</Text>
           <MaterialIcons name="chevron-right" size={24} color="#bbb" />
@@ -38,7 +70,19 @@ const SettingsScreen = ({ navigation }) => {
       </View>
 
       <View style={styles.container}>
-        <TouchableOpacity style={styles.deleteButton}>
+        <TouchableOpacity
+          style={styles.deleteButton}
+          onPress={() =>
+            Alert.alert("Account löschen", "Möchten Sie Ihren FairLion Account wirklich löschen?",
+              [
+                {
+                  text: "Nein",
+                  style: "cancel"
+                },
+                { text: "Ja", onPress: () => deleteAccount() }
+              ])
+          }
+        >
           <Text style={styles.deleteText}>Account löschen</Text>
         </TouchableOpacity>
       </View>
