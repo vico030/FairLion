@@ -1,6 +1,7 @@
 import React from "react";
 import { View, StyleSheet, Image, Text, Dimensions } from "react-native";
 import { AntDesign, Feather } from "@expo/vector-icons";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 export default function FriendRequest({ requesterName, city, requestId, acceptRequest, declineRequest, requesterImage }) {
   console.log(requesterImage);
@@ -18,8 +19,12 @@ export default function FriendRequest({ requesterName, city, requestId, acceptRe
         <View style={styles.bottomRowRight}>
           <Text style={styles.city}>{city}</Text>
           <View style={styles.icons}>
-            <AntDesign name="check" size={24} color="green" onPress={() => acceptRequest(requestId)} />
-            <Feather name="x" size={24} color="red" onPress={() => declineRequest(requestId)} />
+            <TouchableOpacity>
+              <AntDesign name="check" size={24} color="green" onPress={() => acceptRequest(requestId)} />
+            </TouchableOpacity>
+            <TouchableOpacity>
+              <Feather name="x" size={24} color="red" onPress={() => declineRequest(requestId)} />
+            </TouchableOpacity>
           </View>
         </View>
       </View>

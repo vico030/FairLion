@@ -2,6 +2,7 @@ import React from "react";
 import { View, Text, StyleSheet, Image, Dimensions } from "react-native";
 import UserButton from "./UserButton";
 import { AntDesign, Feather, MaterialCommunityIcons } from "@expo/vector-icons";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 export default function ItemRequest({
   produktName,
@@ -32,19 +33,23 @@ export default function ItemRequest({
         <View style={styles.items}>
           <UserButton user={user} navigation={navigation} />
           <View style={styles.icons}>
-            <AntDesign
-              name="check"
-              size={24}
-              color="green"
-              onPress={() => acceptRequest(requestId)}
-            />
-            {declineRequest &&
-              <Feather
-                name="x"
+            <TouchableOpacity>
+              <AntDesign
+                name="check"
                 size={24}
-                color="red"
-                onPress={() => declineRequest(requestId)}
+                color="green"
+                onPress={() => acceptRequest(requestId)}
               />
+            </TouchableOpacity>
+            {declineRequest &&
+              <TouchableOpacity>
+                <Feather
+                  name="x"
+                  size={24}
+                  color="red"
+                  onPress={() => declineRequest(requestId)}
+                />
+              </TouchableOpacity>
             }
           </View>
         </View>
