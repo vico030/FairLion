@@ -12,6 +12,8 @@ import {
 import UserButton from "./UserButton";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import FavouritesButton from "./FavouritesButton";
+import { formatDuration } from "../helpers/format.js";
+
 
 export default function ItemLend({
   navigation,
@@ -53,6 +55,7 @@ export default function ItemLend({
     displayRemainingTime = remainingTimeMonths;
     displayRemainingTimeUnit = "Monat(e)";
   }
+  let duration = formatDuration(ausleihfrist)
   return (
     <TouchableOpacity
       style={styles.itemStyle}
@@ -76,7 +79,7 @@ export default function ItemLend({
           besitzer: besitzer,
           produktName: produktName,
           images: images,
-          ausleihfrist: ausleihfrist,
+          ausleihfrist: duration,
           kategorie: kategorie,
           beschreibung: beschreibung,
           displayRemainingTime: Math.floor(displayRemainingTime),

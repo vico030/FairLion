@@ -13,6 +13,8 @@ import UserButton from "./UserButton";
 import FavouritesButton from "./FavouritesButton";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-community/async-storage";
+import { formatDuration } from "../helpers/format.js";
+
 
 export default function ItemSearch({
   navigation,
@@ -28,7 +30,7 @@ export default function ItemSearch({
   user,
   borrower
 }) {
-  console.log(images);
+  let duration = formatDuration(ausleihfrist)
   return (
     <TouchableOpacity
       style={styles.itemStyle}
@@ -48,7 +50,7 @@ export default function ItemSearch({
           produktName: produktName,
           images: images,
           beschreibung: beschreibung,
-          ausleihfrist: ausleihfrist,
+          ausleihfrist: duration,
           kategorie: kategorie,
           status: status,
           articleId: articleId,
@@ -74,7 +76,7 @@ export default function ItemSearch({
           <UserButton user={user} navigation={navigation} />
 
           <Text style={styles.itemTime} numberOfLines={1}>
-            Frist: {ausleihfrist}
+            Frist: {duration}
           </Text>
         </View>
       </View>
