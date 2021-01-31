@@ -368,20 +368,22 @@ const styles = StyleSheet.create({
 
   // SAVE BUTTON ELEMENT
   ButtonContainer: {
-    marginTop: 50,
+    marginTop: 20,
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
   },
   saveBtn: {
-    width: "80%",
+    width: "60%",
     backgroundColor: "#E77F23",
-    borderRadius: 25,
-    height: 50,
+    borderRadius: 15,
+    height: 60,
     alignItems: "center",
     justifyContent: "center",
-    marginTop: 20,
-    marginBottom: 20,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
   },
   saveText: {
     color: "#fff",
