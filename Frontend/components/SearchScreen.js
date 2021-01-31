@@ -1,18 +1,31 @@
 import env from "../env.js";
 const { BACKEND_URL } = env;
-import { View, Text, StyleSheet, FlatList } from "react-native";
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, Alert, Modal } from "react-native";
 import React, { useState, useEffect } from "react";
 import { SearchBar } from "react-native-elements";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import ItemSearch from "./ItemSearch";
-import AsyncStorage from "@react-native-community/async-storage";
+import CheckBox from "@react-native-community/checkbox";
 import { ActivityIndicator } from "react-native";
 
 const SearchScreen = ({ navigation }) => {
   const [searchInput, setSearchInput] = useState("");
   const [articles, setArticles] = useState([]);
+  let savedArticles = [];
   const [searching, setSearching] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [filterVisible, setFilterVisible] = useState(false);
+  const [activeFilter, setActiveFilter] = useState({
+    filme: false,
+    bücher: false,
+    spiele: false,
+    musik: false,
+    elektronik: false,
+    werkzeug: false,
+    kleidung: false,
+    haushalt: false,
+    sonstiges: false
+  });
 
   const fetchArticles = async () => {
     setLoading(true);
@@ -46,6 +59,7 @@ const SearchScreen = ({ navigation }) => {
       }
 
       setArticles(array);
+      savedArticles=array;
     }
   };
 
@@ -58,7 +72,9 @@ const SearchScreen = ({ navigation }) => {
       getFavourites();
     }
     setArticles([]);
-    if (input.length != 0) fetchArticles();
+    if (input.length != 0) {
+      fetchArticles();
+    };
   };
 
   async function getFavourites() {
@@ -82,17 +98,306 @@ const SearchScreen = ({ navigation }) => {
     }
     if (res.status === 200) {
       setArticles(await resJson.data);
+      savedArticles = await resJson.data;
     }
   }
 
+  function filterArticles(category) {
+    setArticles(articles.filter(el => el.category===category))
+  }
+
+
   useEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <TouchableOpacity onPress={() => {
+          // Filter View
+          console.log(filterVisible);
+          setFilterVisible(true);
+        }}>
+
+          <MaterialCommunityIcons
+            name="dns-outline"
+            size={28}
+            style={styles.rightIcon}
+          />
+        </TouchableOpacity>
+      ),
+    });
     const unsubscribe = navigation.addListener("focus", () => {
-      if (searchInput.length === 0) getFavourites();
+      if (searchInput.length === 0) {
+        getFavourites();
+      };
     });
     return unsubscribe;
   }, [navigation]);
+
   return (
     <View>
+      <Modal
+        animationType="fade"
+        visible={filterVisible}
+        transparent={true}
+        onRequestClose={() => {
+          console.log(filterVisible);
+          setFilterVisible(!filterVisible);
+        }}>
+        <View style={styles.modalView}>
+          <Text style={styles.text}>Kategorie filtern</Text>
+          <View style={styles.verticalLine} />
+
+          <View style={styles.element}>
+            <Text style={styles.elementTextLeft}>Filme</Text>
+            <CheckBox
+              disabled={false}
+              value={activeFilter.filme}
+              onValueChange={() => {
+                setArticles(savedArticles);
+                setActiveFilter({
+                  filme: true,
+                  bücher: false,
+                  spiele: false,
+                  musik: false,
+                  elektronik: false,
+                  werkzeug: false,
+                  kleidung: false,
+                  haushalt: false,
+                  sonstiges: false
+                });
+                filterArticles("filme");
+                setFilterVisible(!filterVisible);
+              }
+              }
+            />
+          </View>
+
+          <View style={styles.element}>
+            <Text style={styles.elementTextLeft}>Bücher</Text>
+            <CheckBox
+              disabled={false}
+              value={activeFilter.bücher}
+              onValueChange={() => {
+                setArticles(savedArticles);
+                setActiveFilter({
+                  filme: false,
+                  bücher: true,
+                  spiele: false,
+                  musik: false,
+                  elektronik: false,
+                  werkzeug: false,
+                  kleidung: false,
+                  haushalt: false,
+                  sonstiges: false
+                });
+                filterArticles("bücher");
+                setFilterVisible(!filterVisible);
+              }
+              }
+            />
+          </View>
+
+          <View style={styles.element}>
+            <Text style={styles.elementTextLeft}>Spiele</Text>
+            <CheckBox
+              disabled={false}
+              value={activeFilter.spiele}
+              onValueChange={() => {
+                setArticles(savedArticles);
+                setActiveFilter({
+                  filme: false,
+                  bücher: false,
+                  spiele: true,
+                  musik: false,
+                  elektronik: false,
+                  werkzeug: false,
+                  kleidung: false,
+                  haushalt: false,
+                  sonstiges: false
+                });
+                filterArticles("spiele");
+                setFilterVisible(!filterVisible);
+              }
+              }
+            />
+          </View>
+
+          <View style={styles.element}>
+            <Text style={styles.elementTextLeft}>Musik</Text>
+            <CheckBox
+              disabled={false}
+              value={activeFilter.musik}
+              onValueChange={() => {
+                setArticles(savedArticles);
+                setActiveFilter({
+                  filme: false,
+                  bücher: false,
+                  spiele: false,
+                  musik: true,
+                  elektronik: false,
+                  werkzeug: false,
+                  kleidung: false,
+                  haushalt: false,
+                  sonstiges: false
+                });
+                filterArticles("musik");
+                setFilterVisible(!filterVisible);
+              }
+              }
+            />
+          </View>
+
+          <View style={styles.element}>
+            <Text style={styles.elementTextLeft}>Elektronik</Text>
+            <CheckBox
+              disabled={false}
+              value={activeFilter.elektronik}
+              onValueChange={() => {
+                setArticles(savedArticles);
+                setActiveFilter({
+                  filme: false,
+                  bücher: false,
+                  spiele: false,
+                  musik: false,
+                  elektronik: true,
+                  werkzeug: false,
+                  kleidung: false,
+                  haushalt: false,
+                  sonstiges: false
+                });
+                filterArticles("elektronik");
+                setFilterVisible(!filterVisible);
+              }
+              }
+            />
+          </View>
+
+          <View style={styles.element}>
+            <Text style={styles.elementTextLeft}>Werkzeug</Text>
+            <CheckBox
+              disabled={false}
+              value={activeFilter.werkzeug}
+              onValueChange={() => {
+                setArticles(savedArticles);
+                setActiveFilter({
+                  filme: false,
+                  bücher: false,
+                  spiele: false,
+                  musik: false,
+                  elektronik: false,
+                  werkzeug: true,
+                  kleidung: false,
+                  haushalt: false,
+                  sonstiges: false
+                });
+                filterArticles("werkzeug");
+                setFilterVisible(!filterVisible);
+              }
+              }
+            />
+          </View>
+
+          <View style={styles.element}>
+            <Text style={styles.elementTextLeft}>Kleidung</Text>
+            <CheckBox
+              disabled={false}
+              value={activeFilter.kleidung}
+              onValueChange={() => {
+                setArticles(savedArticles);
+                setActiveFilter({
+                  filme: false,
+                  bücher: false,
+                  spiele: false,
+                  musik: false,
+                  elektronik: false,
+                  werkzeug: false,
+                  kleidung: true,
+                  haushalt: false,
+                  sonstiges: false
+                });
+                filterArticles("kleidung");
+                setFilterVisible(!filterVisible);
+              }
+              }
+            />
+          </View>
+
+          <View style={styles.element}>
+            <Text style={styles.elementTextLeft}>Haushalt</Text>
+            <CheckBox
+              disabled={false}
+              value={activeFilter.haushalt}
+              onValueChange={() => {
+                setArticles(savedArticles);
+                setActiveFilter({
+                  filme: false,
+                  bücher: false,
+                  spiele: false,
+                  musik: false,
+                  elektronik: false,
+                  werkzeug: false,
+                  kleidung: false,
+                  haushalt: true,
+                  sonstiges: false
+                });
+                filterArticles("haushalt");
+                setFilterVisible(!filterVisible);
+              }
+              }
+            />
+          </View>
+
+          <View style={styles.element}>
+            <Text style={styles.elementTextLeft}>Sonstiges</Text>
+            <CheckBox
+              disabled={false}
+              value={activeFilter.sonstiges}
+              onValueChange={() => {
+                setArticles(savedArticles);
+                setActiveFilter({
+                  filme: false,
+                  bücher: false,
+                  spiele: false,
+                  musik: false,
+                  elektronik: false,
+                  werkzeug: false,
+                  kleidung: false,
+                  haushalt: false,
+                  sonstiges: true
+                });
+                filterArticles("sonstiges");
+                setFilterVisible(!filterVisible);
+              }
+              }
+            />
+          </View>
+
+          <View style={styles.element}>
+            <Text style={styles.elementTextLeft}>Filter entfernen</Text>
+            <CheckBox
+              disabled={false}
+              value={false}
+              onValueChange={() => {
+                setActiveFilter({
+                  filme: false,
+                  bücher: false,
+                  spiele: false,
+                  musik: false,
+                  elektronik: false,
+                  werkzeug: false,
+                  kleidung: false,
+                  haushalt: false,
+                  sonstiges: false
+                });
+                setArticles(savedArticles);
+                setFilterVisible(!filterVisible);
+              }
+              }
+            />
+          </View>
+
+        </View>
+      </Modal>
+
       <SearchBar
         containerStyle={{
           backgroundColor: "#333740",
@@ -169,6 +474,45 @@ const styles = StyleSheet.create({
     top: "50%",
     fontSize: 20,
     textAlign: "center",
+  },
+  rightIcon: {
+    color: "#fff",
+    marginRight: 15,
+  },
+  modalView: {
+    margin: 10,
+    marginTop: 60,
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 35,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5
+  },
+  verticalLine: {
+    borderBottomColor: "#CFCFCF",
+    borderBottomWidth: 1,
+    marginVertical: 10,
+  },
+  element: {
+    width: "100%",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginTop: 10,
+  },
+  elementTextLeft: {
+    fontSize: 12,
+  },
+  elementTextRight: {
+    fontSize: 12,
+    textAlign: "right",
   },
 });
 export default SearchScreen;
