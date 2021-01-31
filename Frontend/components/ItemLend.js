@@ -12,7 +12,7 @@ import {
 import UserButton from "./UserButton";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import FavouritesButton from "./FavouritesButton";
-import { formatDuration } from "../helpers/format.js";
+import { formatDuration, formatRemaining } from "../helpers/format.js";
 
 
 export default function ItemLend({
@@ -29,32 +29,10 @@ export default function ItemLend({
   user,
 }) {
 
-  //console.log(images);
-  // console.log(returnDate);
-  let remainingTime = returnDate.getTime() - new Date().getTime();
-  let remainingTimeSeconds = remainingTime / 1000;
-  let remainingTimeMinutes = remainingTimeSeconds / 60;
-  let remainingTimeHours = remainingTimeMinutes / 60;
-  let remainingTimeDays = remainingTimeHours / 24;
-  let remainingTimeMonths = remainingTimeDays / 31;
-  //console.log(remainingTimeHours);
-  //console.log(remainingTimeDays);
-  // console.log(new Date().getTime());
-  // console.log(new Date(returnDate.getTime));
-  let displayRemainingTime = remainingTimeHours;
-  let displayRemainingTimeUnit = "Stunde(n)";
-  if (remainingTimeHours > 24) {
-    displayRemainingTime = remainingTimeDays;
-    displayRemainingTimeUnit = "Tag(e)";
-  }
-  if (remainingTimeHours < 1) {
-    displayRemainingTime = remainingTimeMinutes;
-    displayRemainingTimeUnit = "Minute(n)";
-  }
-  if (remainingTimeDays > 31) {
-    displayRemainingTime = remainingTimeMonths;
-    displayRemainingTimeUnit = "Monat(e)";
-  }
+  let remainingTime = formatRemaining(returnDate)
+  let displayRemainingTime = remainingTime[0]
+  let displayRemainingTimeUnit = remainingTime[1]
+  
   let duration = formatDuration(ausleihfrist)
   return (
     <TouchableOpacity
@@ -84,6 +62,7 @@ export default function ItemLend({
           beschreibung: beschreibung,
           displayRemainingTime: Math.floor(displayRemainingTime),
           displayRemainingTimeUnit: displayRemainingTimeUnit,
+          returnDate: returnDate,
           articleId: articleId,
           user: user,
           favored: favored

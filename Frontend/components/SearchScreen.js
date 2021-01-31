@@ -143,6 +143,7 @@ const SearchScreen = ({ navigation }) => {
             ausleihfrist={item.duration}
             images={item.images}
             kategorie={item.category}
+            returnDate={item.returnDate}
             beschreibung={item.description}
             favored={item.favourite}
             status={item.status}

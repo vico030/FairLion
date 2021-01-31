@@ -64,6 +64,7 @@ export default function ProfileStockItemList({ artikelzahl, navigation, id }) {
             beschreibung={item.description}
             favored={item.favourite}
             status={item.status}
+            returnDate={item.returnDate}
             articleId={item._id}
             user={item.user}
             borrower={item.borrower}

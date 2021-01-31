@@ -26,6 +26,7 @@ export default function ItemSearch({
   favored,
   kategorie,
   status,
+  returnDate,
   articleId,
   user,
   borrower
@@ -55,6 +56,7 @@ export default function ItemSearch({
           status: status,
           articleId: articleId,
           favored: favored,
+          returnDate: returnDate,
           user: user,
         })}
       }

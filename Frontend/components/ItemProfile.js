@@ -26,6 +26,7 @@ export default function ItemProfile({
   ausleihfrist,
   kategorie,
   favored,
+  returnDate,
   status,
   articleId,
   user,
@@ -59,6 +60,7 @@ export default function ItemProfile({
           ausleihfrist: duration,
           favored: favored,
           status: status,
+          returnDate: returnDate,
           articleId: articleId,
           user: user,
         })
