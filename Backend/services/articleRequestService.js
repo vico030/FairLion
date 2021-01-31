@@ -6,11 +6,16 @@ const UserModel = require("../models/UserModel");
 
 const getArticleRequests = function (userId, type) {
   return new Promise((resolve, reject) => {
-    ArticleRequest.find({ [type]: userId })
+    ArticleRequest.find({
+        [type]: userId
+      })
       .then(async (articleRequests) => {
         const requestsWithAddtionialData = await Promise.all(articleRequests.map(async request => {
           try {
-            const { title, images } = await ArticleModel.findById(request.articleId);
+            const {
+              title,
+              images
+            } = await ArticleModel.findById(request.articleId);
             const user = await UserModel.findById(request.borrower)
               .select("-password")
               .select("-refreshToken")
@@ -23,8 +28,7 @@ const getArticleRequests = function (userId, type) {
               images
             }
             return newRequest;
-          }
-          catch (err) {
+          } catch (err) {
             console.log(err);
             return request;
           }
@@ -47,29 +51,47 @@ const getArticleRequests = function (userId, type) {
 
 function createArticleRequests(body, userId) {
   return new Promise(async (resolve, reject) => {
-    const article = await Article.findById(body.articleId);
-    console.log(article);
-    const articleRequest = new ArticleRequest({
-      ...body,
-      owner: article.owner,
-      borrower: userId,
-    });
-    articleRequest
-      .save()
-      .then((articleRequest) => {
-        return resolve({
-          data: articleRequest,
-          message: "Artikelanfrage wurde erstellt.",
-          status: 201,
+    try {
+      const user = await UserModel.findById(userId);
+      const article = await Article.findById(body.articleId);
+
+      if (user.friends.includes(article.owner)) {
+        const articleRequest = new ArticleRequest({
+          ...body,
+          owner: article.owner,
+          borrower: userId,
         });
-      })
-      .catch((err) => {
+        articleRequest
+          .save()
+          .then((articleRequest) => {
+            return resolve({
+              data: articleRequest,
+              message: "Artikelanfrage wurde erstellt.",
+              status: 201,
+            });
+          })
+          .catch((err) => {
+            return reject({
+              error: err,
+              status: 500,
+              message: "Artikelanfrage konnte nicht erstellt werden.",
+            });
+          });
+      } else {
         return reject({
-          error: err,
-          status: 500,
-          message: "Artikelanfrage konnte nicht erstellt werden.",
+          error: "Fehler",
+          status: 400,
+          message: "Artikelanfrage konnte nicht erstellt werden, weil du mit dem Besitzer nicht befreundet bist.",
         });
+      }
+    } catch (error) {
+      return reject({
+        error: err,
+        status: 400,
+        message: "User oder Article existiert nicht.",
       });
+    }
+
   });
 }
 
@@ -80,8 +102,9 @@ function updateArticleRequest(body, requestId, userId) {
       if (oldArticleRequest.owner == userId) {
         const articleRequest = await ArticleRequest.findByIdAndUpdate(
           requestId,
-          body,
-          { new: true }
+          body, {
+            new: true
+          }
         ).catch((err) => {
           throw err;
         });
@@ -119,8 +142,9 @@ function updateArticleRequest(body, requestId, userId) {
       if (oldArticleRequest.borrower == userId) {
         const articleRequest = await ArticleRequest.findByIdAndUpdate(
           requestId,
-          body,
-          { new: true }
+          body, {
+            new: true
+          }
         ).catch((err) => {
           throw err;
         });
@@ -142,8 +166,7 @@ function updateArticleRequest(body, requestId, userId) {
           message: "Article-Request-Update wurde durchgeführt.",
           status: 201,
         });
-      }
-      else {
+      } else {
         return reject({
           error: "Not Authorized",
           status: 401,
@@ -193,7 +216,9 @@ const deleteArticleRequest = function (requestId, userId) {
 
 async function addReturnDateToArticle(id) {
   try {
-    const { duration } = await ArticleModel.findById(id);
+    const {
+      duration
+    } = await ArticleModel.findById(id);
     const durations = initializeDurationsObject();
     const durationArray = duration.split(" "); //split value from unit
     const dateInDurationSpan = new Date(
@@ -227,12 +252,12 @@ function initializeDurationsObject() {
     millisecond: 1,
   };
   (durations.second = durations.millisecond * 1000),
-    (durations.minute = durations.second * 60),
-    (durations.hour = durations.minute * 60),
-    (durations.day = durations.hour * 24),
-    (durations.week = durations.day * 7),
-    (durations.month = durations.day * 30),
-    (durations.year = durations.day * 365); // doesn't fact in leap years
+  (durations.minute = durations.second * 60),
+  (durations.hour = durations.minute * 60),
+  (durations.day = durations.hour * 24),
+  (durations.week = durations.day * 7),
+  (durations.month = durations.day * 30),
+  (durations.year = durations.day * 365); // doesn't fact in leap years
   return durations;
 }
 

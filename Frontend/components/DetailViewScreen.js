@@ -48,10 +48,10 @@ const DetailViewScreen = ({ route, navigation }) => {
     }
 
     if (res.status === 201) {
-      Alert.alert(user.username + " wurde eine Anfrage gesendet")
+      Alert.alert("Anfrage versendet",user.username + " wurde eine Artikelanfrage gesendet.")
       setRequested(true);
     }
-    else if (res.status === 500) {
+    else {
       const errMess = await res.json();
       Alert.alert("Fehler", errMess.message);
     }
