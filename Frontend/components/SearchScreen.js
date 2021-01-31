@@ -30,7 +30,7 @@ const SearchScreen = ({ navigation }) => {
   });
   const [selectedCategory, setSelectedCategory] = useState("");
 
-  const fetchArticles = async () => {
+  const fetchArticles = async (input) => {
     setLoading(true);
     const requestOptions = {
       method: "get",
@@ -45,7 +45,7 @@ const SearchScreen = ({ navigation }) => {
     var resJson;
     try {
       res = await fetch(
-        BACKEND_URL + `articles/query/${searchInput}`,
+        BACKEND_URL + `articles/query/${input}`,
         requestOptions
       );
       setLoading(false);
@@ -69,15 +69,16 @@ const SearchScreen = ({ navigation }) => {
   const handleSearchInputChange = (input) => {
     setSearchInput(input);
     console.log(input);
-    if (input.length != 0) setSearching(true);
+    if (input.length != 0) {
+      setSearching(true);
+      fetchArticles(input);
+      return;
+    }
     else {
       setSearching(false);
       getFavourites();
+      return;
     }
-    setArticles([]);
-    if (input.length != 0) {
-      fetchArticles();
-    };
   };
 
   async function getFavourites() {
@@ -144,7 +145,7 @@ const SearchScreen = ({ navigation }) => {
     });
     return unsubscribe;
   }, [navigation, searchInput]);
-  
+
   return (
     <View>
       <Modal
@@ -207,7 +208,8 @@ const SearchScreen = ({ navigation }) => {
         value={searchInput}
         onChangeText={(input) => handleSearchInputChange(input)}
         onClear={() => {
-          setArticles([]);
+          handleSearchInputChange("");
+          //setArticles([]);
         }}
       />
 
