@@ -11,6 +11,7 @@ import {
 } from "react-native";
 import UserButton from "./UserButton";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { formatDuration } from "../helpers/format.js";
 
 export default function ItemStock({
   besitzer,
@@ -26,6 +27,7 @@ export default function ItemStock({
   isVisible
 }) {
   // Hier steht nur Text, damit da Bilder sind
+  let duration = formatDuration(ausleihfrist)
   return (
     // change image link to correct parameter url
     <TouchableOpacity
@@ -35,7 +37,7 @@ export default function ItemStock({
           besitzer: besitzer,
           images: images,
           produktName: produktName,
-          ausleihfrist: ausleihfrist,
+          ausleihfrist: duration,
           kategorie: kategorie,
           beschreibung: beschreibung,
           user: user,
@@ -68,7 +70,7 @@ export default function ItemStock({
         <View style={styles.items}>
           <UserButton user={user} navigation={navigation} disabled={true} />
           <Text style={styles.itemTime} numberOfLines={1}>
-            Frist: {ausleihfrist}
+            Frist: {duration}
           </Text>
         </View>
       </View>

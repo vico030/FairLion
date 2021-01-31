@@ -71,7 +71,7 @@ const BorrowedScreen = ({ navigation }) => {
             ausleihfrist={item.duration}
             images={item.images}
             kategorie={item.category}
-            returnDate={new Date(item.returnDate)}
+            returnDate={item.returnDate}
             articleId={item._id}
             user={item.user}
             favored={item.favourite}

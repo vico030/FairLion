@@ -13,6 +13,7 @@ import {
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Carousel from "./CarouselComponent";
 import UserButton from "./UserButton";
+import {formatRemaining} from "../helpers/format"
 
 const windowHeight = Dimensions.get("window").height;
 
@@ -27,6 +28,7 @@ const DetailReturnViewScreen = ({ route, navigation }) => {
     kategorie,
     displayRemainingTimeUnit,
     displayRemainingTime,
+    returnDate,
     user
   } = route.params;
 
@@ -104,6 +106,8 @@ const DetailReturnViewScreen = ({ route, navigation }) => {
     getArticleRequest();
   }, [])
 
+  let remainingTime = formatRemaining(returnDate)
+  console.log(returnDate)
   return (
     <ScrollView style={styles.container}>
       <View style={styles.main}>
@@ -155,7 +159,7 @@ const DetailReturnViewScreen = ({ route, navigation }) => {
               <Text style={styles.timeExpired}>Frist abgelaufen!</Text>
             ) : (
                 <Text style={styles.elementTextRight}>
-                  Noch: {displayRemainingTime} {displayRemainingTimeUnit}
+                  Noch: {Math.floor(remainingTime[0])} {remainingTime[1]}
                 </Text>
               )}
           </View>

@@ -13,6 +13,9 @@ import ProfileUserButton from "./ProfileUserButton";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import FavouritesButton from "./FavouritesButton";
 import AsyncStorage from "@react-native-community/async-storage";
+import { formatDuration } from "../helpers/format.js";
+
+
 export default function ItemProfile({
   navigation,
   besitzer,
@@ -23,12 +26,15 @@ export default function ItemProfile({
   ausleihfrist,
   kategorie,
   favored,
+  returnDate,
   status,
   articleId,
   user,
   borrower,
 }) {
   
+
+  let duration = formatDuration(ausleihfrist)
   return (
     // change image link to correct parameter url
     <TouchableOpacity
@@ -52,9 +58,10 @@ export default function ItemProfile({
           images: images,
           ausleihfrist,
           kategorie,
-          ausleihfrist,
+          ausleihfrist: duration,
           favored: favored,
           status: status,
+          returnDate: returnDate,
           articleId: articleId,
           user: user,
         })
