@@ -5,3 +5,4 @@ testing
 /files/*
 !/files/donotdelete
 !/files/default_profile.png
+!/files/logo.png

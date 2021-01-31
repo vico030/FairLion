@@ -20,14 +20,14 @@ const transporter = mailer.createTransport({
     }
 })
 
-const sendEmail = async (to, hash, type) => {
+const sendEmail = async (to, hash, type, username) => {
     if (type === "pwreset") {
         try {
             const info = await transporter.sendMail({
                 from: user,
                 to,
-                subject: "New password",
-                text: `New password: ${hash}`
+                subject: "Neues Passwort",
+                text: `Dein neues Passwort lautet: ${hash}`
             })
             console.log(info.messageId);
         }
@@ -47,7 +47,9 @@ const sendEmail = async (to, hash, type) => {
                 <div style="height: 20rem">
                     
                     <p>
-                    Danke für das Registrieren auf FairLion!<br><br>
+                    Hallo ${username},
+                    <br><br>
+                    danke, dass du dich bei FairLion registriert hast!<br><br>
                     Um deinen Account vollständig zu aktivieren, klicke bitte auf den Button.
                     <br><br>
                     <a style="color: white; background: #E77F23; text-decoration: none; padding: 0.5rem 1rem; border-radius: 25px; display: block; width: 7rem; font-size: 15px; text-align: center" href="${link}">Confirm email</a>

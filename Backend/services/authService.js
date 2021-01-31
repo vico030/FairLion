@@ -25,7 +25,7 @@ const registerUser = (body) => {
                     message: "Succesfully created account."
                 })*/
                 console.log(authToken);
-                sendEmail(savedUser.email, savedUser.verificationHash);
+                sendEmail(savedUser.email, savedUser.verificationHash, "confirm", savedUser.username);
                 return resolve({
                     data: newUser,//{ userId: savedUser._id, username: savedUser.username },
                     status: 201,
