@@ -359,18 +359,18 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   button: {
-    width: "80%",
+    width: "60%",
     backgroundColor: "#E77F23",
     borderRadius: 25,
     height: 50,
     alignItems: "center",
     justifyContent: "center",
     marginTop: 20,
-    /* marginBottom: 40,
+    marginBottom: 40,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.25,
-    shadowRadius: 4, */
+    shadowRadius: 4,
   },
   buttonText: {
     color: "#fff",
