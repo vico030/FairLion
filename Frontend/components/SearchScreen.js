@@ -8,6 +8,8 @@ import ItemSearch from "./ItemSearch";
 import CheckBox from "@react-native-community/checkbox";
 import { ActivityIndicator } from "react-native";
 
+const categories = ["Filme", "Bücher", "Spiele", "Musik", "Elektronik", "Werkzeug", "Kleidung", "Haushalt", "Sonstiges", "Filter entfernen"];
+
 const SearchScreen = ({ navigation }) => {
   const [searchInput, setSearchInput] = useState("");
   const [articles, setArticles] = useState([]);
@@ -155,255 +157,33 @@ const SearchScreen = ({ navigation }) => {
           <Text style={styles.text}>Kategorie filtern</Text>
           <View style={styles.verticalLine} />
 
-          <View style={styles.element}>
-            <Text style={styles.elementTextLeft}>Filme</Text>
-            <CheckBox
-              disabled={false}
-              value={activeFilter.filme}
-              onValueChange={() => {
-                setArticles(savedArticles);
-                setActiveFilter({
-                  filme: true,
-                  bücher: false,
-                  spiele: false,
-                  musik: false,
-                  elektronik: false,
-                  werkzeug: false,
-                  kleidung: false,
-                  haushalt: false,
-                  sonstiges: false
-                });
-                setSelectedCategory("filme");
-                setFilterVisible(!filterVisible);
-              }
-              }
-            />
-          </View>
-
-          <View style={styles.element}>
-            <Text style={styles.elementTextLeft}>Bücher</Text>
-            <CheckBox
-              disabled={false}
-              value={activeFilter.bücher}
-              onValueChange={() => {
-                setArticles(savedArticles);
-                setActiveFilter({
-                  filme: false,
-                  bücher: true,
-                  spiele: false,
-                  musik: false,
-                  elektronik: false,
-                  werkzeug: false,
-                  kleidung: false,
-                  haushalt: false,
-                  sonstiges: false
-                });
-                setSelectedCategory("bücher");
-                setFilterVisible(!filterVisible);
-              }
-              }
-            />
-          </View>
-
-          <View style={styles.element}>
-            <Text style={styles.elementTextLeft}>Spiele</Text>
-            <CheckBox
-              disabled={false}
-              value={activeFilter.spiele}
-              onValueChange={() => {
-                setArticles(savedArticles);
-                setActiveFilter({
-                  filme: false,
-                  bücher: false,
-                  spiele: true,
-                  musik: false,
-                  elektronik: false,
-                  werkzeug: false,
-                  kleidung: false,
-                  haushalt: false,
-                  sonstiges: false
-                });
-                setSelectedCategory("spiele");
-                setFilterVisible(!filterVisible);
-              }
-              }
-            />
-          </View>
-
-          <View style={styles.element}>
-            <Text style={styles.elementTextLeft}>Musik</Text>
-            <CheckBox
-              disabled={false}
-              value={activeFilter.musik}
-              onValueChange={() => {
-                setArticles(savedArticles);
-                setActiveFilter({
-                  filme: false,
-                  bücher: false,
-                  spiele: false,
-                  musik: true,
-                  elektronik: false,
-                  werkzeug: false,
-                  kleidung: false,
-                  haushalt: false,
-                  sonstiges: false
-                });
-                setSelectedCategory("musik");
-                setFilterVisible(!filterVisible);
-              }
-              }
-            />
-          </View>
-
-          <View style={styles.element}>
-            <Text style={styles.elementTextLeft}>Elektronik</Text>
-            <CheckBox
-              disabled={false}
-              value={activeFilter.elektronik}
-              onValueChange={() => {
-                setArticles(savedArticles);
-                setActiveFilter({
-                  filme: false,
-                  bücher: false,
-                  spiele: false,
-                  musik: false,
-                  elektronik: true,
-                  werkzeug: false,
-                  kleidung: false,
-                  haushalt: false,
-                  sonstiges: false
-                });
-                setSelectedCategory("elektronik");
-                setFilterVisible(!filterVisible);
-              }
-              }
-            />
-          </View>
-
-          <View style={styles.element}>
-            <Text style={styles.elementTextLeft}>Werkzeug</Text>
-            <CheckBox
-              disabled={false}
-              value={activeFilter.werkzeug}
-              onValueChange={() => {
-                setArticles(savedArticles);
-                setActiveFilter({
-                  filme: false,
-                  bücher: false,
-                  spiele: false,
-                  musik: false,
-                  elektronik: false,
-                  werkzeug: true,
-                  kleidung: false,
-                  haushalt: false,
-                  sonstiges: false
-                });
-                setSelectedCategory("werkzeug");
-                setFilterVisible(!filterVisible);
-              }
-              }
-            />
-          </View>
-
-          <View style={styles.element}>
-            <Text style={styles.elementTextLeft}>Kleidung</Text>
-            <CheckBox
-              disabled={false}
-              value={activeFilter.kleidung}
-              onValueChange={() => {
-                setArticles(savedArticles);
-                setActiveFilter({
-                  filme: false,
-                  bücher: false,
-                  spiele: false,
-                  musik: false,
-                  elektronik: false,
-                  werkzeug: false,
-                  kleidung: true,
-                  haushalt: false,
-                  sonstiges: false
-                });
-                setSelectedCategory("kleidung");
-                setFilterVisible(!filterVisible);
-              }
-              }
-            />
-          </View>
-
-          <View style={styles.element}>
-            <Text style={styles.elementTextLeft}>Haushalt</Text>
-            <CheckBox
-              disabled={false}
-              value={activeFilter.haushalt}
-              onValueChange={() => {
-                setArticles(savedArticles);
-                setActiveFilter({
-                  filme: false,
-                  bücher: false,
-                  spiele: false,
-                  musik: false,
-                  elektronik: false,
-                  werkzeug: false,
-                  kleidung: false,
-                  haushalt: true,
-                  sonstiges: false
-                });
-                setSelectedCategory("haushalt");
-                setFilterVisible(!filterVisible);
-              }
-              }
-            />
-          </View>
-
-          <View style={styles.element}>
-            <Text style={styles.elementTextLeft}>Sonstiges</Text>
-            <CheckBox
-              disabled={false}
-              value={activeFilter.sonstiges}
-              onValueChange={() => {
-                setArticles(savedArticles);
-                setActiveFilter({
-                  filme: false,
-                  bücher: false,
-                  spiele: false,
-                  musik: false,
-                  elektronik: false,
-                  werkzeug: false,
-                  kleidung: false,
-                  haushalt: false,
-                  sonstiges: true
-                });
-                setSelectedCategory("sonstiges");
-                setFilterVisible(!filterVisible);
-              }
-              }
-            />
-          </View>
-
-          <View style={styles.element}>
-            <Text style={styles.elementTextLeft}>Filter entfernen</Text>
-            <CheckBox
-              disabled={false}
-              value={false}
-              onValueChange={() => {
-                setActiveFilter({
-                  filme: false,
-                  bücher: false,
-                  spiele: false,
-                  musik: false,
-                  elektronik: false,
-                  werkzeug: false,
-                  kleidung: false,
-                  haushalt: false,
-                  sonstiges: false
-                });
-                setSelectedCategory("");
-                setFilterVisible(!filterVisible);
-              }
-              }
-            />
-          </View>
-
+          {categories.map(category => {
+            const lowerCaseCategory = category.toLowerCase();
+            const selectedCategory = category.includes("entfernen") ? "" : lowerCaseCategory;
+            const newActiveFilter = { ...activeFilter };
+            for (const filter of Object.keys(newActiveFilter)) {
+              if (newActiveFilter[filter]) newActiveFilter[filter] = false;
+            }
+            return (
+              <View style={styles.element}>
+                <Text style={styles.elementTextLeft}>{category}</Text>
+                <CheckBox
+                  disabled={false}
+                  value={activeFilter[lowerCaseCategory]}
+                  onValueChange={() => {
+                    setArticles(savedArticles);
+                    setActiveFilter({
+                      ...newActiveFilter,
+                      [lowerCaseCategory]: true
+                    })
+                    setSelectedCategory(selectedCategory);
+                    setFilterVisible(!filterVisible);
+                  }
+                  }
+                />
+              </View>
+            )
+          })}
         </View>
       </Modal>
 
