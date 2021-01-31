@@ -11,7 +11,7 @@ import { ActivityIndicator } from "react-native";
 const SearchScreen = ({ navigation }) => {
   const [searchInput, setSearchInput] = useState("");
   const [articles, setArticles] = useState([]);
-  let savedArticles = [];
+  const [savedArticles, setSavedArticles] = useState([]);
   const [searching, setSearching] = useState(false);
   const [loading, setLoading] = useState(false);
   const [filterVisible, setFilterVisible] = useState(false);
@@ -26,6 +26,7 @@ const SearchScreen = ({ navigation }) => {
     haushalt: false,
     sonstiges: false
   });
+  const [selectedCategory, setSelectedCategory] = useState("");
 
   const fetchArticles = async () => {
     setLoading(true);
@@ -59,7 +60,7 @@ const SearchScreen = ({ navigation }) => {
       }
 
       setArticles(array);
-      savedArticles=array;
+      setSavedArticles(array);
     }
   };
 
@@ -98,14 +99,22 @@ const SearchScreen = ({ navigation }) => {
     }
     if (res.status === 200) {
       setArticles(await resJson.data);
-      savedArticles = await resJson.data;
+      setSavedArticles(await resJson.data);
     }
   }
 
-  function filterArticles(category) {
-    setArticles(articles.filter(el => el.category===category))
+  function filterArticles() {
+    if (selectedCategory) {
+      setArticles(savedArticles.filter(el => el.category === selectedCategory));
+    }
+    else {
+      setArticles(savedArticles);
+    }
   }
 
+  useEffect(() => {
+    filterArticles();
+  }, [selectedCategory, searchInput, savedArticles])
 
   useEffect(() => {
     navigation.setOptions({
@@ -164,7 +173,7 @@ const SearchScreen = ({ navigation }) => {
                   haushalt: false,
                   sonstiges: false
                 });
-                filterArticles("filme");
+                setSelectedCategory("filme");
                 setFilterVisible(!filterVisible);
               }
               }
@@ -189,7 +198,7 @@ const SearchScreen = ({ navigation }) => {
                   haushalt: false,
                   sonstiges: false
                 });
-                filterArticles("bücher");
+                setSelectedCategory("bücher");
                 setFilterVisible(!filterVisible);
               }
               }
@@ -214,7 +223,7 @@ const SearchScreen = ({ navigation }) => {
                   haushalt: false,
                   sonstiges: false
                 });
-                filterArticles("spiele");
+                setSelectedCategory("spiele");
                 setFilterVisible(!filterVisible);
               }
               }
@@ -239,7 +248,7 @@ const SearchScreen = ({ navigation }) => {
                   haushalt: false,
                   sonstiges: false
                 });
-                filterArticles("musik");
+                setSelectedCategory("musik");
                 setFilterVisible(!filterVisible);
               }
               }
@@ -264,7 +273,7 @@ const SearchScreen = ({ navigation }) => {
                   haushalt: false,
                   sonstiges: false
                 });
-                filterArticles("elektronik");
+                setSelectedCategory("elektronik");
                 setFilterVisible(!filterVisible);
               }
               }
@@ -289,7 +298,7 @@ const SearchScreen = ({ navigation }) => {
                   haushalt: false,
                   sonstiges: false
                 });
-                filterArticles("werkzeug");
+                setSelectedCategory("werkzeug");
                 setFilterVisible(!filterVisible);
               }
               }
@@ -314,7 +323,7 @@ const SearchScreen = ({ navigation }) => {
                   haushalt: false,
                   sonstiges: false
                 });
-                filterArticles("kleidung");
+                setSelectedCategory("kleidung");
                 setFilterVisible(!filterVisible);
               }
               }
@@ -339,7 +348,7 @@ const SearchScreen = ({ navigation }) => {
                   haushalt: true,
                   sonstiges: false
                 });
-                filterArticles("haushalt");
+                setSelectedCategory("haushalt");
                 setFilterVisible(!filterVisible);
               }
               }
@@ -364,7 +373,7 @@ const SearchScreen = ({ navigation }) => {
                   haushalt: false,
                   sonstiges: true
                 });
-                filterArticles("sonstiges");
+                setSelectedCategory("sonstiges");
                 setFilterVisible(!filterVisible);
               }
               }
@@ -388,7 +397,7 @@ const SearchScreen = ({ navigation }) => {
                   haushalt: false,
                   sonstiges: false
                 });
-                setArticles(savedArticles);
+                setSelectedCategory("");
                 setFilterVisible(!filterVisible);
               }
               }
@@ -423,6 +432,7 @@ const SearchScreen = ({ navigation }) => {
 
       {searching ? (
         articles.length === 0 ? (
+          !loading &&
           <Text style={styles.infoText}>Leider nichts gefunden!{"\n"}:(</Text>
         ) : (
             <Text style={styles.text}> Suchergebnisse: </Text>
