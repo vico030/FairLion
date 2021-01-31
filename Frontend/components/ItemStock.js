@@ -23,6 +23,7 @@ export default function ItemStock({
   user,
   borrower,
   articleId,
+  isVisible
 }) {
   // Hier steht nur Text, damit da Bilder sind
   return (
@@ -39,7 +40,8 @@ export default function ItemStock({
           beschreibung: beschreibung,
           user: user,
           articleId: articleId,
-          borrower: borrower
+          borrower: borrower,
+          isVisible: isVisible
         })
       }
     >

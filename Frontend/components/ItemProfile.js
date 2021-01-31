@@ -26,9 +26,9 @@ export default function ItemProfile({
   status,
   articleId,
   user,
-  borrower
+  borrower,
 }) {
-
+  
   return (
     // change image link to correct parameter url
     <TouchableOpacity

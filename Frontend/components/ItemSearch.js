@@ -13,6 +13,7 @@ import UserButton from "./UserButton";
 import FavouritesButton from "./FavouritesButton";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-community/async-storage";
+import { render } from "react-dom";
 
 export default function ItemSearch({
   navigation,
@@ -26,9 +27,9 @@ export default function ItemSearch({
   status,
   articleId,
   user,
-  borrower
+  borrower,
 }) {
-  console.log(images);
+
   return (
     <TouchableOpacity
       style={styles.itemStyle}
