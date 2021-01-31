@@ -271,8 +271,8 @@ const styles = StyleSheet.create({
   signUpBtn: {
     width: "60%",
     backgroundColor: "#E77F23",
-    borderRadius: 15,
-    height: 60,
+    borderRadius: 25,
+    height: 50,
     alignItems: "center",
     justifyContent: "center",
     marginVertical: 20,
@@ -289,8 +289,8 @@ const styles = StyleSheet.create({
   disabledBtn: {
     width: "60%",
     backgroundColor: "#CFCFCF",
-    borderRadius: 15,
-    height: 60,
+    borderRadius: 25,
+    height: 50,
     alignItems: "center",
     justifyContent: "center",
     marginVertical: 20,
