@@ -8,7 +8,7 @@ import AsyncStorage from "@react-native-community/async-storage";
 export default function FavouritesButton({ favored, articleId }) {
   
   let favoredVar = favored;
-  const [isFavored, setFavored] = useState(favoredVar);
+  const [isFavored, setFavored] = useState(favored);
   console.log(isFavored);
   console.log(articleId);
 
