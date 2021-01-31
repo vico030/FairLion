@@ -1,18 +1,34 @@
 import env from "../env.js";
 const { BACKEND_URL } = env;
-import { View, Text, StyleSheet, FlatList } from "react-native";
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, Alert, Modal } from "react-native";
 import React, { useState, useEffect } from "react";
 import { SearchBar } from "react-native-elements";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import ItemSearch from "./ItemSearch";
-import AsyncStorage from "@react-native-community/async-storage";
+import CheckBox from "@react-native-community/checkbox";
 import { ActivityIndicator } from "react-native";
+
+const categories = ["Filme", "Bücher", "Spiele", "Musik", "Elektronik", "Werkzeug", "Kleidung", "Haushalt", "Sonstiges", "Filter entfernen"];
 
 const SearchScreen = ({ navigation }) => {
   const [searchInput, setSearchInput] = useState("");
   const [articles, setArticles] = useState([]);
+  const [savedArticles, setSavedArticles] = useState([]);
   const [searching, setSearching] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [filterVisible, setFilterVisible] = useState(false);
+  const [activeFilter, setActiveFilter] = useState({
+    filme: false,
+    bücher: false,
+    spiele: false,
+    musik: false,
+    elektronik: false,
+    werkzeug: false,
+    kleidung: false,
+    haushalt: false,
+    sonstiges: false
+  });
+  const [selectedCategory, setSelectedCategory] = useState("");
 
   const fetchArticles = async () => {
     setLoading(true);
@@ -46,6 +62,7 @@ const SearchScreen = ({ navigation }) => {
         array.push(...friendArticles);
       }
       setArticles(array.filter(el => el.isVisible));
+      setSavedArticles(array.filter(el => el.isVisible));
     }
   };
 
@@ -58,7 +75,9 @@ const SearchScreen = ({ navigation }) => {
       getFavourites();
     }
     setArticles([]);
-    if (input.length != 0) fetchArticles();
+    if (input.length != 0) {
+      fetchArticles();
+    };
   };
 
   async function getFavourites() {
@@ -81,20 +100,95 @@ const SearchScreen = ({ navigation }) => {
       console.log(err);
     }
     if (res.status === 200) {
-      let array = await resJson.data
+      let array = await resJson.data;
       setArticles(array.filter(el => el.isVisible));
+      setSavedArticles(array.filter(el => el.isVisible));
+    }
+  }
+
+  function filterArticles() {
+    if (selectedCategory) {
+      setArticles(savedArticles.filter(el => el.category === selectedCategory));
+    }
+    else {
+      setArticles(savedArticles);
     }
   }
 
   useEffect(() => {
+    filterArticles();
+  }, [selectedCategory, searchInput, savedArticles])
+
+  useEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <TouchableOpacity onPress={() => {
+          // Filter View
+          console.log(filterVisible);
+          setFilterVisible(true);
+        }}>
+
+          <MaterialCommunityIcons
+            name="dns-outline"
+            size={28}
+            style={styles.rightIcon}
+            color={selectedCategory ? "#e77f23" : "white"}
+          />
+        </TouchableOpacity>
+      ),
+    });
     const unsubscribe = navigation.addListener("focus", () => {
-      if (searchInput.length === 0) getFavourites();
+      if (searchInput.length === 0) {
+        getFavourites();
+      };
     });
     return unsubscribe;
   }, [navigation]);
 
   return (
     <View>
+      <Modal
+        animationType="fade"
+        visible={filterVisible}
+        transparent={true}
+        onRequestClose={() => {
+          console.log(filterVisible);
+          setFilterVisible(!filterVisible);
+        }}>
+        <View style={styles.modalView}>
+          <Text style={styles.text}>Kategorie filtern</Text>
+          <View style={styles.verticalLine} />
+
+          {categories.map(category => {
+            const lowerCaseCategory = category.toLowerCase();
+            const selectedCategory = category.includes("entfernen") ? "" : lowerCaseCategory;
+            const newActiveFilter = { ...activeFilter };
+            for (const filter of Object.keys(newActiveFilter)) {
+              if (newActiveFilter[filter]) newActiveFilter[filter] = false;
+            }
+            return (
+              <View style={styles.element} key={category}>
+                <Text style={styles.elementTextLeft}>{category}</Text>
+                <CheckBox
+                  disabled={false}
+                  value={activeFilter[lowerCaseCategory]}
+                  onValueChange={() => {
+                    setArticles(savedArticles);
+                    setActiveFilter({
+                      ...newActiveFilter,
+                      [lowerCaseCategory]: selectedCategory ? true : false
+                    })
+                    setSelectedCategory(selectedCategory);
+                    setFilterVisible(!filterVisible);
+                  }
+                  }
+                />
+              </View>
+            )
+          })}
+        </View>
+      </Modal>
+
       <SearchBar
         containerStyle={{
           backgroundColor: "#333740",
@@ -119,6 +213,7 @@ const SearchScreen = ({ navigation }) => {
 
       {searching ? (
         articles.length === 0 ? (
+          !loading &&
           <Text style={styles.infoText}>Leider nichts gefunden!{"\n"}:(</Text>
         ) : (
             <Text style={styles.text}> Suchergebnisse: </Text>
@@ -171,6 +266,45 @@ const styles = StyleSheet.create({
     top: "50%",
     fontSize: 20,
     textAlign: "center",
+  },
+  rightIcon: {
+    color: "#fff",
+    marginRight: 15,
+  },
+  modalView: {
+    margin: 10,
+    marginTop: 60,
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 35,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5
+  },
+  verticalLine: {
+    borderBottomColor: "#CFCFCF",
+    borderBottomWidth: 1,
+    marginVertical: 10,
+  },
+  element: {
+    width: "100%",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginTop: 10,
+  },
+  elementTextLeft: {
+    fontSize: 12,
+  },
+  elementTextRight: {
+    fontSize: 12,
+    textAlign: "right",
   },
 });
 export default SearchScreen;

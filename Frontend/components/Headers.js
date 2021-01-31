@@ -499,13 +499,13 @@ const SearchStackScreen = ({ navigation }) => (
         headerTitleStyle: {
           fontFamily: "Roboto",
         },
-        headerRight: () => (
+        /* headerRight: () => (
           <MaterialCommunityIcons
             name="dns-outline"
             size={28}
             style={styles.rightIcon}
           />
-        ),
+        ), */
         headerLeft: () => (
           <MaterialIcons
             name="menu"
