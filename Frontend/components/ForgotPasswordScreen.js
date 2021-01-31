@@ -20,8 +20,7 @@ export const ForgotPasswordScreen = ({ navigation }) => {
 
   const submitEmail = () => {
     if (!email)
-      return setError({ occured: true, label: "Field cannot be empty." });
-    console.log("HALLO");
+      return setError({ occured: true, label: "Feld darf nicht leer sein." });
     fetch(BACKEND_URL + "auth" + "/" + "pwreset", {
       method: "POST",
       headers: {
@@ -33,13 +32,13 @@ export const ForgotPasswordScreen = ({ navigation }) => {
     })
       .then((response) => {
         if (response.status === 200) {
-          Alert.alert("Successfully sent new password to your email.");
+          Alert.alert("Erfolg","Wir haben dir dein neues Passwort per Email zugeschickt.");
           navigation.goBack();
         } else {
           setError({
             occured: true,
             label:
-              "Something went wrong trying to reset your password. Please try later again.",
+              "Da ist etwas schief gelaufen. Versuche es bitte später noch einmal.",
           });
         }
       })
@@ -47,7 +46,7 @@ export const ForgotPasswordScreen = ({ navigation }) => {
         setError({
           occured: true,
           label:
-            "Something went wrong trying to reset your password. Please try later again.",
+            "Da ist etwas schief gelaufen. Versuche es bitte später noch einmal.",
         });
       });
   };
@@ -77,7 +76,7 @@ export const ForgotPasswordScreen = ({ navigation }) => {
         </TouchableOpacity>
       </View>
 
-      {error.occured && Alert.alert(error.label)}
+      {error.occured && Alert.alert("Fehler",error.label)}
     </KeyboardAwareScrollView>
   );
 };

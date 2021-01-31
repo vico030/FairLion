@@ -16,7 +16,7 @@ const registerUser = (body) => {
             const user = new userModel(body);
             const savedUser = await user.save();
             generateTokens({ email: savedUser.email, userId: savedUser._id }, async (err, authToken, refreshToken) => {
-                if (err) return res.status(500).send("Internal Server error.");
+                if (err) return res.status(500).send("Interner Server Fehler.");
                 //sendEmail(req.body.email, verificationHash);
                 var newUser = await userModel.findOneAndUpdate({ email: user.email }, { refreshToken }).select("-password") //we dont care about the response, set refreshToken
                 /*return res.status(201).json({
@@ -29,7 +29,7 @@ const registerUser = (body) => {
                 return resolve({
                     data: newUser,//{ userId: savedUser._id, username: savedUser.username },
                     status: 201,
-                    message: "Successfully created user.",
+                    message: "User wurde erstellt.",
                     refreshToken,
                     authToken
                 })
@@ -51,28 +51,28 @@ const loginUser = ({ email, password }) => {
     return new Promise(async (resolve, reject) => {
         try {
             const user = await userModel.findOne({ email });
-            if (!user) return reject({ data: [], message: "User does not exist.", status: 401 })
+            if (!user) return reject({ data: [], message: "User existiert nicht.", status: 401 })
             user.comparePasswords(password, err => {
                 if (err) {
-                    if (err === true) return reject({ error: "Password invalid", status: 400, message: "Password invalid" }); //passwords arent equal
-                    else return reject({ error: err, status: 500, message: "Internal Server Error. Try later again." }); //some unexpected error
+                    if (err === true) return reject({ error: "Password invalid", status: 400, message: "Passwort ungültig." }); //passwords arent equal
+                    else return reject({ error: err, status: 500, message: "Interner Server Fehler. Versuche es später noch einmal." }); //some unexpected error
                 }
                 //check if verified
-                if (!user.isVerified) return reject({ error: null, status: 401, message: "Please verify your email address first." })
+                if (!user.isVerified) return reject({ error: null, status: 401, message: "Bitte bestätige zuerst deine Email-Adresse." })
                 generateTokens({ email: user.email, userId: user._id }, async (err, authToken, refreshToken) => {
-                    if (err) return reject({ error: err, status: 500, message: "Internal Server Error. Try later again." }); //some unexpected error
+                    if (err) return reject({ error: err, status: 500, message: "Interner Server Fehler. Versuche es später noch einmal." }); //some unexpected error
                     try {
                         const newUser = await userModel.findOneAndUpdate({ email: user.email }, { refreshToken }).select('-password');
-                        return resolve({ data: newUser, status: 200, message: "Successfully logged in", authToken, refreshToken });
+                        return resolve({ data: newUser, status: 200, message: "Erfolgreich eingeloggt.", authToken, refreshToken });
                     }
                     catch (err) {
-                        return reject({ error: err, status: 500, message: "Internal Server Error. Try later again." })
+                        return reject({ error: err, status: 500, message: "Interner Server Fehler. Versuche es später noch einmal." })
                     }
                 })
             })
         }
         catch (err) {
-            return reject({ error: err, message: "Server error. Try later again.", status: 500 })
+            return reject({ error: err, message: "Interner Server Fehler. Versuche es später noch einmal.", status: 500 })
         }
     })
 }
@@ -81,11 +81,11 @@ const verifyUser = hash => {
     return new Promise(async (resolve, reject) => {
         try {
             const user = await userModel.findOneAndUpdate({ verificationHash: hash }, { isVerified: true, $unset: { verificationHash: "" } })
-            return resolve({ data: user, status: 200, message: "Successfully verified user." });
+            return resolve({ data: user, status: 200, message: "User erfolgreich verifiziert." });
         }
         catch (err) {
             console.log(err);
-            return reject({ error: err, message: "Server error. Try later again.", status: 500 })
+            return reject({ error: err, message: "Interner Server Fehler. Versuche es später noch einmal.", status: 500 })
         }
     })
 }
@@ -100,11 +100,11 @@ const resetPassword = email => {
                 await user.save();
             }
             sendEmail(user.email, newPassword, "pwreset");
-            return resolve({ data: null, message: "Successfully reset password.", status: 200 });
+            return resolve({ data: null, message: "Passwort erfolgreich zurückgesetzt", status: 200 });
         }
         catch (err) {
             console.log(err);
-            return reject({ error: err, message: "Server error. Try later again.", status: 500 })
+            return reject({ error: err, message: "Interner Server Fehler. Versuche es später noch einmal.", status: 500 })
         }
     })
 }
@@ -120,7 +120,7 @@ const changePassword = ({ email, password }) => {
         return resolve({ data: null, message: "Password wurde erfolgreich geändert.", status: 200 });
       } catch (err) {
         console.log(err);
-        return reject({ error: err, message: "Server Error: Probiere es bitte später erneut.", status: 500 });
+        return reject({ error: err, message: "Interner Server Fehler. Versuche es später noch einmal.", status: 500 });
       }
     });
   };
@@ -137,7 +137,7 @@ function generateUID() {
 
 //idee cookie has long expiration date, jwt expiration short, so a hacker cant use the token for more than 5 minutes, if he manages to get the token
 const isAuthenticated = async (req, res, next) => {
-    if (!req.cookies.authToken || !req.cookies.refreshToken) return res.status(401).send("Please Login first"); //no cookie
+    if (!req.cookies.authToken || !req.cookies.refreshToken) return res.status(401).send("Bitte zuerst einloggen."); //no cookie
     try {
         const { authToken } = req.cookies;
         const { email, userId } = jwt.verify(authToken, privateAuthKey); //just checking for an exception
@@ -154,7 +154,7 @@ const isAuthenticated = async (req, res, next) => {
                 const user = await userModel.findOne({ email: decoded.email });
                 if (user.refreshToken === refreshToken) { //database refreshToken === given refreshToken from cookies
                     generateAuthToken({ email: decoded.eamil, userId: decoded.userId }, privateAuthKey, (err, newAuthToken) => {
-                        if (err) return res.status(500).send("Internal Server Error. Please try later again.");
+                        if (err) return res.status(500).send("Interner Server Fehler. Versuche es später noch einmal.");
                         res.cookie("authToken", newAuthToken, { httpOnly: true, maxAge: 9999999999 });
                         req.email = decoded.eamil;
                         req.userId = decoded.userId;
@@ -163,17 +163,17 @@ const isAuthenticated = async (req, res, next) => {
                 }
                 else { //if tokens arent same
                     console.log(user.refreshToken, refreshToken);
-                    res.status(401).send("Access denied, refreshToken");
+                    res.status(401).send("Zugriff verweigert, refreshToken abgelaufen.");
                 }
             }
             catch (err) { //if jwt error on refreshToken
                 console.log(err)
-                if (err.message === "jwt expired") return res.status(401).send("Please Login.");
-                else return res.status(401).send("Access denied, refreshToken");
+                if (err.message === "jwt expired") return res.status(401).send("Bitte einloggen.");
+                else return res.status(401).send("Zugriff verweigert, refreshToken abgelaufen.");
             }
         }
         else { //some other jwt error
-            return res.status(401).send("Access denied, authToken. Please Login.");
+            return res.status(401).send("Zugriff verweigert, AuthToken abgelaufen. Bitte einloggen.");
         }
     }
 }
@@ -189,7 +189,7 @@ function handleNewUserError(err) {
         }) //409 == conflict
         else */ if (err.keyPattern.email) return ({
             error: err,
-            message: "Email is already in use",
+            message: "Email ist bereits registriert.",
             status: 409
         }) //409 == conflict
     } else if (err.name === 'ValidationError') { //err.errors == list of attributes that had this error
@@ -198,25 +198,25 @@ function handleNewUserError(err) {
             if (err.errors.username.kind === "minlength")
                 return ({
                     error: err,
-                    message: "Username must be at least 4 letters and max 15 letters long",
+                    message: "Username muss zwischen 4 und 15 Zeichen lang sein.",
                     status: 400
                 }) //400 == client side error}
             return ({
                 error: err,
-                message: "Special characters not valid for username. Characters from the alphabet and numbers are allowed.",
+                message: "Sonderzeichen sind beim Username nicht erlaubt. Bitte verwende alphanumerische Zeichen.",
                 status: 400
             })
         }
         //if email validation error
         return ({
             error: err,
-            message: "Email does not have a valid format.",
+            message: "Email hat nicht das korrekte Format.",
             status: 400
         }) //400 == client side error}
     }
     return ({
         error: err,
-        message: "Something went wrong. Try later again.",
+        message: "Interner Server Fehler. Versuche es später noch einmal.",
         status: 500
     }) //server error
 }
