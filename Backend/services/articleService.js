@@ -245,12 +245,12 @@ const deleteArticleById = function (articleId) {
                 }, {
                     new: true
                 });
-                Article.findById(articleId)
-                    .then((article) => {
+                await Article.findById(articleId)
+                    .then(async (article) => {
                         let userId = article.owner;
                         copy = article;
                         article.delete();
-                        User.findByIdAndUpdate(userId, {
+                        await User.findByIdAndUpdate(userId, {
                             $inc: {
                                 articleCount: -1
                             }
