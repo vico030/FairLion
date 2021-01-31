@@ -131,6 +131,7 @@ const SearchScreen = ({ navigation }) => {
             name="dns-outline"
             size={28}
             style={styles.rightIcon}
+            color={selectedCategory ? "#e77f23" : "white"}
           />
         </TouchableOpacity>
       ),
@@ -165,7 +166,7 @@ const SearchScreen = ({ navigation }) => {
               if (newActiveFilter[filter]) newActiveFilter[filter] = false;
             }
             return (
-              <View style={styles.element}>
+              <View style={styles.element} key={category}>
                 <Text style={styles.elementTextLeft}>{category}</Text>
                 <CheckBox
                   disabled={false}
@@ -174,7 +175,7 @@ const SearchScreen = ({ navigation }) => {
                     setArticles(savedArticles);
                     setActiveFilter({
                       ...newActiveFilter,
-                      [lowerCaseCategory]: true
+                      [lowerCaseCategory]: selectedCategory ? true : false
                     })
                     setSelectedCategory(selectedCategory);
                     setFilterVisible(!filterVisible);
