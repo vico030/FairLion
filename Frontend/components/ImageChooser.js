@@ -23,7 +23,7 @@ export default function ImageChooser(props) {
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
       allowsMultipleSelection: true,
-      aspect: [4, 3],
+      aspect: props.aspect,
       quality: 1,
     });
     if (result.uri) props.handleImages([result.uri]);
@@ -35,12 +35,12 @@ export default function ImageChooser(props) {
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.button} onPress={() => selectImage()}>
+      <TouchableOpacity style={JSON.stringify(props.aspect)==JSON.stringify([1,1]) ? styles.buttonSquare : styles.button} onPress={() => selectImage()}>
         {!imageSource && (
           <MaterialIcons name="add-a-photo" style={styles.icon} size={36} />
         )}
         {imageSource && (
-          <Image source={{ uri: imageSource }} style={styles.image} />
+          <Image source={{ uri: imageSource }} style={JSON.stringify(props.aspect)==JSON.stringify([1,1]) ? styles.imageSquare : styles.image} />
         )}
       </TouchableOpacity>
     </View>
@@ -63,8 +63,23 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     backgroundColor: "#fff",
   },
+  buttonSquare: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    width: 150,
+    height: 150,
+    borderWidth: 1,
+    borderColor: "#C6C6C8",
+    borderRadius: 5,
+    backgroundColor: "#fff",
+  },
   image: {
     width: 200,
+    height: 150,
+  },
+  imageSquare: {
+    width: 150,
     height: 150,
   },
   icon: {

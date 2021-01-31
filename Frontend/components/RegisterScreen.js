@@ -158,7 +158,7 @@ const RegisterScreen = ({ navigation }) => {
 
   return (
     <KeyboardAwareScrollView style={{ flex: 1 }}>
-      <ImageChooser handleImages={handleImages} />
+      <ImageChooser handleImages={handleImages} aspect={[1,1]}/>
 
       <View style={styles.userInfo}>
         <View style={styles.inputView}>

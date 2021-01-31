@@ -136,7 +136,7 @@ const AddItemScreen = ({ navigation }) => {
 
   return (
     <KeyboardAwareScrollView style={{ flex: 1 }}>
-      <ImageChooser handleImages={handleImages} />
+      <ImageChooser handleImages={handleImages} aspect={[4,3]}/>
 
       <View style={styles.itemInfo}>
         <View style={styles.inputView}>
