@@ -73,6 +73,7 @@ const StockScreen = ({ navigation }) => {
             user={item.user}
             borrower={item.borrower}
             articleId={item._id}
+            isVisible={item.isVisible}
           />
         )}
       />

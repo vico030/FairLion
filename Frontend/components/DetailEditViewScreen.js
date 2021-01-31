@@ -32,10 +32,12 @@ const DetailEditViewScreen = ({
     beschreibung,
     user,
     articleId,
-    borrower
+    borrower,
+    isVisible
   } = route.params;
 
-  const [borrowerObject, setBorrowerObject] = useState(null)
+  const [borrowerObject, setBorrowerObject] = useState(null);
+  const [visibility, setVisibility] = useState(isVisible);
 
   async function getBorrower() {
     const requestOptions = {
@@ -89,25 +91,53 @@ const DetailEditViewScreen = ({
     }
   }
 
-  useEffect(() => {
-    navigation.setOptions({ headerRight: ()=> 
-      <TouchableOpacity onPress={() => {
-        Alert.alert("Artikel Löschen", "Wirklich löschen?", [
-          {
-            text: "Nein",
-            style: "cancel"
-          },
-          { text: "Ja", onPress: () => deleteArticle() }
-        ])
+  const hideArticle = async () => {
+    const formdata = new FormData();
+    formdata.append("isVisible", !visibility);
 
-      }}>
-        <Feather
-          name="trash"
-          style={styles.rightIcon}
-          size={22}
-          color="white"
-        />
-      </TouchableOpacity>
+    const requestOptions = {
+      method: "PUT",
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Accept: "application/json",
+      },
+      body: formdata
+    };
+    let res;
+    let resJson;
+    try {
+      res = await fetch(BACKEND_URL + `articles/${articleId}`, requestOptions);
+      resJson = await res.json();
+      if (res.status === 201) {
+        setVisibility(await resJson.data.isVisible);
+      }
+    }
+    catch (err) {
+      console.log(err);
+    }
+  }
+
+  useEffect(() => {
+    console.log(visibility);
+    navigation.setOptions({
+      headerRight: () =>
+        <TouchableOpacity onPress={() => {
+          Alert.alert("Artikel Löschen", "Wirklich löschen?", [
+            {
+              text: "Nein",
+              style: "cancel"
+            },
+            { text: "Ja", onPress: () => deleteArticle() }
+          ])
+
+        }}>
+          <Feather
+            name="trash"
+            style={styles.rightIcon}
+            size={22}
+            color="white"
+          />
+        </TouchableOpacity>
     });
     const unsubscribe = navigation.addListener("focus", () => {
       getBorrower();
@@ -129,22 +159,40 @@ const DetailEditViewScreen = ({
 
           <View style={styles.items}>
             <UserButton user={user} navigation={navigation} disabled={true} />
-            {/* <TouchableOpacity onPress={() => {
-              Alert.alert("Artikel verbergen", "möchten Sie den Artikel für andere Nutzer verbergen?", [
-                {
-                  text: "Nein",
-                  style: "cancel"
-                },
-                { text: "Ja", onPress: () => hideArticle() }
-              ])
+            <TouchableOpacity onPress={() => {
+              if (visibility) {
+                Alert.alert("Artikel verbergen", "Möchten Sie den Artikel für andere Nutzer verbergen?", [
+                  {
+                    text: "Nein",
+                    style: "cancel"
+                  },
+                  { text: "Ja", onPress: () => hideArticle() }
+                ])
+              }
+              else {
+                Alert.alert("Artikel anzeigen", "Möchten Sie den Artikel für andere Nutzer sichtbar machen?", [
+                  {
+                    text: "Nein",
+                    style: "cancel"
+                  },
+                  { text: "Ja", onPress: () => hideArticle() }
+                ])
+              }
 
             }}>
-              <MaterialCommunityIcons
-                name="eye-off-outline"
-                size={24}
-                color="black"
-              />
-            </TouchableOpacity> */}
+              {visibility ?
+                <MaterialCommunityIcons
+                  name="eye-outline"
+                  size={24}
+                  color="black"
+                /> :
+                <MaterialCommunityIcons
+                  name="eye-off-outline"
+                  size={24}
+                  color="black"
+                />
+              }
+            </TouchableOpacity>
           </View>
         </View>
 

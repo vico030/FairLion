@@ -38,6 +38,10 @@ const articleSchema = mongoose.Schema({
   returnDate: {
     type: Date,
   },
+  isVisible: {
+    type: Boolean,
+    default: true
+  }
 });
 
 module.exports = mongoose.model("Article", articleSchema);

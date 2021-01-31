@@ -38,14 +38,14 @@ const SearchScreen = ({ navigation }) => {
       setLoading(false);
       console.log(err);
     }
+    console.log(resJson.message);
     if (res.status === 200) {
       let array = [];
 
       for (const friendArticles of Object.values(resJson.data)) {
         array.push(...friendArticles);
       }
-
-      setArticles(array);
+      setArticles(array.filter(el => el.isVisible));
     }
   };
 
@@ -81,7 +81,8 @@ const SearchScreen = ({ navigation }) => {
       console.log(err);
     }
     if (res.status === 200) {
-      setArticles(await resJson.data);
+      let array = await resJson.data
+      setArticles(array.filter(el => el.isVisible));
     }
   }
 
@@ -91,6 +92,7 @@ const SearchScreen = ({ navigation }) => {
     });
     return unsubscribe;
   }, [navigation]);
+
   return (
     <View>
       <SearchBar
@@ -112,7 +114,6 @@ const SearchScreen = ({ navigation }) => {
         onChangeText={(input) => handleSearchInputChange(input)}
         onClear={() => {
           setArticles([]);
-          console.log(articles);
         }}
       />
 
@@ -149,6 +150,7 @@ const SearchScreen = ({ navigation }) => {
             articleId={item._id}
             user={item.user}
             borrower={item.borrower}
+            isVisible={item.isVisible}
           />
         )}
       />

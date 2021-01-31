@@ -33,7 +33,8 @@ export default function ProfileStockItemList({ artikelzahl, navigation, id }) {
       console.log(err);
     }
     if (res.status === 200) {
-      setArticles(resJson.data);
+      let array = await resJson.data;
+      setArticles(array.filter(el => el.isVisible));
     }
   };
 
