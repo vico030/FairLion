@@ -8,11 +8,13 @@ import {
   TouchableOpacity,
   ScrollView,
   Dimensions,
+  Alert
 } from "react-native";
 import { MaterialCommunityIcons, Feather } from "@expo/vector-icons";
 import Carousel from "./CarouselComponent";
 import UserButton from "./UserButton";
-import { Alert } from "react-native";
+import { useNavigation } from '@react-navigation/native'
+import { Button } from "react-native";
 
 const windowHeight = Dimensions.get("window").height;
 
@@ -88,6 +90,25 @@ const DetailEditViewScreen = ({
   }
 
   useEffect(() => {
+    navigation.setOptions({ headerRight: ()=> 
+      <TouchableOpacity onPress={() => {
+        Alert.alert("Artikel Löschen", "Wirklich löschen?", [
+          {
+            text: "Nein",
+            style: "cancel"
+          },
+          { text: "Ja", onPress: () => deleteArticle() }
+        ])
+
+      }}>
+        <Feather
+          name="trash"
+          style={styles.rightIcon}
+          size={22}
+          color="white"
+        />
+      </TouchableOpacity>
+    });
     const unsubscribe = navigation.addListener("focus", () => {
       getBorrower();
     });
@@ -108,27 +129,22 @@ const DetailEditViewScreen = ({
 
           <View style={styles.items}>
             <UserButton user={user} navigation={navigation} disabled={true} />
-            <TouchableOpacity onPress={() => {
-              Alert.alert("Artikel Löschen", "Wirklich löschen?", [
+            {/* <TouchableOpacity onPress={() => {
+              Alert.alert("Artikel verbergen", "möchten Sie den Artikel für andere Nutzer verbergen?", [
                 {
                   text: "Nein",
                   style: "cancel"
                 },
-                { text: "Ja", onPress: () => deleteArticle() }
+                { text: "Ja", onPress: () => hideArticle() }
               ])
 
             }}>
-              <Feather
-                name="trash"
-                size={24}
-                color="black"
-              />
-              {/* <MaterialCommunityIcons
+              <MaterialCommunityIcons
                 name="eye-off-outline"
                 size={24}
                 color="black"
-              /> */}
-            </TouchableOpacity>
+              />
+            </TouchableOpacity> */}
           </View>
         </View>
 
@@ -321,5 +337,9 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.25,
     shadowRadius: 4,
-  }
+  },
+  rightIcon: {
+    color: "#fff",
+    marginRight: 15,
+  },
 });

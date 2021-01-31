@@ -1,6 +1,6 @@
 import env from "../env.js";
 const { BACKEND_URL } = env;
-import React from "react";
+import React, {useEffect} from "react";
 import { View, Text, StyleSheet, Image, Dimensions, TouchableOpacity, Linking } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
@@ -37,16 +37,39 @@ export default function ProfileInfoBox({
       resJson = await res.json();
 
     }
-    catch(err){
+    catch (err) {
       console.log(err);
     }
-    if(res.status===201){
+    if (res.status === 201) {
       navigation.goBack();
     }
     else {
       Alert.alert("Fehler", resJson.message);
     }
   }
+
+  useEffect(() => {
+    navigation.setOptions({
+      headerRight: () =>
+        <TouchableOpacity onPress={() => {
+          Alert.alert("Freund entfernen", "Wirklich entfernen?", [
+            {
+              text: "Nein",
+              style: "cancel"
+            },
+            { text: "Ja", onPress: () => unFriend() }
+          ])
+        }}>
+          <Feather
+            name="trash"
+            style={styles.rightIcon}
+            size={22}
+            color="white"
+          />
+        </TouchableOpacity>
+    });
+  }, [navigation]);
+
 
   return (
     <View style={{ backgroundColor: "#fff" }}>
@@ -64,23 +87,6 @@ export default function ProfileInfoBox({
           <Text stlye={styles.userAddress}>{plz} {wohnort}</Text>
           <Text stlye={styles.userAddress}>{land}</Text>
         </View>
-
-        <TouchableOpacity style={styles.deleteFriend} onPress={() => {
-          Alert.alert("Freund entfernen", "Wirklich entfernen?", [
-            {
-              text: "Nein",
-              style: "cancel"
-            },
-            { text: "Ja", onPress: () => unFriend() }
-          ])
-
-        }}>
-          <Feather
-            name="trash"
-            size={24}
-            color="grey"
-          />
-        </TouchableOpacity>
 
         <View style={styles.iconsWrapper}>
           <TouchableOpacity onPress={async () => {
@@ -153,9 +159,8 @@ const styles = StyleSheet.create({
   aboutHeader: {
     fontWeight: "700",
   },
-  deleteFriend:{
-    paddingTop: 15,
-    position: "absolute",
-    right: 15,
-  }
+  rightIcon: {
+    color: "#fff",
+    marginRight: 15,
+  },
 });
