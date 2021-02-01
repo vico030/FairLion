@@ -222,14 +222,14 @@ function handleNewUserError(err) {
 }
 
 const generateAuthToken = (userDetails, key, callback) => {
-    jwt.sign(userDetails, key, { expiresIn: "5m" }, (err, result) => {
+    jwt.sign(userDetails, key, { expiresIn: "3d" }, (err, result) => {
         if (err) return callback(err);
         callback(null, result)
     })
 }
 
 const generateTokens = (userDetails, callback) => {
-    jwt.sign(userDetails, privateAuthKey, { expiresIn: "5m" }, (err, authToken) => { //generate authToken
+    jwt.sign(userDetails, privateAuthKey, { expiresIn: "3d" }, (err, authToken) => { //generate authToken
         if (err) return callback(err);
         jwt.sign(userDetails, privateRefreshKey, { expiresIn: "30d" }, (err, refreshToken) => {
             if (err) callback(err);
