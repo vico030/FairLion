@@ -25,6 +25,14 @@ const EditProfileScreen = ({ route, navigation }) => {
   const [aboutMe, setAboutMe] = useState("");
   const [image, setImage] = useState("");
 
+  const usernameInput = React.createRef();
+  const phoneInput = React.createRef();
+  const streetInput = React.createRef();
+  const zipCodeInput = React.createRef();
+  const cityInput = React.createRef();
+  const countryInput = React.createRef();
+  const infoInput = React.createRef();
+
   const getUser = async () => {
     try {
       setUsername(await AsyncStorage.getItem("username"));
@@ -44,13 +52,14 @@ const EditProfileScreen = ({ route, navigation }) => {
   };
 
   useEffect(() => {
-    getUser();
-  }, []);
+    const unsubscribe = navigation.addListener("focus", () => {
+      getUser();
+    });
+    return unsubscribe;
+  }, [navigation]);
 
   const usernameChange = (value) => {
-    if (value.length !== 0) {
-      setUsername(value);
-    } else {
+    if (value !== username && value.length >= 4 && value.length <= 15) {
       setUsername(value);
     }
   };
@@ -58,6 +67,7 @@ const EditProfileScreen = ({ route, navigation }) => {
   const handlePhoneChange = (value) => {
     if (value !== phone) {
       setPhone(value);
+      console.log("hallo")
     }
   };
 
@@ -165,7 +175,7 @@ const EditProfileScreen = ({ route, navigation }) => {
         [
           {
             text: "Ok",
-            onPress: () => DevSettings.reload(),
+            //onPress: () => DevSettings.reload(),
           },
         ],
         { cancelable: false }
@@ -174,18 +184,23 @@ const EditProfileScreen = ({ route, navigation }) => {
       const errMess = await res.json();
       Alert.alert("Update gescheitert ", errMess.message);
     }
-    //updateUserContext(username, city, image);
-
     navigation.goBack();
+    usernameInput.current.clear();
+    phoneInput.current.clear();
+    streetInput.current.clear();
+    zipCodeInput.current.clear();
+    cityInput.current.clear();
+    infoInput.current.clear();
   };
 
   return (
     <KeyboardAwareScrollView style={{ flex: 1 }}>
-      <ImageChooser handleImages={handleImages} aspect={[1,1]}/>
+      <ImageChooser handleImages={handleImages} aspect={[1, 1]} />
 
       <View style={styles.userInfo}>
         <View style={styles.inputView}>
           <TextInput
+            ref={usernameInput}
             style={styles.inputText}
             placeholder="Username"
             placeholderTextColor="#7E7E7E"
@@ -196,6 +211,7 @@ const EditProfileScreen = ({ route, navigation }) => {
 
         <View style={styles.inputViewLast}>
           <TextInput
+            ref={phoneInput}
             style={styles.inputText}
             placeholder="Gib deine neue Telefonnummer ein"
             placeholderTextColor="#7E7E7E"
@@ -209,6 +225,7 @@ const EditProfileScreen = ({ route, navigation }) => {
       <View style={styles.userInfo}>
         <View style={styles.inputView}>
           <TextInput
+            ref={streetInput}
             style={styles.inputText}
             placeholder="Straße und Hausnummer"
             placeholderTextColor="#7E7E7E"
@@ -218,6 +235,7 @@ const EditProfileScreen = ({ route, navigation }) => {
 
         <View style={styles.inputView}>
           <TextInput
+            ref={zipCodeInput}
             style={styles.inputText}
             placeholder="PLZ"
             placeholderTextColor="#7E7E7E"
@@ -228,6 +246,7 @@ const EditProfileScreen = ({ route, navigation }) => {
 
         <View style={styles.inputView}>
           <TextInput
+            ref={cityInput}
             style={styles.inputText}
             placeholder="Ort"
             placeholderTextColor="#7E7E7E"
@@ -240,6 +259,7 @@ const EditProfileScreen = ({ route, navigation }) => {
 
           <View style={styles.pickerContainer}>
             <Picker
+              ref={countryInput}
               selectedValue={country}
               style={styles.picker}
               itemStyle={styles.pickerItems}
@@ -255,10 +275,11 @@ const EditProfileScreen = ({ route, navigation }) => {
           </View>
         </View>
       </View>
-      
+
       <View style={styles.userPersonalInfo}>
         <View style={styles.inputAboutMeView}>
           <TextInput
+            ref={infoInput}
             style={styles.inputText}
             placeholder="Über mich..."
             placeholderTextColor="#7E7E7E"

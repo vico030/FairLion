@@ -36,7 +36,7 @@ const DrawerContent = ({ navigation }) => {
       getUserdata();
     });
     return unsubscribe; */
-  }, [navigation]);
+  }, [navigation, AsyncStorage.multiGet(["image", "username", "phone", "street", "zipCode", "city", "country", "info"])]);
 
   return (
     <View style={styles.container}>
