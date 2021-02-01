@@ -597,6 +597,35 @@ function unFriend(userId, friendId) {
           .catch((err) => {
             throw err;
           });
+        // favourites bei friend entfernen
+        const userArticles = await articleModel.find({
+          owner: userId
+        });
+        for (article of userArticles) {
+          if (friend.favourites.includes(article._id)) {
+            await userModel
+              .findByIdAndUpdate(friendId, {
+                $pull: {
+                  favourites: article._id
+                }
+              });
+          }
+        }
+        // favourites bei user entfernen
+        const friendArticles = await articleModel.find({
+          owner: friendId
+        });
+        for (article of friendArticles) {
+          if (user.favourites.includes(article._id)) {
+            await userModel
+              .findByIdAndUpdate(userId, {
+                $pull: {
+                  favourites: article._id
+                }
+              });
+          }
+        }
+
         return resolve({
           data: user,
           message: "Freundschaftsbeziehung wurde erfolgreich beendet.",
