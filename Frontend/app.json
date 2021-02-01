@@ -13,11 +13,11 @@
     "ios": {
       "supportsTablet": false,
       "bundleIdentifier": "com.fairlion.app",
-      "buildNumber": "1.0.0"
+      "buildNumber": "1.0.1"
     },
     "android": {
       "package": "com.fairlion.app",
-      "versionCode": 1
+      "versionCode": "1.0.1"
     },
     "description": "Verleihen leicht gemacht!"
   }
