@@ -38,7 +38,7 @@ const SettingsScreen = ({ navigation }) => {
   return (
     <View style={styles.main}>
       <View style={styles.container}>
-        <TouchableOpacity style={styles.subMenuBottom}>
+        <TouchableOpacity style={styles.subMenu}>
           <Text style={styles.buttonText}>Über fairLION</Text>
           <MaterialIcons name="chevron-right" size={24} color="#bbb" />
         </TouchableOpacity>
@@ -53,7 +53,7 @@ const SettingsScreen = ({ navigation }) => {
           <MaterialIcons name="chevron-right" size={24} color="#bbb" />
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.subMenu}>
+        <TouchableOpacity style={styles.subMenuBottom}>
           <Text style={styles.buttonText}>Datenschutzerklärung</Text>
           <MaterialIcons name="chevron-right" size={24} color="#bbb" />
         </TouchableOpacity>

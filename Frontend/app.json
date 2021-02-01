@@ -17,7 +17,7 @@
     },
     "android": {
       "package": "com.fairlion.app",
-      "versionCode": "1.0.2"
+      "versionCode": 1
     },
     "description": "Verleihen leicht gemacht!"
   }
