@@ -165,7 +165,7 @@ const EditProfileScreen = ({ route, navigation }) => {
         [
           {
             text: "Ok",
-            onPress: () => DevSettings.reload(),
+            //onPress: () => DevSettings.reload(),
           },
         ],
         { cancelable: false }
