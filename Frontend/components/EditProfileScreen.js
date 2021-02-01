@@ -14,9 +14,8 @@ import ImageChooser from "./ImageChooser";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scrollview";
 import { Alert, DevSettings } from "react-native";
 
-const EditProfileScreen = ({ route, navigation }) => {
+const EditProfileScreen = ({ navigation }) => {
   const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [street, setStreet] = useState("");
   const [PLZ, setPLZ] = useState("");
@@ -25,18 +24,9 @@ const EditProfileScreen = ({ route, navigation }) => {
   const [aboutMe, setAboutMe] = useState("");
   const [image, setImage] = useState("");
 
-  const usernameInput = React.createRef();
-  const phoneInput = React.createRef();
-  const streetInput = React.createRef();
-  const zipCodeInput = React.createRef();
-  const cityInput = React.createRef();
-  const countryInput = React.createRef();
-  const infoInput = React.createRef();
-
   const getUser = async () => {
     try {
       setUsername(await AsyncStorage.getItem("username"));
-      setEmail(await AsyncStorage.getItem("email"));
       setPhone(await AsyncStorage.getItem("phone"));
       setStreet(await AsyncStorage.getItem("street"));
       setPLZ(await AsyncStorage.getItem("zipCode"));
@@ -58,48 +48,7 @@ const EditProfileScreen = ({ route, navigation }) => {
     return unsubscribe;
   }, [navigation]);
 
-  const usernameChange = (value) => {
-    if (value !== username && value.length >= 4 && value.length <= 15) {
-      setUsername(value);
-    }
-  };
 
-  const handlePhoneChange = (value) => {
-    if (value !== phone) {
-      setPhone(value);
-      console.log("hallo")
-    }
-  };
-
-  const handleStreetChange = (value) => {
-    if (value !== street) {
-      setStreet(value);
-    }
-  };
-
-  const handlePLZChange = (value) => {
-    if (value !== PLZ) {
-      setPLZ(value);
-    }
-  };
-
-  const handleCityChange = (value) => {
-    if (value !== city) {
-      setCity(value);
-    }
-  };
-
-  const handleCountryChange = (value) => {
-    if (value !== country) {
-      setCountry(value);
-    }
-  };
-
-  const handleAboutMEChange = (value) => {
-    if (value !== aboutMe) {
-      setAboutMe(value);
-    }
-  };
 
   const handleImages = (imageUris) => {
     if (imageUris) {
@@ -124,17 +73,41 @@ const EditProfileScreen = ({ route, navigation }) => {
   };
 
   const handleEdit = async () => {
+
+    const oldUsername = await AsyncStorage.getItem("username");
+    const oldPhone = await AsyncStorage.getItem("phone");
+    const oldStreet = await AsyncStorage.getItem("street");
+    const oldZipCode = await AsyncStorage.getItem("zipCode");
+    const oldCity = await AsyncStorage.getItem("city");
+    const oldCountry = await AsyncStorage.getItem("country");
+    const oldInfo = await AsyncStorage.getItem("info");
+
     const formdata = new FormData();
-    //if (image) formdata.append("picture", image);
-    formdata.append("username", username);
-    formdata.append("email", email);
-    formdata.append("phone", phone);
-    formdata.append("street", street);
-    formdata.append("zipCode", PLZ);
-    formdata.append("city", city);
-    formdata.append("country", country);
-    formdata.append("info", aboutMe);
-    formdata.append("image", image);
+
+    if (username !== oldUsername && username.length >= 4 && username.length <= 15) {
+      formdata.append("username", username);
+    }
+    if (phone !== oldPhone) {
+      formdata.append("phone", phone);
+    }
+    if (street !== oldStreet) {
+      formdata.append("street", street);
+    }
+    if (PLZ !== oldZipCode) {
+      formdata.append("zipCode", PLZ);
+    }
+    if (city !== oldCity) {
+      formdata.append("city", city);
+    }
+    if (country !== oldCountry) {
+      formdata.append("country", country);
+    }
+    if (aboutMe !== oldInfo) {
+      formdata.append("info", aboutMe);
+    }
+    if (image) {
+      formdata.append("image", image);
+    }
 
     let res;
     let requestOptions = {
@@ -185,12 +158,6 @@ const EditProfileScreen = ({ route, navigation }) => {
       Alert.alert("Update gescheitert ", errMess.message);
     }
     navigation.goBack();
-    usernameInput.current.clear();
-    phoneInput.current.clear();
-    streetInput.current.clear();
-    zipCodeInput.current.clear();
-    cityInput.current.clear();
-    infoInput.current.clear();
   };
 
   return (
@@ -200,24 +167,24 @@ const EditProfileScreen = ({ route, navigation }) => {
       <View style={styles.userInfo}>
         <View style={styles.inputView}>
           <TextInput
-            ref={usernameInput}
+            value={username}
             style={styles.inputText}
             placeholder="Username"
             placeholderTextColor="#7E7E7E"
             autoCapitalize="none"
-            onChangeText={(value) => usernameChange(value)}
+            onChangeText={(value) => setUsername(value)}
           />
         </View>
 
         <View style={styles.inputViewLast}>
           <TextInput
-            ref={phoneInput}
+            value={phone}
             style={styles.inputText}
             placeholder="Gib deine neue Telefonnummer ein"
             placeholderTextColor="#7E7E7E"
             autoCapitalize="none"
             keyboardType="phone-pad"
-            onChangeText={(value) => handlePhoneChange(value)}
+            onChangeText={(value) => setPhone(value)}
           />
         </View>
       </View>
@@ -225,32 +192,32 @@ const EditProfileScreen = ({ route, navigation }) => {
       <View style={styles.userInfo}>
         <View style={styles.inputView}>
           <TextInput
-            ref={streetInput}
+            value={street}
             style={styles.inputText}
             placeholder="Straße und Hausnummer"
             placeholderTextColor="#7E7E7E"
-            onChangeText={(value) => handleStreetChange(value)}
+            onChangeText={(value) => setStreet(value)}
           />
         </View>
 
         <View style={styles.inputView}>
           <TextInput
-            ref={zipCodeInput}
+            value={PLZ}
             style={styles.inputText}
             placeholder="PLZ"
             placeholderTextColor="#7E7E7E"
             keyboardType="phone-pad"
-            onChangeText={(value) => handlePLZChange(value)}
+            onChangeText={(value) => setPLZ(value)}
           />
         </View>
 
         <View style={styles.inputView}>
           <TextInput
-            ref={cityInput}
+            value={city}
             style={styles.inputText}
             placeholder="Ort"
             placeholderTextColor="#7E7E7E"
-            onChangeText={(value) => handleCityChange(value)}
+            onChangeText={(value) => setCity(value)}
           />
         </View>
 
@@ -259,13 +226,12 @@ const EditProfileScreen = ({ route, navigation }) => {
 
           <View style={styles.pickerContainer}>
             <Picker
-              ref={countryInput}
               selectedValue={country}
               style={styles.picker}
               itemStyle={styles.pickerItems}
               mode={"dropdown"}
               onValueChange={(itemValue, itemIndex) =>
-                handleCountryChange(itemValue)
+                setCountry(itemValue)
               }
             >
               <Picker.Item label="Deutschland" value="de" />
@@ -279,11 +245,11 @@ const EditProfileScreen = ({ route, navigation }) => {
       <View style={styles.userPersonalInfo}>
         <View style={styles.inputAboutMeView}>
           <TextInput
-            ref={infoInput}
+            value={aboutMe}
             style={styles.inputText}
             placeholder="Über mich..."
             placeholderTextColor="#7E7E7E"
-            onChangeText={(value) => handleAboutMEChange(value)}
+            onChangeText={(value) => setAboutMe(value)}
           />
         </View>
       </View>

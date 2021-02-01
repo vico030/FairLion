@@ -31,11 +31,6 @@ const DrawerContent = ({ navigation }) => {
 
   useEffect(() => {
     getUserdata();
-    console.log("render!");
-    /* const unsubscribe = navigation.addListener("focus", () => {
-      getUserdata();
-    });
-    return unsubscribe; */
   }, [navigation, AsyncStorage.multiGet(["image", "username", "phone", "street", "zipCode", "city", "country", "info"])]);
 
   return (
