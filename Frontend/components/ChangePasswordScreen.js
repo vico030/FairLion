@@ -77,7 +77,7 @@ export const ChangePasswordScreen = ({ navigation }) => {
       <View style={styles.view}>
         <View style={styles.textContainer}>
           <Text style={styles.baseText}>
-            Geben Sie ein Ihr neues Passwort ein:
+            Geben Sie Ihr neues Passwort ein:
           </Text>
         </View>
 

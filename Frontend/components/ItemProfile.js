@@ -32,7 +32,7 @@ export default function ItemProfile({
   user,
   borrower,
 }) {
-  
+
 
   let duration = formatDuration(ausleihfrist)
   return (
@@ -42,10 +42,8 @@ export default function ItemProfile({
       onPress={async () => {
         const userId = await AsyncStorage.getItem("userId");
         let screen;
-        if (borrower) {          
-          if (borrower == userId) {
-            screen = "ReturnDetails";
-          }
+        if (borrower && borrower == userId) {
+          screen = "ReturnDetails";
         }
         else {
           screen = "ViewDetails";
@@ -64,6 +62,7 @@ export default function ItemProfile({
           returnDate: returnDate,
           articleId: articleId,
           user: user,
+          borrower: borrower
         })
       }
       }

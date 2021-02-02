@@ -40,10 +40,8 @@ export default function ItemSearch({
       onPress={async () =>{
         const userId = await AsyncStorage.getItem("userId");
         let screen;
-        if (borrower) {          
-          if (borrower == userId) {
+        if (borrower && borrower == userId) {
             screen = "ReturnDetails";
-          }
         }
         else {
           screen = "ViewDetails";
@@ -60,6 +58,7 @@ export default function ItemSearch({
           favored: favored,
           returnDate: returnDate,
           user: user,
+          borrower: borrower
         })}
       }
     >

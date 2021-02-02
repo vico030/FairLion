@@ -19,7 +19,7 @@ import AsyncStorage from "@react-native-community/async-storage";
 const windowHeight = Dimensions.get("window").height;
 
 const DetailViewScreen = ({ route, navigation }) => {
-  const { besitzer, produktName, beschreibung, articleId, images, ausleihfrist, kategorie, status, user, favored } = route.params;
+  const { besitzer, produktName, beschreibung, articleId, images, ausleihfrist, kategorie, status, user, favored, borrower } = route.params;
 
   let favoredVar = favored;
   const [requested, setRequested] = useState(false);
@@ -187,7 +187,7 @@ const DetailViewScreen = ({ route, navigation }) => {
           </View>
         </View>
         <View style={styles.buttonContainer}>
-          <TouchableOpacity disabled={requested} style={requested ? styles.disabledBtn : styles.signUpBtn} onPress={() => handleLend()}>
+          <TouchableOpacity disabled={requested || borrower} style={(requested || borrower) ? styles.disabledBtn : styles.signUpBtn} onPress={() => handleLend()}>
             <Text style={styles.loginText}>{requested ? "Angefragt" : "Anfragen"}</Text>
           </TouchableOpacity>
         </View>
