@@ -27,7 +27,6 @@ export default function ItemStock({
   isVisible
 }) {
   // Hier steht nur Text, damit da Bilder sind
-  let duration = formatDuration(ausleihfrist)
   return (
     // change image link to correct parameter url
     <TouchableOpacity
@@ -37,7 +36,7 @@ export default function ItemStock({
           besitzer: besitzer,
           images: images,
           produktName: produktName,
-          ausleihfrist: duration,
+          ausleihfrist: ausleihfrist,
           kategorie: kategorie,
           beschreibung: beschreibung,
           user: user,
@@ -70,7 +69,7 @@ export default function ItemStock({
         <View style={styles.items}>
           <UserButton user={user} navigation={navigation} disabled={true} />
           <Text style={styles.itemTime} numberOfLines={1}>
-            Frist: {duration}
+            Frist: {formatDuration(ausleihfrist)}
           </Text>
         </View>
       </View>

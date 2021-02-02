@@ -49,6 +49,7 @@ const EditItemScreen = ({
   }
 
   const handleEdit = async () => {
+    console.log( durationValue + " " + durationUnit);
     const formdata = new FormData();
     formdata.append("title", title);
     formdata.append("description", description);

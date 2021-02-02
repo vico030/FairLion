@@ -15,6 +15,7 @@ import Carousel from "./CarouselComponent";
 import UserButton from "./UserButton";
 import { useNavigation } from '@react-navigation/native'
 import { Button } from "react-native";
+import { formatDuration } from "../helpers/format.js";
 
 const windowHeight = Dimensions.get("window").height;
 
@@ -217,7 +218,7 @@ const DetailEditViewScreen = ({
 
           <View style={styles.element}>
             <Text style={styles.elementTextLeft}>Ausleihbar für:</Text>
-            <Text style={styles.elementTextRight}>{ausleihfrist}</Text>
+            <Text style={styles.elementTextRight}>{formatDuration(ausleihfrist)}</Text>
           </View>
 
           <View style={styles.element}>
