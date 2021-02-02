@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "FairLION",
-    "version": "1.0.3",
+    "version": "1.0.4",
     "orientation": "portrait",
     "icon": "./assets/logo.png",
     "updates": {
@@ -13,11 +13,11 @@
     "ios": {
       "supportsTablet": false,
       "bundleIdentifier": "com.fairlion.app",
-      "buildNumber": "1.0.3"
+      "buildNumber": "1.0.4"
     },
     "android": {
       "package": "com.fairlion.app",
-      "versionCode": 2
+      "versionCode": 4
     },
     "description": "Verleihen leicht gemacht!"
   }
