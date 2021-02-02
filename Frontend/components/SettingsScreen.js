@@ -64,7 +64,7 @@ const SettingsScreen = ({ navigation }) => {
           style={styles.subMenuBottom}
           onPress={() => navigation.navigate("ChangePassword")}
         >
-          <Text style={styles.buttonText}>Password ändern</Text>
+          <Text style={styles.buttonText}>Passwort ändern</Text>
           <MaterialIcons name="chevron-right" size={24} color="#bbb" />
         </TouchableOpacity>
       </View>
