@@ -42,13 +42,14 @@ Nahezu alle von uns im Voraus erdachten Funktionen wurden in der finalen App imp
 
 ### Screenshots
 
-![Login Screen]()
-![Ausgeliehen Screen]()
-![Lager Screen]()
-![Suche Screen]()
-![Anfragen Screen]()
-![Freunde Screen]()
-![App Drawer]()
+![Login Screen](/login.jpg)
+![Ausgeliehen Screen](/ausgeliehen.jpg)
+![Lager Screen](/lager.jpg)
+![Favoriten Screen](/favoriten.jpg)
+![Suche Screen](/suche.jpg)
+![Anfragen Screen](/anfragen.jpg)
+![Freunde Screen](/freunde.jpg)
+![App Drawer](/drawer.jpg)
 
 ## Arbeitsaufteilung und Rollen
 
